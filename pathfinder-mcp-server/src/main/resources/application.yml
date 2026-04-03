@@ -1,0 +1,21 @@
+﻿spring:
+  application:
+    name: pathfinder-mcp-server
+  datasource:
+    url: ${PATHFINDER_MCP_DB_URL:${PATHFINDER_DB_URL:${DATABASE_URL:jdbc:postgresql://localhost:5433/flightpathfinder}}}
+    username: ${PATHFINDER_MCP_DB_USERNAME:${PATHFINDER_DB_USERNAME:${DATABASE_USERNAME:postgres}}}
+    password: ${PATHFINDER_MCP_DB_PASSWORD:${PATHFINDER_DB_PASSWORD:${DATABASE_PASSWORD:postgres}}}
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      url: ${PATHFINDER_REDIS_URL:${REDIS_URL:redis://:123456@localhost:6380}}
+      timeout: 5000ms
+
+server:
+  port: ${PATHFINDER_MCP_SERVER_PORT:8081}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

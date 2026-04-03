@@ -1,0 +1,80 @@
+﻿spring:
+  application:
+    name: pathfinder-bootstrap
+  datasource:
+    url: ${PATHFINDER_DB_URL:${DATABASE_URL:jdbc:postgresql://localhost:5433/flightpathfinder}}
+    username: ${PATHFINDER_DB_USERNAME:${DATABASE_USERNAME:postgres}}
+    password: ${PATHFINDER_DB_PASSWORD:${DATABASE_PASSWORD:postgres}}
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      url: ${PATHFINDER_REDIS_URL:${REDIS_URL:redis://:123456@localhost:6380}}
+      timeout: 5000ms
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+pathfinder:
+  admin:
+    data:
+      etl:
+        openflights:
+          airports-location: classpath:data/openflights/airports.dat
+          airlines-location: classpath:data/openflights/airlines.dat
+          routes-location: classpath:data/openflights/routes.dat
+        visa:
+          location: classpath:data/visa_policies.yaml
+        city-cost:
+          location: classpath:data/city_costs.json
+  ai:
+    providers:
+      siliconflow:
+        type: SILICON_FLOW
+        enabled: true
+        base-url: ${PATHFINDER_SILICONFLOW_BASE_URL:https://api.siliconflow.cn}
+        api-key: ${PATHFINDER_SILICONFLOW_API_KEY:}
+        endpoints:
+          chat: /v1/chat/completions
+      bailian:
+        type: BAILIAN
+        enabled: true
+        base-url: ${PATHFINDER_BAILIAN_BASE_URL:https://dashscope.aliyuncs.com}
+        api-key: ${PATHFINDER_BAILIAN_API_KEY:}
+        endpoints:
+          embedding: /compatible-mode/v1/embeddings
+      mock:
+        type: MOCK
+        enabled: true
+    chat:
+      provider: ${PATHFINDER_CHAT_PROVIDER:siliconflow}
+      model-name: ${PATHFINDER_CHAT_MODEL:Qwen/Qwen2.5-72B-Instruct}
+      enabled: true
+      streaming-enabled: true
+      timeout-ms: ${PATHFINDER_CHAT_TIMEOUT_MS:30000}
+      temperature: ${PATHFINDER_CHAT_TEMPERATURE:0.2}
+      max-tokens: ${PATHFINDER_CHAT_MAX_TOKENS:4096}
+    embedding:
+      provider: ${PATHFINDER_EMBEDDING_PROVIDER:bailian}
+      model-name: ${PATHFINDER_EMBEDDING_MODEL:text-embedding-v3}
+      enabled: true
+      timeout-ms: ${PATHFINDER_EMBEDDING_TIMEOUT_MS:30000}
+      dimension: ${PATHFINDER_EMBEDDING_DIMENSION:1024}
+  rag:
+    mcp:
+      client:
+        base-url: ${PATHFINDER_MCP_SERVER_URL:http://localhost:8081}
+    memory:
+      recent-turn-limit: 4
+      summary-enabled: true
+      summary-start-turns: 6
+      summary-max-chars: 360
+  flight:
+    graph:
+      snapshot:
+        default-graph-key: flight-main

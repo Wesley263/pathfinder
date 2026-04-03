@@ -1,0 +1,152 @@
+[
+  {
+    "iata_code": "PVG",
+    "city": "Shanghai",
+    "country": "China",
+    "country_code": "CN",
+    "daily_cost_usd": 80,
+    "accommodation_usd": 45,
+    "meal_cost_usd": 15,
+    "transportation_usd": 8
+  },
+  {
+    "iata_code": "PEK",
+    "city": "Beijing",
+    "country": "China",
+    "country_code": "CN",
+    "daily_cost_usd": 75,
+    "accommodation_usd": 40,
+    "meal_cost_usd": 12,
+    "transportation_usd": 7
+  },
+  {
+    "iata_code": "NRT",
+    "city": "Tokyo",
+    "country": "Japan",
+    "country_code": "JP",
+    "daily_cost_usd": 110,
+    "accommodation_usd": 60,
+    "meal_cost_usd": 18,
+    "transportation_usd": 12
+  },
+  {
+    "iata_code": "KIX",
+    "city": "Osaka",
+    "country": "Japan",
+    "country_code": "JP",
+    "daily_cost_usd": 90,
+    "accommodation_usd": 50,
+    "meal_cost_usd": 15,
+    "transportation_usd": 8
+  },
+  {
+    "iata_code": "ICN",
+    "city": "Seoul",
+    "country": "South Korea",
+    "country_code": "KR",
+    "daily_cost_usd": 85,
+    "accommodation_usd": 45,
+    "meal_cost_usd": 14,
+    "transportation_usd": 7
+  },
+  {
+    "iata_code": "BKK",
+    "city": "Bangkok",
+    "country": "Thailand",
+    "country_code": "TH",
+    "daily_cost_usd": 50,
+    "accommodation_usd": 25,
+    "meal_cost_usd": 8,
+    "transportation_usd": 5
+  },
+  {
+    "iata_code": "SIN",
+    "city": "Singapore",
+    "country": "Singapore",
+    "country_code": "SG",
+    "daily_cost_usd": 100,
+    "accommodation_usd": 55,
+    "meal_cost_usd": 16,
+    "transportation_usd": 10
+  },
+  {
+    "iata_code": "KUL",
+    "city": "Kuala Lumpur",
+    "country": "Malaysia",
+    "country_code": "MY",
+    "daily_cost_usd": 45,
+    "accommodation_usd": 22,
+    "meal_cost_usd": 7,
+    "transportation_usd": 4
+  },
+  {
+    "iata_code": "LAX",
+    "city": "Los Angeles",
+    "country": "United States",
+    "country_code": "US",
+    "daily_cost_usd": 180,
+    "accommodation_usd": 120,
+    "meal_cost_usd": 25,
+    "transportation_usd": 15
+  },
+  {
+    "iata_code": "JFK",
+    "city": "New York",
+    "country": "United States",
+    "country_code": "US",
+    "daily_cost_usd": 220,
+    "accommodation_usd": 150,
+    "meal_cost_usd": 30,
+    "transportation_usd": 18
+  },
+  {
+    "iata_code": "LHR",
+    "city": "London",
+    "country": "United Kingdom",
+    "country_code": "GB",
+    "daily_cost_usd": 180,
+    "accommodation_usd": 110,
+    "meal_cost_usd": 25,
+    "transportation_usd": 20
+  },
+  {
+    "iata_code": "CDG",
+    "city": "Paris",
+    "country": "France",
+    "country_code": "FR",
+    "daily_cost_usd": 170,
+    "accommodation_usd": 100,
+    "meal_cost_usd": 24,
+    "transportation_usd": 18
+  },
+  {
+    "iata_code": "FRA",
+    "city": "Frankfurt",
+    "country": "Germany",
+    "country_code": "DE",
+    "daily_cost_usd": 150,
+    "accommodation_usd": 85,
+    "meal_cost_usd": 20,
+    "transportation_usd": 12
+  },
+  {
+    "iata_code": "SYD",
+    "city": "Sydney",
+    "country": "Australia",
+    "country_code": "AU",
+    "daily_cost_usd": 150,
+    "accommodation_usd": 90,
+    "meal_cost_usd": 22,
+    "transportation_usd": 14
+  },
+  {
+    "iata_code": "DXB",
+    "city": "Dubai",
+    "country": "United Arab Emirates",
+    "country_code": "AE",
+    "daily_cost_usd": 130,
+    "accommodation_usd": 75,
+    "meal_cost_usd": 22,
+    "transportation_usd": 10
+  }
+]

@@ -1,0 +1,187 @@
+package com.flightpathfinder.admin.service.impl;
+
+import com.flightpathfinder.admin.service.AdminTraceDetailResult;
+import com.flightpathfinder.admin.service.AdminTraceNodeSummary;
+import com.flightpathfinder.admin.service.AdminTraceRunSummary;
+import com.flightpathfinder.admin.service.AdminTraceService;
+import com.flightpathfinder.admin.service.AdminTraceToolSummary;
+import com.flightpathfinder.rag.core.trace.RagTraceDetailResult;
+import com.flightpathfinder.rag.core.trace.RagTraceNodeDetail;
+import com.flightpathfinder.rag.core.trace.RagTraceQueryService;
+import com.flightpathfinder.rag.core.trace.RagTraceRunSummary;
+import com.flightpathfinder.rag.core.trace.RagTraceToolSummary;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
+
+/**
+ * Default admin-facing adapter over persisted trace queries.
+ *
+ * <p>This service translates core trace read models into management-oriented shapes so admin APIs can expose
+ * partial/error/snapshot-miss semantics without directly leaking runtime trace models.
+ */
+@Service
+public class DefaultAdminTraceService implements AdminTraceService {
+
+    private final RagTraceQueryService ragTraceQueryService;
+
+    public DefaultAdminTraceService(RagTraceQueryService ragTraceQueryService) {
+        this.ragTraceQueryService = ragTraceQueryService;
+    }
+
+    /**
+     * Loads one admin-facing trace detail view.
+     *
+     * @param traceId unique trace identifier
+     * @return admin detail result when the trace exists
+     */
+    @Override
+    public Optional<AdminTraceDetailResult> findDetail(String traceId) {
+        return ragTraceQueryService.findDetail(traceId)
+                .map(this::toDetailResult);
+    }
+
+    /**
+     * Lists recent traces for admin inspection.
+     *
+     * @param requestId optional request id filter
+     * @param conversationId optional conversation id filter
+     * @param limit maximum number of runs to return
+     * @return admin-facing trace summaries
+     */
+    @Override
+    public List<AdminTraceRunSummary> listRuns(String requestId, String conversationId, int limit) {
+        return ragTraceQueryService.listRuns(requestId, conversationId, limit).stream()
+                .map(this::toRunSummaryWithDetail)
+                .toList();
+    }
+
+    private AdminTraceRunSummary toRunSummaryWithDetail(RagTraceRunSummary runSummary) {
+        Optional<RagTraceDetailResult> detailResult = ragTraceQueryService.findDetail(runSummary.traceId());
+        if (detailResult.isPresent()) {
+            return toRunSummary(detailResult.get());
+        }
+        return toRunSummary(runSummary, List.of(), List.of());
+    }
+
+    private AdminTraceDetailResult toDetailResult(RagTraceDetailResult detailResult) {
+        List<AdminTraceNodeSummary> stages = detailResult.stages().stream()
+                .map(this::toNodeSummary)
+                .toList();
+        List<AdminTraceNodeSummary> nodes = detailResult.nodes().stream()
+                .map(this::toNodeSummary)
+                .toList();
+        List<AdminTraceToolSummary> toolSummaries = detailResult.mcpToolSummaries().stream()
+                .map(this::toToolSummary)
+                .toList();
+        return new AdminTraceDetailResult(
+                toRunSummary(detailResult.run(), stages, toolSummaries),
+                stages,
+                nodes,
+                toolSummaries);
+    }
+
+    private AdminTraceRunSummary toRunSummary(RagTraceDetailResult detailResult) {
+        List<AdminTraceNodeSummary> stages = detailResult.stages().stream()
+                .map(this::toNodeSummary)
+                .toList();
+        List<AdminTraceToolSummary> toolSummaries = detailResult.mcpToolSummaries().stream()
+                .map(this::toToolSummary)
+                .toList();
+        return toRunSummary(detailResult.run(), stages, toolSummaries);
+    }
+
+    private AdminTraceRunSummary toRunSummary(RagTraceRunSummary runSummary,
+                                              List<AdminTraceNodeSummary> stages,
+                                              List<AdminTraceToolSummary> toolSummaries) {
+        // Admin views surface "partial" and "error" explicitly because operators need to distinguish structured
+        // business incompleteness from outright infrastructure failures.
+        boolean partial = stages.stream().anyMatch(AdminTraceNodeSummary::partial);
+        boolean errorOccurred = isErrorStatus(runSummary.overallStatus())
+                || stages.stream().anyMatch(stage -> isErrorStatus(stage.status()) || !stage.error().isBlank())
+                || toolSummaries.stream().anyMatch(AdminTraceToolSummary::error);
+        return new AdminTraceRunSummary(
+                runSummary.traceId(),
+                runSummary.requestId(),
+                runSummary.conversationId(),
+                runSummary.scene(),
+                runSummary.overallStatus(),
+                runSummary.snapshotMissOccurred(),
+                partial,
+                errorOccurred,
+                runSummary.startedAt(),
+                runSummary.finishedAt(),
+                runSummary.nodeCount(),
+                runSummary.toolCount(),
+                stages,
+                toolSummaries);
+    }
+
+    private AdminTraceNodeSummary toNodeSummary(RagTraceNodeDetail nodeDetail) {
+        boolean partial = booleanAttribute(nodeDetail.attributes(), "partial");
+        boolean snapshotMiss = booleanAttribute(nodeDetail.attributes(), "snapshotMiss")
+                || booleanAttribute(nodeDetail.attributes(), "snapshotMissAffected");
+        String error = firstNonBlank(
+                stringAttribute(nodeDetail.attributes(), "error"),
+                isErrorStatus(nodeDetail.status()) ? nodeDetail.summary() : "");
+        return new AdminTraceNodeSummary(
+                nodeDetail.nodeName(),
+                nodeDetail.nodeType(),
+                nodeDetail.status(),
+                nodeDetail.summary(),
+                nodeDetail.startedAt(),
+                nodeDetail.finishedAt(),
+                partial,
+                snapshotMiss,
+                error,
+                nodeDetail.attributes());
+    }
+
+    private AdminTraceToolSummary toToolSummary(RagTraceToolSummary toolSummary) {
+        return new AdminTraceToolSummary(
+                toolSummary.toolId(),
+                toolSummary.status(),
+                toolSummary.message(),
+                toolSummary.snapshotMiss(),
+                isErrorStatus(toolSummary.status()));
+    }
+
+    private boolean booleanAttribute(Map<String, Object> attributes, String key) {
+        Object value = attributes == null ? null : attributes.get(key);
+        if (value instanceof Boolean booleanValue) {
+            return booleanValue;
+        }
+        if (value instanceof String stringValue) {
+            return Boolean.parseBoolean(stringValue.trim());
+        }
+        return false;
+    }
+
+    private String stringAttribute(Map<String, Object> attributes, String key) {
+        Object value = attributes == null ? null : attributes.get(key);
+        return value == null ? "" : String.valueOf(value).trim();
+    }
+
+    private boolean isErrorStatus(String status) {
+        String normalized = status == null ? "" : status.trim().toUpperCase(Locale.ROOT);
+        if (normalized.isBlank()) {
+            return false;
+        }
+        return normalized.equals("FAILED")
+                || normalized.equals("ERROR")
+                || normalized.endsWith("_ERROR")
+                || normalized.equals("INVALID_PARAMETER")
+                || normalized.equals("MISSING_REQUIRED");
+    }
+
+    private String firstNonBlank(String... values) {
+        for (String value : values) {
+            if (value != null && !value.isBlank()) {
+                return value.trim();
+            }
+        }
+        return "";
+    }
+}

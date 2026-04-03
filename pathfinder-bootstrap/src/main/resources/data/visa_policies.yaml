@@ -1,0 +1,90 @@
+- destination_country: CN
+  passport_country: US
+  visa_required: YES
+  visa_duration_days: 30
+  transit_conditions: '{"transit_without_visa": false, "duration_limit_hours": 24}'
+  notes: US passport requires visa
+
+- destination_country: CN
+  passport_country: JP
+  visa_required: YES
+  visa_duration_days: 15
+  transit_conditions: '{"transit_without_visa": true, "duration_limit_hours": 72}'
+  notes: Japan passport can transit
+
+- destination_country: CN
+  passport_country: SG
+  visa_required: YES
+  visa_duration_days: 15
+  transit_conditions: '{"transit_without_visa": true, "duration_limit_hours": 72}'
+  notes: Singapore passport can transit
+
+- destination_country: JP
+  passport_country: CN
+  visa_required: YES
+  visa_duration_days: 90
+  transit_conditions: '{"transit_without_visa": false, "duration_limit_hours": 24}'
+  notes: China requires visa
+
+- destination_country: JP
+  passport_country: US
+  visa_required: NO
+  visa_duration_days: 90
+  transit_conditions: '{"transit_without_visa": true, "duration_limit_hours": 72}'
+  notes: US visa-free 90 days
+
+- destination_country: SG
+  passport_country: CN
+  visa_required: YES
+  visa_duration_days: 30
+  transit_conditions: '{"transit_without_visa": true, "duration_limit_hours": 96}'
+  notes: China can transit without visa
+
+- destination_country: TH
+  passport_country: CN
+  visa_required: YES
+  visa_duration_days: 60
+  transit_conditions: '{"transit_without_visa": false, "duration_limit_hours": 24}'
+  notes: China requires visa
+
+- destination_country: TH
+  passport_country: US
+  visa_required: NO
+  visa_duration_days: 30
+  transit_conditions: '{"transit_without_visa": true, "duration_limit_hours": 72}'
+  notes: US visa-free 30 days
+
+- destination_country: AE
+  passport_country: CN
+  visa_required: YES
+  visa_duration_days: 30
+  transit_conditions: '{"transit_without_visa": false, "duration_limit_hours": 24}'
+  notes: China requires visa
+
+- destination_country: GB
+  passport_country: CN
+  visa_required: YES
+  visa_duration_days: 180
+  transit_conditions: '{"transit_without_visa": false, "duration_limit_hours": 24}'
+  notes: China requires visa
+
+- destination_country: FR
+  passport_country: CN
+  visa_required: YES
+  visa_duration_days: 90
+  transit_conditions: '{"transit_without_visa": false, "duration_limit_hours": 24}'
+  notes: China requires visa
+
+- destination_country: AU
+  passport_country: CN
+  visa_required: YES
+  visa_duration_days: 90
+  transit_conditions: '{"transit_without_visa": false, "duration_limit_hours": 24}'
+  notes: China requires visa
+
+- destination_country: US
+  passport_country: CN
+  visa_required: YES
+  visa_duration_days: 90
+  transit_conditions: '{"transit_without_visa": false, "duration_limit_hours": 24}'
+  notes: China requires visa
