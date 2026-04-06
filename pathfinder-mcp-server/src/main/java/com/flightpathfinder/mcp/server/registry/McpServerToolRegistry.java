@@ -6,26 +6,25 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Server-side catalog of MCP tools exposed by this process.
+ * 当前服务进程对外暴露的 MCP 工具目录。
  *
- * <p>The registry is deliberately narrow: it only answers "what tools are available?" and "which executor
- * owns this tool?" Protocol dispatch, dependency health checks and business execution all stay outside this
- * abstraction.
+ * <p>该注册器刻意保持窄职责：只回答“有哪些工具”与“某工具由谁执行”。
+ * 协议分发、依赖健康检查与业务执行不属于此抽象。
  */
 public interface McpServerToolRegistry {
 
     /**
-     * Lists descriptors for all tools currently exposed by the MCP server.
+     * 列出 MCP 服务当前对外暴露的全部工具描述。
      *
-     * @return ordered tool descriptors used by {@code tools/list}
+     * @return 按注册顺序返回、供 {@code tools/list} 使用的工具描述
      */
     List<McpToolDescriptor> listTools();
 
     /**
-     * Finds the executor responsible for the given tool id.
+     * 查找给定 toolId 对应的执行器。
      *
-     * @param toolId MCP tool id such as {@code graph.path.search}
-     * @return matching executor when the tool is registered in this process
+     * @param toolId MCP 工具 id，例如 {@code graph.path.search}
+     * @return 若当前进程已注册该工具则返回匹配执行器
      */
     Optional<McpToolExecutor> findExecutor(String toolId);
 }

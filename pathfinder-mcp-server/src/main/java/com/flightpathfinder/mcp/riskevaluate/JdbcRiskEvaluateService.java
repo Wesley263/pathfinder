@@ -13,11 +13,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * JDBC-backed implementation of {@link RiskEvaluateService}.
+ * {@link RiskEvaluateService} 的 JDBC 实现。
  *
- * <p>This service owns the current transfer-risk rule model for {@code risk.evaluate}. It reads reference
- * data locally and applies server-side scoring so the tool can evolve without sharing bootstrap business
- * implementations.
+ * <p>该服务承载 {@code risk.evaluate} 当前中转风险规则模型，
+ * 在本地读取参考数据并执行服务端评分，
+ * 从而在不共享 bootstrap 业务实现的前提下持续演进。
  */
 @Service
 public class JdbcRiskEvaluateService implements RiskEvaluateService {
@@ -63,10 +63,10 @@ public class JdbcRiskEvaluateService implements RiskEvaluateService {
     }
 
     /**
-     * Evaluates a transfer scenario using hub, airline and buffer heuristics.
+     * 基于枢纽、航司与缓冲时长启发式评估中转场景风险。
      *
-     * @param query normalized risk-evaluation request
-     * @return structured risk result including score, level, explanation and recommendations
+     * @param query 归一化风险评估请求
+     * @return 结构化风险结果，包含分数、等级、解释与建议
      */
     @Override
     public RiskEvaluateResult evaluate(RiskEvaluateQuery query) {
@@ -96,8 +96,8 @@ public class JdbcRiskEvaluateService implements RiskEvaluateService {
 
         double airlineRisk = ((1 - firstOnTimeRate) + (1 - secondOnTimeRate)) / 2.0D;
         if (!sameAirline) {
-            // Cross-airline connections are intentionally penalized because recheck and baggage handling add a
-            // consistent operational risk even before schedule reliability is considered.
+            // 跨航司中转会被有意惩罚，
+            // 因为改签转运行李等环节在时刻表可靠性之外也会带来稳定运营风险。
             airlineRisk += CROSS_AIRLINE_PENALTY;
         }
         airlineRisk = clamp(airlineRisk);
@@ -197,7 +197,7 @@ public class JdbcRiskEvaluateService implements RiskEvaluateService {
     }
 
     private double computeBufferRisk(double bufferHours) {
-        // Buffer scoring is intentionally coarse-grained in v1 so results stay explainable to operators.
+        // 首版故意采用粗粒度缓冲评分，保证结果对运营人员可解释。
         if (bufferHours < 1.5D) {
             return 1.0D;
         }
@@ -211,8 +211,7 @@ public class JdbcRiskEvaluateService implements RiskEvaluateService {
     }
 
     private double computeHubRisk(String hubAirport) {
-        // Hub classification is kept local to the server-side rule model until a richer operational dataset is
-        // introduced.
+        // 在引入更丰富运营数据之前，枢纽分级先保留在服务端本地规则模型中。
         if (MAJOR_HUBS.contains(hubAirport)) {
             return 0.10D;
         }

@@ -3,22 +3,22 @@ package com.flightpathfinder.admin.service.etl;
 import com.flightpathfinder.admin.service.AdminDatasetReloadResult;
 
 /**
- * Dataset-level ETL importer used by admin-triggered reload.
+ * 管理端触发重载时使用的数据集级 ETL 导入器。
  *
- * <p>Each importer owns one external dataset so admin reload can report dataset-granular results instead of
- * collapsing all ETL work into one opaque success/failure bit.
+ * <p>每个导入器负责一个外部数据集，使管理端重载能够以数据集粒度报告结果，
+ * 而不是把所有 ETL 工作压缩成单一的成功/失败标记。
  */
 public interface AdminDatasetImporter {
 
     /**
-     * Returns the stable dataset id used in admin reload reporting.
+        * 返回管理端重载报告使用的稳定数据集标识。
      *
      * @return dataset id such as {@code openflights}, {@code visa}, or {@code city_cost}
      */
     String datasetId();
 
     /**
-     * Executes ETL import for one dataset.
+        * 执行单个数据集的 ETL 导入。
      *
      * @return dataset-level reload result including processed/upserted/failed counts and source details
      */

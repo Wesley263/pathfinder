@@ -23,10 +23,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * ETL importer for the OpenFlights-derived airport, airline and route dataset.
+ * 基于 OpenFlights 的机场、航司与航线数据 ETL 导入器。
  *
- * <p>This importer lives on the admin surface because it is an operator-triggered ingestion pipeline, not a
- * user-facing runtime query service.
+ * <p>该导入器属于管理端能力面，是由运维触发的数据摄取流水线，
+ * 而非面向用户的运行时查询服务。
  */
 @Service
 public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
@@ -189,7 +189,7 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-     * Returns the stable admin dataset id for OpenFlights ETL.
+        * 返回 OpenFlights ETL 的稳定管理数据集标识。
      *
      * @return {@code openflights}
      */
@@ -199,7 +199,7 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-     * Executes OpenFlights ETL across airports, airlines and routes.
+        * 执行 OpenFlights ETL，覆盖机场、航司与航线。
      *
      * @return dataset-level reload result with processed/upserted/failed counts and source details
      */
@@ -239,8 +239,7 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
         }
 
         try {
-            // Airports and airlines are parsed first so route import can validate foreign references and compute
-            // derived route attributes from the same source-of-truth rows.
+            // 先解析机场与航司，再导入航线，以便校验外键引用并基于同源数据计算派生字段。
             ParseOutcome<AirportRecord> airports = parseAirports(airportsResource);
             ParseOutcome<AirlineRecord> airlines = parseAirlines(airlinesResource);
             ParseOutcome<RouteRecord> routes = parseRoutes(routesResource, airports.records(), airlines.records());
@@ -254,8 +253,7 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
                     + airportUpserts.failedCount() + airlineUpserts.failedCount() + routeUpserts.failedCount();
             long upserted = airportUpserts.upsertedCount() + airlineUpserts.upsertedCount() + routeUpserts.upsertedCount();
 
-            // Admin reload reports dataset-level detail instead of only one overall flag so operators can see
-            // which slice of OpenFlights import degraded.
+            // 管理端重载按数据集分片返回细节，便于定位 OpenFlights 哪一部分出现退化。
             String status = failed > 0 ? "PARTIAL_SUCCESS" : "SUCCESS";
             String reason = failed > 0
                     ? "openflights ETL completed with row-level skips or failures"
@@ -448,8 +446,7 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
             pairCompetition.merge(pairKey, 1, Integer::sum);
         }
 
-        // Route import derives operational fields such as distance, duration and base price so downstream graph
-        // and MCP flows can work without depending on 1.0 loader implementations.
+        // 航线导入会派生距离、时长、基础价格等字段，确保下游图与 MCP 流程无需依赖 1.0 装载实现。
         List<RouteRecord> finalRoutes = new ArrayList<>(routes.size());
         for (BasicRouteRecord route : routes.values()) {
             String pairKey = route.source().iataCode() + "|" + route.destination().iataCode();

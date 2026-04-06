@@ -1,19 +1,18 @@
 package com.flightpathfinder.rag.core.answer;
 
 /**
- * Turns assembled answer input into the final answer text.
+ * 最终回答文本生成边界。
  *
- * <p>This boundary keeps text composition separate from evidence collection so later LLM or
- * prompt-based generation can replace the current deterministic composer without changing
- * retrieval orchestration.</p>
+ * <p>它只负责把已经装配好的输入模型转成用户可读文本，让证据收集和文本组织保持分层，
+ * 后续可平滑替换为 LLM 或更复杂的 prompt 方案。</p>
  */
 public interface FinalAnswerTextComposer {
 
     /**
-     * Composes answer text from normalized answer input.
+     * 根据标准化回答输入生成最终文本。
      *
-     * @param promptInput normalized answer-generation input
-     * @return final answer text shown to the caller
+     * @param promptInput 标准化后的回答输入
+     * @return 面向调用方输出的最终回答文本
      */
     String compose(FinalAnswerPromptInput promptInput);
 }

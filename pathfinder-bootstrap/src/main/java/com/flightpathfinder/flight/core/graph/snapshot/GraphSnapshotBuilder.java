@@ -3,18 +3,18 @@ package com.flightpathfinder.flight.core.graph.snapshot;
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshot;
 
 /**
- * Builds a graph snapshot read model from the main program's authoritative data sources.
+ * 图快照构建边界。
  *
- * <p>The builder stays on the bootstrap side because the main program owns graph data
- * lifecycle and decides when a new snapshot should exist.</p>
+ * <p>构建器位于 bootstrap 主程序侧，因为图数据生命周期由主程序负责，
+ * 何时生成新快照也应由主程序决策。</p>
  */
 public interface GraphSnapshotBuilder {
 
     /**
-     * Builds a fresh snapshot for the requested graph key.
+     * 为指定 graphKey 构建新快照。
      *
-     * @param graphKey logical graph identifier
-     * @return fully materialized graph snapshot read model
+     * @param graphKey 图逻辑标识
+     * @return 完整物化后的图快照读模型
      */
     GraphSnapshot build(String graphKey);
 }

@@ -1,5 +1,7 @@
-package com.flightpathfinder.framework.protocol.mcp;
-
+﻿package com.flightpathfinder.framework.protocol.mcp;
+/**
+ * 面向 MCP 协议层的通用模型。
+ */
 public record JsonRpcResponse<T>(String jsonrpc, Object id, T result, JsonRpcError error) {
 
     public static <T> JsonRpcResponse<T> success(Object id, T result) {
@@ -10,4 +12,6 @@ public record JsonRpcResponse<T>(String jsonrpc, Object id, T result, JsonRpcErr
         return new JsonRpcResponse<>("2.0", id, null, error);
     }
 }
+
+
 

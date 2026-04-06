@@ -25,7 +25,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * OpenAI-compatible chat client used for providers such as SiliconFlow.
+ * 兼容 OpenAI 协议的聊天客户端实现。
+ *
+ * <p>用于对接 SiliconFlow、百炼等兼容接口的上游模型服务。
  */
 @Service
 @Primary

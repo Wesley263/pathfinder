@@ -14,10 +14,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * Default admin service for graph snapshot inspection and lifecycle control.
+ * 图快照巡检与生命周期控制的管理端默认服务。
  *
- * <p>This service belongs to the graph admin surface because snapshot state is an operational read-model
- * concern. It reuses graph lifecycle/query boundaries instead of duplicating Redis logic in controllers.
+ * <p>该服务归属图管理能力面，聚焦快照读模型的运维状态。
+ * 它复用图生命周期与查询边界，避免在控制器中重复 Redis 细节逻辑。
  */
 @Service
 public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotService {
@@ -35,7 +35,7 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
     }
 
     /**
-     * Loads the current published snapshot status for the requested graph key.
+        * 加载指定图键当前已发布的快照状态。
      *
      * @param graphKey logical graph identifier; blank means the default graph
      * @return snapshot status or structured {@code SNAPSHOT_MISS} view
@@ -68,7 +68,7 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
     }
 
     /**
-     * Rebuilds and republishes the graph snapshot.
+        * 重建并重新发布图快照。
      *
      * @param graphKey logical graph identifier; blank means the default graph
      * @param reason operator-supplied rebuild reason
@@ -91,7 +91,7 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
     }
 
     /**
-     * Invalidates the currently published snapshot without rebuilding it.
+        * 失效当前已发布快照，不执行重建。
      *
      * @param graphKey logical graph identifier; blank means the default graph
      * @param reason operator-supplied invalidation reason

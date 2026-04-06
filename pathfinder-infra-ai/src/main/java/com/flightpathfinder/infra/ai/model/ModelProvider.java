@@ -1,7 +1,7 @@
-package com.flightpathfinder.infra.ai.model;
+﻿package com.flightpathfinder.infra.ai.model;
 
 /**
- * Supported upstream provider types for AI capabilities.
+ * 面向 AI 能力支持的上游供应商类型。
  */
 public enum ModelProvider {
     OPENAI_COMPATIBLE,
@@ -10,3 +10,4 @@ public enum ModelProvider {
     BAILIAN,
     MOCK
 }
+

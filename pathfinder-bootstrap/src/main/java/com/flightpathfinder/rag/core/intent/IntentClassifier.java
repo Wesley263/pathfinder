@@ -3,18 +3,18 @@ package com.flightpathfinder.rag.core.intent;
 import java.util.List;
 
 /**
- * Classifies a single rewritten question into candidate intent nodes.
+ * 单个问题文本的意图分类边界。
  *
- * <p>This boundary is narrower than the resolver: it only scores candidates and does not
- * decide how results should be merged across multiple sub-questions.</p>
+ * <p>它只负责给候选意图打分，不负责多个子问题之间的汇总和最终分流。
+ * 这样分类器可以专注“识别”，而 resolver 专注“决策”。</p>
  */
 public interface IntentClassifier {
 
     /**
-     * Scores the most relevant intent targets for one question string.
+     * 为单个问题文本计算候选意图分数。
      *
-     * @param question rewritten question or sub-question
-     * @return ranked candidate leaf intents
+     * @param question 改写后的问题或子问题文本
+     * @return 按分数排序的候选叶子意图列表
      */
     List<IntentNodeScore> classifyTargets(String question);
 }

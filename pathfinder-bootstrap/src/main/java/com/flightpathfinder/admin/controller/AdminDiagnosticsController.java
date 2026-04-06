@@ -29,10 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Admin-assisted diagnostic query API.
+ * 管理端诊断查询 API。
  *
- * <p>These endpoints provide direct checks for operators and developers. They are intentionally not part of
- * the user-facing search API because they expose raw diagnostic behavior and structured tool outcomes.
+ * <p>这些端点用于运维与研发的直接诊断，暴露原始诊断行为与结构化工具结果，
+ * 因此不纳入用户侧搜索 API。
  */
 @RestController
 @RequestMapping("/api/admin/diagnostics")
@@ -45,7 +45,7 @@ public class AdminDiagnosticsController {
     }
 
     /**
-     * Executes a direct flight diagnostic query.
+        * 执行直飞诊断查询。
      *
      * @param request admin flight diagnostic request
      * @return diagnostic result adapted for admin inspection
@@ -62,7 +62,7 @@ public class AdminDiagnosticsController {
     }
 
     /**
-     * Executes a direct path diagnostic query.
+        * 执行路径诊断查询。
      *
      * @param request admin path diagnostic request
      * @return diagnostic result adapted for admin inspection
@@ -81,7 +81,7 @@ public class AdminDiagnosticsController {
     }
 
     /**
-     * Looks up one airport for operational verification.
+        * 查询单个机场用于运维核验。
      *
      * @param iata airport IATA code to inspect
      * @return admin-facing airport lookup result

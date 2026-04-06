@@ -9,24 +9,26 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * Bounded best-first implementation of {@link GraphPathSearchService}.
+ * {@link GraphPathSearchService} 的 bounded best-first 实现。
  *
- * <p>This is the core search engine behind {@code graph.path.search}. It keeps frontier
- * expansion, pruning, candidate admission, Pareto filtering, and final ranking in one search
- * boundary instead of scattering those phases across protocol or snapshot code.</p>
+ * <p>这是 {@code graph.path.search} 背后的核心搜索引擎。
+ * 它在单一搜索边界内完成 frontier 扩展、裁剪、候选准入、Pareto 过滤和最终排序，
+ * 避免这些阶段分散到协议层或快照层。</p>
  */
 @Service
 public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchService {
 
+    /** Pareto 分层过滤器。 */
     private final GraphPathParetoFilter paretoFilter = new GraphPathParetoFilter();
+    /** 最终加权排序器。 */
     private final GraphPathWeightedRanker weightedRanker = new GraphPathWeightedRanker();
 
     /**
-     * Searches candidate paths on a restored graph using bounded best-first expansion.
+     * 在恢复图上使用 bounded best-first 扩展搜索候选路径。
      *
-     * @param graph restored graph derived from the published snapshot
-     * @param request path search constraints
-     * @return ranked candidate paths compatible with the MCP response contract
+     * @param graph 由已发布快照恢复的图
+     * @param request 路径搜索约束
+     * @return 与 MCP 响应契约兼容的排序候选路径
      */
     @Override
     public List<RestoredCandidatePath> search(RestoredFlightGraph graph, GraphPathSearchRequest request) {
@@ -34,8 +36,7 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
             return List.of();
         }
 
-        // Lower bounds are prepared once and then reused by multiple pruning decisions so the
-        // search loop can reject obviously bad states before the frontier grows too large.
+        // 下界仅预计算一次并复用于多种裁剪判定，避免 frontier 膨胀后再做迟后过滤。
         GraphPathSearchLowerBounds lowerBounds = GraphPathSearchLowerBounds.prepare(
                 graph,
                 request.origin(),
@@ -62,23 +63,20 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
 
         int expansions = 0;
         while (!expansionFrontier.isEmpty() && expansions < profile.frontierPolicy().maxExpansions()) {
-            // Frontier expansion is best-first rather than DFS enumeration, so the search keeps
-            // pulling the most promising partial state under the current heuristic.
+            // 这里按 best-first 而非 DFS 枚举，从 frontier 中持续取当前最有希望的部分状态。
             GraphPathSearchNode node = expansionFrontier.pollBest();
             if (node == null) {
                 break;
             }
             if (node.state().currentAirport().equals(request.destination()) && !node.edges().isEmpty()) {
-                // Candidate admission happens before more expansion so the pool can tighten
-                // early-stop decisions using real completed paths instead of only heuristics.
+                // 先做候选准入再继续扩展，使 early-stop 基于真实完成路径而不只依赖启发式估计。
                 admitCandidate(node.edges(), node.state(), heuristic, candidatePool);
                 if (candidatePool.shouldStop(expansionFrontier.peekBestScore(), profile.frontierPolicy())) {
                     break;
                 }
                 continue;
             }
-            // Dominance pruning prevents the frontier from keeping a strictly worse partial
-            // state that reaches the same airport with worse cost/reliability/visited history.
+            // 支配裁剪可移除同机场下严格劣势状态，防止其在 frontier 中占位。
             if (dominanceFrontier.isDominated(node.state())) {
                 continue;
             }
@@ -103,8 +101,7 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
                     sequence);
             sequence += Math.max(1, graph.getOutgoingEdges(node.state().currentAirport()).size());
             for (GraphPathSearchNode trimmedNode : expansionFrontier.trimToSize(profile.frontierPolicy().maxFrontierSize())) {
-                // Frontier size is explicitly bounded so the search remains predictable and does
-                // not degrade back into "expand everything, filter later".
+                // frontier 显式限长，避免退化为“先全扩展、后统一过滤”的不可控模式。
                 dominanceFrontier.discard(trimmedNode.state());
             }
             if (candidatePool.shouldStop(expansionFrontier.peekBestScore(), profile.frontierPolicy())) {
@@ -117,14 +114,16 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
             return List.of();
         }
 
-        // Pareto filtering reduces the admitted pool to non-dominated layers before weighted
-        // ranking picks the final top-K, which improves candidate diversity and stability.
+        // 先做 Pareto 过滤保留非支配层，再做加权排序选 top-K，能提升结果多样性与稳定性。
         GraphPathParetoSelection selection = paretoFilter.selectForRanking(
                 admittedCandidates,
                 profile.frontierPolicy().minimumParetoSelectionCount());
         return weightedRanker.rank(graph, selection, profile.scoringProfile(), request.topK());
     }
 
+    /**
+     * 扩展单个搜索节点并把后继状态放入 frontier。
+     */
     private void expandNode(RestoredFlightGraph graph,
                             GraphPathSearchRequest request,
                             GraphPathSearchLowerBounds lowerBounds,
@@ -185,6 +184,9 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
         }
     }
 
+    /**
+     * 判断当前状态是否可继续扩展。
+     */
     private boolean isExpandable(GraphPathPartialState state,
                                  GraphPathSearchRequest request,
                                  GraphPathSearchLowerBounds lowerBounds,
@@ -195,6 +197,9 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
                 && !heuristic.shouldPruneByDetour(state);
     }
 
+    /**
+     * 判断候选后继状态是否仍可达并符合预算与绕路约束。
+     */
     private boolean isCandidateReachable(GraphPathPartialState nextState,
                                          GraphPathSearchRequest request,
                                          GraphPathSearchLowerBounds lowerBounds,
@@ -206,6 +211,9 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
                 && !heuristic.shouldPruneByDetour(nextState);
     }
 
+    /**
+     * 把边序列与部分状态转换为候选路径对象。
+     */
     private RestoredCandidatePath toCandidatePath(List<RestoredGraphEdge> edges,
                                                   GraphPathPartialState state) {
         List<RestoredPathLeg> legs = edges.stream()
@@ -232,6 +240,9 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
                 state.averageOnTimeRate());
     }
 
+    /**
+     * 将候选路径按评分准入候选池。
+     */
     private void admitCandidate(List<RestoredGraphEdge> edges,
                                 GraphPathPartialState state,
                                 GraphPathSearchHeuristic heuristic,

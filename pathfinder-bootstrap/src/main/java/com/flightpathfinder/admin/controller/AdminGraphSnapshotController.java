@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Admin API for graph snapshot lifecycle management.
+ * 图快照生命周期管理的管理端 API。
  *
- * <p>Graph snapshot operations live under a dedicated admin namespace because snapshot inspection, rebuild and
- * invalidation are distinct operational concerns from generic data reload.
+ * <p>图快照查询、重建与失效属于独立运维关注点，
+ * 因此在管理端命名空间下单独暴露，不与通用数据重载混合。
  */
 @RestController
 @RequestMapping("/api/admin/graph/snapshots")
@@ -31,7 +31,7 @@ public class AdminGraphSnapshotController {
     }
 
     /**
-     * Returns the current published graph snapshot status.
+        * 返回当前已发布图快照状态。
      *
      * @param graphKey optional graph key; blank means the default graph
      * @return admin-facing snapshot status
@@ -42,7 +42,7 @@ public class AdminGraphSnapshotController {
     }
 
     /**
-     * Rebuilds the graph snapshot for the requested graph key.
+        * 为指定图键重建图快照。
      *
      * @param request optional rebuild request with graph key and operator reason
      * @return rebuilt snapshot status
@@ -55,7 +55,7 @@ public class AdminGraphSnapshotController {
     }
 
     /**
-     * Invalidates the current graph snapshot without rebuilding it.
+        * 仅失效当前图快照，不执行重建。
      *
      * @param graphKey optional graph key; blank means the default graph
      * @param reason optional operator reason

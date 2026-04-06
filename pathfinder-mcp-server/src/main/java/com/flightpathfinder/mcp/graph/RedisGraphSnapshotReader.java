@@ -10,27 +10,35 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * Redis-backed graph snapshot reader for the MCP server.
+ * MCP server 侧基于 Redis 的图快照读取器。
  *
- * <p>This reader stays strictly read-only. The MCP server must never rebuild the graph or
- * query bootstrap-owned tables on snapshot miss; it only consumes the published read model.</p>
+ * <p>读取器保持严格只读。MCP server 不应在 snapshot miss 时重建图或回查
+ * bootstrap 数据表，只消费已发布读模型。</p>
  */
 @Component
 public class RedisGraphSnapshotReader implements GraphSnapshotReader {
 
+    /** Redis 访问模板。 */
     private final StringRedisTemplate stringRedisTemplate;
+    /** JSON 反序列化映射器。 */
     private final ObjectMapper objectMapper;
 
+    /**
+     * 构造 Redis 图快照读取器。
+     *
+     * @param stringRedisTemplate Redis 模板
+     * @param objectMapper JSON 映射器
+     */
     public RedisGraphSnapshotReader(StringRedisTemplate stringRedisTemplate, ObjectMapper objectMapper) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.objectMapper = objectMapper;
     }
 
     /**
-     * Loads the latest published snapshot for the supplied graph key from Redis.
+     * 从 Redis 读取指定 graphKey 的最新已发布快照。
      *
-     * @param graphKey logical graph identifier
-     * @return latest snapshot when present
+     * @param graphKey 图逻辑标识
+     * @return 最新快照（存在时返回）
      */
     @Override
     public Optional<GraphSnapshot> loadLatest(String graphKey) {
@@ -51,6 +59,12 @@ public class RedisGraphSnapshotReader implements GraphSnapshotReader {
         return Optional.of(snapshot);
     }
 
+    /**
+     * 反序列化图快照载荷。
+     *
+     * @param payload JSON 载荷
+     * @return 图快照对象
+     */
     private GraphSnapshot deserialize(String payload) {
         try {
             return objectMapper.readValue(payload, GraphSnapshot.class);

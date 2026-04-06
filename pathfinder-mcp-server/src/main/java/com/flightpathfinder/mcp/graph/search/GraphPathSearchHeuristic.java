@@ -5,23 +5,35 @@ import com.flightpathfinder.mcp.graph.model.RestoredFlightGraph;
 import com.flightpathfinder.mcp.graph.model.RestoredGraphNode;
 
 /**
- * Heuristic scoring and detour-pruning helper for bounded best-first search.
+ * bounded best-first 搜索的启发式评分与绕路裁剪助手。
  *
- * <p>This helper keeps search-order math separate from the search loop so frontier expansion,
- * candidate admission, and detour pruning all share the same scoring assumptions.</p>
+ * <p>该助手把评分计算从搜索主循环中拆出，确保 frontier 扩展、候选准入和绕路裁剪
+ * 使用同一套评分假设。</p>
  */
 final class GraphPathSearchHeuristic {
 
+    /** 恢复图。 */
     private final RestoredFlightGraph graph;
+    /** 搜索请求。 */
     private final GraphPathSearchRequest request;
+    /** 预计算下界。 */
     private final GraphPathSearchLowerBounds lowerBounds;
+    /** frontier 策略。 */
     private final GraphPathFrontierPolicy frontierPolicy;
+    /** 评分配置。 */
     private final GraphPathScoringProfile scoringProfile;
+    /** 价格参考值。 */
     private final double priceReferenceCny;
+    /** 时长参考值。 */
     private final double durationReferenceMinutes;
+    /** 中转参考值。 */
     private final double transferReference;
+    /** 经停参考值。 */
     private final double stopReference;
 
+    /**
+     * 构造启发式助手。
+     */
     GraphPathSearchHeuristic(RestoredFlightGraph graph,
                              GraphPathSearchRequest request,
                              GraphPathSearchLowerBounds lowerBounds,
@@ -41,7 +53,7 @@ final class GraphPathSearchHeuristic {
     }
 
     /**
-     * Scores a partial state using optimistic lower-bound assumptions.
+     * 基于乐观下界对部分状态打分。
      */
     double optimisticScore(GraphPathPartialState state) {
         int remainingSegments = lowerBounds.minRemainingSegments(state.currentAirport());
@@ -63,7 +75,7 @@ final class GraphPathSearchHeuristic {
     }
 
     /**
-     * Scores a completed candidate path for admission into the bounded pool.
+     * 对完成候选路径打分，用于候选池准入。
      */
     double candidateScore(RestoredCandidatePath candidate) {
         return composeScore(
@@ -78,19 +90,21 @@ final class GraphPathSearchHeuristic {
     }
 
     /**
-     * Rejects partial states whose estimated detour is already too large to stay competitive.
+     * 过滤估计绕路过大的部分状态。
      */
     boolean shouldPruneByDetour(GraphPathPartialState state) {
         if (state.segmentsUsed() < 2) {
             return false;
         }
-        // Detour pruning only starts once the path has enough shape to be meaningful; otherwise
-        // early segments would be unfairly penalized before the route has a chance to recover.
+        // 绕路裁剪在路径形态足够成型后才启用，避免早期航段被过早惩罚。
         double threshold = frontierPolicy.detourBaseThreshold()
                 + Math.max(0, request.maxSegments() - 2) * frontierPolicy.detourPerExtraSegmentThreshold();
         return lowerBounds.estimatedDetourRatio(state.currentAirport(), state.totalDistanceKm()) > threshold;
     }
 
+    /**
+     * 组合各维度分值为最终分。
+     */
     private double composeScore(double priceUtility,
                                 double durationUtility,
                                 double reliabilityUtility,
@@ -109,6 +123,9 @@ final class GraphPathSearchHeuristic {
                 + competitionUtility * scoringProfile.competitionWeight();
     }
 
+    /**
+     * 估计乐观准点率。
+     */
     private double optimisticReliability(GraphPathPartialState state, int remainingSegments) {
         if (state.segmentsUsed() == 0 && remainingSegments == 0) {
             return 1.0;
@@ -119,6 +136,9 @@ final class GraphPathSearchHeuristic {
         return Math.max(0.0, Math.min(1.0, bestPossible / totalSegments));
     }
 
+    /**
+     * 计算实际候选路径的绕路比。
+     */
     private double actualDetourRatio(RestoredCandidatePath candidate) {
         if (candidate.legs().isEmpty()) {
             return 1.0;
@@ -139,6 +159,9 @@ final class GraphPathSearchHeuristic {
         return candidate.totalDistanceKm() / directDistance;
     }
 
+    /**
+     * 将绕路比转换为效用分。
+     */
     private double detourUtility(double detourRatio) {
         if (detourRatio <= 1.0) {
             return 1.0;
@@ -147,6 +170,9 @@ final class GraphPathSearchHeuristic {
         return Math.max(0.0, 1.0 - (overage / Math.max(0.1, scoringProfile.detourReferenceRatio() - 1.0)));
     }
 
+    /**
+     * 低值更优归一化。
+     */
     private double normalizeLower(double value, double reference) {
         if (reference <= 0.0) {
             return 1.0;
@@ -154,6 +180,9 @@ final class GraphPathSearchHeuristic {
         return Math.max(0.0, 1.0 - Math.min(1.0, value / reference));
     }
 
+    /**
+     * 高值更优归一化。
+     */
     private double normalizeUpper(double value, double reference) {
         if (reference <= 0.0) {
             return 0.0;
@@ -161,14 +190,23 @@ final class GraphPathSearchHeuristic {
         return Math.max(0.0, Math.min(1.0, value / reference));
     }
 
+    /**
+     * 返回有限 double；非有限值时回退。
+     */
     private double finiteDouble(double value, double fallback) {
         return Double.isFinite(value) ? value : fallback;
     }
 
+    /**
+     * 返回有限 int；不可用时回退。
+     */
     private int finiteInt(int value, int fallback) {
         return value < Integer.MAX_VALUE ? value : fallback;
     }
 
+    /**
+     * 计算两地大圆距离（公里）。
+     */
     private double haversineKm(double lat1, double lon1, double lat2, double lon2) {
         double earthRadiusKm = 6371.0;
         double latDistance = Math.toRadians(lat2 - lat1);

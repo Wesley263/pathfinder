@@ -18,11 +18,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 /**
- * Server-side executor for {@code graph.path.search}.
+ * {@code graph.path.search} 的服务端执行器。
  *
- * <p>This executor is the bridge between MCP protocol calls and the graph snapshot search pipeline. It
- * stays in {@code pathfinder-mcp-server} because path search must run against the Redis-backed read model
- * inside the server process rather than reusing bootstrap-side graph builders.
+ * <p>该执行器是 MCP 协议调用与图快照搜索流水线之间的桥接层。
+ * 之所以保留在 {@code pathfinder-mcp-server}，是因为路径搜索必须在服务进程内基于 Redis 读模型执行，
+ * 不能复用 bootstrap 侧图构建流程。
  */
 @Component
 public class GraphPathMcpToolExecutor implements McpToolExecutor {
@@ -43,9 +43,9 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Describes the public contract for {@code graph.path.search}.
+     * 描述 {@code graph.path.search} 对外公开的工具契约。
      *
-     * @return tool descriptor including snapshot-aware request and path-search result schemas
+     * @return 工具描述，包含快照感知请求与路径搜索结果 schema
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -79,11 +79,11 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Executes a graph path search against the latest available graph snapshot.
+     * 基于最新可用图快照执行路径搜索。
      *
-     * @param request MCP tool request containing graph key and path-search constraints
-     * @return structured result that preserves business-level states such as {@code SNAPSHOT_MISS},
-     *     {@code INVALID_REQUEST}, {@code NO_PATH_FOUND} or {@code SUCCESS}
+     * @param request MCP 工具请求，包含 graphKey 与路径搜索约束
+     * @return 结构化结果，保留 {@code SNAPSHOT_MISS}、{@code INVALID_REQUEST}、
+     *     {@code NO_PATH_FOUND}、{@code SUCCESS} 等业务状态
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -95,8 +95,8 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
             }
 
             GraphSnapshot graphSnapshot = snapshot.get();
-            // The MCP server only consumes the published read model. It must never rebuild or backfill the
-            // graph from source tables when the snapshot is absent.
+            // 服务端 MCP 只消费已发布读模型。
+            // 当快照缺失时，绝不能回源源表重建或补图。
             RestoredFlightGraph restoredGraph = graphSnapshotRestorer.restore(graphSnapshot);
             if (!restoredGraph.hasNode(searchRequest.origin()) || !restoredGraph.hasNode(searchRequest.destination())) {
                 return invalidRequestResult("origin or destination is not present in the current graph snapshot");
@@ -148,8 +148,8 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
         if (origin == null || destination == null) {
             throw new IllegalArgumentException("origin and destination are required IATA codes");
         }
-        // MCP callers pass structured arguments, so validation happens here instead of letting the search
-        // layer guess from raw text.
+        // 调用方传入的是结构化 MCP 参数，因此在执行器层完成校验，
+        // 避免搜索层从原始文本中“猜测”输入语义。
         validate(origin, destination, maxBudget, stopoverDays, maxSegments, topK);
         return new GraphPathSearchRequest(graphKey, origin, destination, maxBudget, stopoverDays, maxSegments, topK);
     }

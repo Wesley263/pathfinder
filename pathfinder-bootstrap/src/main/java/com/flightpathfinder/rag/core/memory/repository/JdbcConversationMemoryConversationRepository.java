@@ -13,10 +13,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * JDBC repository for conversation-level memory headers.
+ * 会话级记忆头信息的 JDBC 仓储实现。
  *
- * <p>This repository keeps conversation counters and timestamps separate from individual messages so list and
- * summary queries can stay lightweight.
+ * <p>该仓储将会话计数与时间戳与消息明细分离，
+ * 使列表与摘要查询保持轻量。
  */
 @Repository
 public class JdbcConversationMemoryConversationRepository implements ConversationMemoryConversationRepository {
@@ -52,10 +52,10 @@ public class JdbcConversationMemoryConversationRepository implements Conversatio
     }
 
     /**
-     * Finds one conversation header by conversation id.
+     * 按会话标识查询单条会话头信息。
      *
-     * @param conversationId stable conversation identifier
-     * @return conversation metadata when present
+     * @param conversationId 稳定会话标识
+     * @return 命中时返回会话元数据
      */
     @Override
     public Optional<ConversationMemoryConversation> findByConversationId(String conversationId) {
@@ -65,11 +65,11 @@ public class JdbcConversationMemoryConversationRepository implements Conversatio
     }
 
     /**
-     * Lists recent conversations with an optional exact id filter.
+     * 查询近期会话，并支持按会话标识精确过滤。
      *
-     * @param conversationId optional exact filter
-     * @param limit maximum result size
-     * @return recent conversation headers sorted by update time
+     * @param conversationId 可选精确过滤值
+     * @param limit 最大结果数量
+     * @return 按更新时间排序的会话头列表
      */
     @Override
     public List<ConversationMemoryConversation> findRecent(String conversationId, int limit) {
@@ -89,10 +89,10 @@ public class JdbcConversationMemoryConversationRepository implements Conversatio
     }
 
     /**
-     * Upserts the conversation header after one completed turn has been stored.
+     * 在单轮对话落库后更新或插入会话头信息。
      *
-     * @param conversationId stable conversation identifier
-     * @param requestId latest request id for the conversation
+     * @param conversationId 稳定会话标识
+     * @param requestId 会话最近请求标识
      */
     @Override
     public void upsertAfterTurn(String conversationId, String requestId) {

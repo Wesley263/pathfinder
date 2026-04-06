@@ -13,23 +13,34 @@ import java.util.PriorityQueue;
 import java.util.function.ToDoubleFunction;
 
 /**
- * Precomputed lower bounds used by graph path search.
+ * 图路径搜索使用的预计算下界。
  *
- * <p>This helper isolates reachability and optimistic cost estimates from the main search loop
- * so pruning can stay cheap and deterministic during frontier expansion.</p>
+ * <p>该助手把可达性与乐观代价估计从主循环中抽离，
+ * 使 frontier 扩展期间的裁剪保持低成本与确定性。</p>
  */
 final class GraphPathSearchLowerBounds {
 
+    /** 不可达价格哨兵值。 */
     private static final double UNREACHABLE_PRICE = Double.POSITIVE_INFINITY;
+    /** 不可达时长哨兵值。 */
     private static final int UNREACHABLE_DURATION = Integer.MAX_VALUE;
+    /** 不可达航段哨兵值。 */
     private static final int UNREACHABLE_SEGMENTS = Integer.MAX_VALUE;
 
+    /** 机场到最小剩余航段数。 */
     private final Map<String, Integer> minRemainingSegments;
+    /** 机场到最小剩余价格。 */
     private final Map<String, Double> minRemainingPriceCny;
+    /** 机场到最小剩余时长。 */
     private final Map<String, Integer> minRemainingDurationMinutes;
+    /** 机场到终点直线距离。 */
     private final Map<String, Double> straightLineDistanceToDestinationKm;
+    /** 起终点直线距离。 */
     private final double directDistanceOriginToDestinationKm;
 
+    /**
+     * 构造下界对象。
+     */
     private GraphPathSearchLowerBounds(Map<String, Integer> minRemainingSegments,
                                        Map<String, Double> minRemainingPriceCny,
                                        Map<String, Integer> minRemainingDurationMinutes,
@@ -43,7 +54,7 @@ final class GraphPathSearchLowerBounds {
     }
 
     /**
-     * Precomputes segment, price, duration, and straight-line lower bounds for one search.
+     * 为一次搜索预计算航段、价格、时长与直线距离下界。
      */
     static GraphPathSearchLowerBounds prepare(RestoredFlightGraph graph, String origin, String destination) {
         Map<String, List<RestoredGraphEdge>> incomingEdges = buildIncomingEdges(graph);
@@ -56,33 +67,42 @@ final class GraphPathSearchLowerBounds {
     }
 
     /**
-     * Checks whether the destination is still reachable within the remaining segment budget.
+     * 判断在剩余航段预算内是否仍可到达终点。
      */
     boolean canReachWithinSegments(String airportCode, int remainingSegments) {
         return minRemainingSegments(airportCode) <= remainingSegments;
     }
 
     /**
-     * Checks whether the current spend plus optimistic remaining spend can still fit the budget.
+     * 判断当前已花费与乐观剩余花费之和是否仍在预算内。
      */
     boolean canReachWithinBudget(String airportCode, double spentPriceCny, double maxBudgetCny) {
         return spentPriceCny + minRemainingPriceCny(airportCode) <= maxBudgetCny;
     }
 
+    /**
+     * 返回机场最小剩余航段数。
+     */
     int minRemainingSegments(String airportCode) {
         return minRemainingSegments.getOrDefault(airportCode, UNREACHABLE_SEGMENTS);
     }
 
+    /**
+     * 返回机场最小剩余价格。
+     */
     double minRemainingPriceCny(String airportCode) {
         return minRemainingPriceCny.getOrDefault(airportCode, UNREACHABLE_PRICE);
     }
 
+    /**
+     * 返回机场最小剩余时长。
+     */
     int minRemainingDurationMinutes(String airportCode) {
         return minRemainingDurationMinutes.getOrDefault(airportCode, UNREACHABLE_DURATION);
     }
 
     /**
-     * Estimates how much the current path is detouring relative to the direct origin-destination line.
+     * 估计当前路径相对起终点直连的绕路比例。
      */
     double estimatedDetourRatio(String airportCode, double travelledDistanceKm) {
         if (directDistanceOriginToDestinationKm <= 0.0) {
@@ -93,6 +113,9 @@ final class GraphPathSearchLowerBounds {
         return estimatedTotalDistance / directDistanceOriginToDestinationKm;
     }
 
+    /**
+     * 构建反向入边索引。
+     */
     private static Map<String, List<RestoredGraphEdge>> buildIncomingEdges(RestoredFlightGraph graph) {
         Map<String, List<RestoredGraphEdge>> incomingEdges = new HashMap<>();
         for (String airportCode : graph.getAllNodes()) {
@@ -103,14 +126,16 @@ final class GraphPathSearchLowerBounds {
         return incomingEdges;
     }
 
+    /**
+     * 反向 BFS 计算最小航段下界。
+     */
     private static Map<String, Integer> computeMinSegments(Map<String, List<RestoredGraphEdge>> incomingEdges,
                                                            String destination) {
         Map<String, Integer> minSegments = new HashMap<>();
         ArrayDeque<String> queue = new ArrayDeque<>();
         minSegments.put(destination, 0);
         queue.add(destination);
-        // Reverse BFS gives the cheapest possible segment count to destination for every node,
-        // which makes max-segment pruning constant-time during search.
+        // 反向 BFS 得到每个节点到终点的最小航段数，使航段上限裁剪在搜索期可常数时间判定。
         while (!queue.isEmpty()) {
             String current = queue.removeFirst();
             int nextDistance = minSegments.get(current) + 1;
@@ -126,6 +151,9 @@ final class GraphPathSearchLowerBounds {
         return minSegments;
     }
 
+    /**
+     * Dijkstra 计算最小 double 代价下界。
+     */
     private static Map<String, Double> computeMinDoubleCosts(Map<String, List<RestoredGraphEdge>> incomingEdges,
                                                              String destination,
                                                              ToDoubleFunction<RestoredGraphEdge> costFn) {
@@ -150,6 +178,9 @@ final class GraphPathSearchLowerBounds {
         return costs;
     }
 
+    /**
+     * Dijkstra 计算最小 int 代价下界。
+     */
     private static Map<String, Integer> computeMinIntCosts(Map<String, List<RestoredGraphEdge>> incomingEdges,
                                                            String destination,
                                                            java.util.function.ToIntFunction<RestoredGraphEdge> costFn) {
@@ -174,6 +205,9 @@ final class GraphPathSearchLowerBounds {
         return costs;
     }
 
+    /**
+     * 计算各节点到终点的直线距离。
+     */
     private static Map<String, Double> computeStraightLineDistances(RestoredFlightGraph graph, String destination) {
         RestoredGraphNode destinationNode = graph.getNode(destination);
         if (destinationNode == null) {
@@ -194,6 +228,9 @@ final class GraphPathSearchLowerBounds {
         return distances;
     }
 
+    /**
+     * 计算两地大圆距离（公里）。
+     */
     private static double haversineKm(double lat1, double lon1, double lat2, double lon2) {
         double earthRadiusKm = 6371.0;
         double latDistance = Math.toRadians(lat2 - lat1);
@@ -207,9 +244,11 @@ final class GraphPathSearchLowerBounds {
         return earthRadiusKm * c;
     }
 
+    /** 节点与 double 代价。 */
     private record GraphNodeDistance(String airportCode, double cost) {
     }
 
+    /** 节点与 int 代价。 */
     private record GraphNodeDuration(String airportCode, int cost) {
     }
 }

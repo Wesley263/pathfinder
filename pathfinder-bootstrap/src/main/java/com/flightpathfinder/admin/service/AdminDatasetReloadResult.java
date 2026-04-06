@@ -1,9 +1,12 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminDatasetReloadResult(
         String datasetId,
         String status,
@@ -16,3 +19,4 @@ public record AdminDatasetReloadResult(
         Instant completedAt,
         Map<String, Object> details) {
 }
+

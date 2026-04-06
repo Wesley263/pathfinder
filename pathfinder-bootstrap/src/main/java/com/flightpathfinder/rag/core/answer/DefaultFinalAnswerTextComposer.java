@@ -9,26 +9,32 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * Deterministic text composer for the first 2.0 final-answer stage.
+ * 2.0 第一版 final answer 的确定性文本生成器。
  *
- * <p>This implementation is intentionally simple and auditable. It assembles a stable answer
- * from the normalized prompt input while leaving room for a later model-backed composer.</p>
+ * <p>该实现刻意保持可解释与可审计：基于标准化输入稳定拼装回答文本，
+ * 同时为后续模型版生成器保留替换空间。</p>
  */
 @Service
 public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
 
+    /** 路径规划工具标识。 */
     private static final String GRAPH_PATH_TOOL_ID = "graph.path.search";
+    /** 航班搜索工具标识。 */
     private static final String FLIGHT_SEARCH_TOOL_ID = "flight.search";
+    /** 价格比较工具标识。 */
     private static final String PRICE_LOOKUP_TOOL_ID = "price.lookup";
+    /** 签证检查工具标识。 */
     private static final String VISA_CHECK_TOOL_ID = "visa.check";
+    /** 城市成本工具标识。 */
     private static final String CITY_COST_TOOL_ID = "city.cost";
+    /** 风险评估工具标识。 */
     private static final String RISK_EVALUATE_TOOL_ID = "risk.evaluate";
 
     /**
-     * Composes answer text from normalized answer input.
+     * 基于标准输入生成最终回答文本。
      *
-     * @param promptInput normalized answer-generation input
-     * @return final answer text shown to the caller
+     * @param promptInput 回答生成输入
+     * @return 面向调用方的最终回答文本
      */
     @Override
     public String compose(FinalAnswerPromptInput promptInput) {
@@ -41,8 +47,7 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
             sections.add("Question: " + promptInput.rewrittenQuestion());
         }
 
-        // MCP evidence is rendered first because tool results usually answer the most concrete
-        // operational question, while KB snippets then add policy or travel-context support.
+        // 先渲染 MCP 结果，因为工具输出通常直接回答“可执行问题”；KB 片段再补充规则与背景语义。
         String mcpSection = composeMcpSection(promptInput);
         if (!mcpSection.isBlank()) {
             sections.add(mcpSection);
@@ -62,6 +67,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         return String.join("\n\n", sections);
     }
 
+    /**
+     * 生成 MCP 分支文本段落。
+     *
+     * @param promptInput 回答生成输入
+     * @return MCP 文本段落
+     */
     private String composeMcpSection(FinalAnswerPromptInput promptInput) {
         List<McpExecutionRecord> executions = promptInput.mcpContext().executions();
         if (executions.isEmpty()) {
@@ -98,6 +109,13 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         return "MCP context:\n- " + String.join("\n- ", lines);
     }
 
+    /**
+     * 按工具类型生成成功态 MCP 单行说明。
+     *
+     * @param toolId 工具标识
+     * @param toolResult 工具结果
+     * @return 单行说明文本
+     */
     private String composeSuccessfulMcpLine(String toolId, McpToolCallResult toolResult) {
         return switch (toolId) {
             case GRAPH_PATH_TOOL_ID -> composeSuccessfulPathLine(toolResult);
@@ -110,6 +128,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         };
     }
 
+    /**
+     * 生成 DATA_NOT_FOUND 状态说明。
+     *
+     * @param execution MCP 执行记录
+     * @return 用户可读说明
+     */
     private String composeDataNotFoundLine(McpExecutionRecord execution) {
         return switch (execution.toolId()) {
             case VISA_CHECK_TOOL_ID -> "Visa check result: visa policy data is not available for the requested countries.";
@@ -119,6 +143,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         };
     }
 
+    /**
+     * 生成路径规划成功态说明。
+     *
+     * @param toolResult 工具结果
+     * @return 单行说明
+     */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulPathLine(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -141,6 +171,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
                 + "; transferCount=" + stringValue(pathMap.get("transferCount"));
     }
 
+    /**
+     * 生成航班搜索成功态说明。
+     *
+     * @param toolResult 工具结果
+     * @return 单行说明
+     */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulFlightSearchLine(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -172,6 +208,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
                 + stringValue(toolResult.structuredContent().get("flightCount"));
     }
 
+    /**
+     * 生成价格比较成功态说明。
+     *
+     * @param toolResult 工具结果
+     * @return 单行说明
+     */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulPriceLookupLine(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -200,6 +242,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         return line;
     }
 
+    /**
+     * 生成签证检查成功态说明。
+     *
+     * @param toolResult 工具结果
+     * @return 单行说明
+     */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulVisaCheckLine(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -225,6 +273,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
                 + String.join(", ", entries);
     }
 
+    /**
+     * 生成城市成本成功态说明。
+     *
+     * @param toolResult 工具结果
+     * @return 单行说明
+     */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulCityCostLine(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -253,6 +307,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         return line;
     }
 
+    /**
+     * 生成风险评估成功态说明。
+     *
+     * @param toolResult 工具结果
+     * @return 单行说明
+     */
     private String composeSuccessfulRiskEvaluateLine(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
             return "Risk evaluation completed, but no structured risk payload was returned.";
@@ -275,6 +335,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
                 + stringValue(toolResult.structuredContent().get("explanation"));
     }
 
+    /**
+     * 从 legs 字段构造路由串。
+     *
+     * @param legsObject 结构化 legs 字段
+     * @return 形如 A -> B -> C 的路由文本
+     */
     private String buildRoute(Object legsObject) {
         if (!(legsObject instanceof List<?> legs) || legs.isEmpty()) {
             return "route unavailable";
@@ -296,6 +362,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         return nodes.isEmpty() ? "route unavailable" : String.join(" -> ", nodes);
     }
 
+    /**
+     * 生成 KB 分支文本段落。
+     *
+     * @param promptInput 回答生成输入
+     * @return KB 文本段落
+     */
     private String composeKbSection(FinalAnswerPromptInput promptInput) {
         if (promptInput.kbContext().empty()) {
             return "";
@@ -310,6 +382,12 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         return lines.isEmpty() ? "" : "KB context:\n- " + String.join("\n- ", lines);
     }
 
+    /**
+     * 返回工具友好名称。
+     *
+     * @param toolId 工具标识
+     * @return 友好名称
+     */
     private String friendlyToolName(String toolId) {
         return switch (toolId) {
             case GRAPH_PATH_TOOL_ID -> "Path planning";
@@ -322,6 +400,13 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         };
     }
 
+    /**
+     * 对长文本做安全截断。
+     *
+     * @param text 原始文本
+     * @param maxLength 最大长度
+     * @return 截断后文本
+     */
     private String abbreviate(String text, int maxLength) {
         if (text == null) {
             return "";
@@ -333,10 +418,22 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
         return trimmed.substring(0, Math.max(0, maxLength - 3)) + "...";
     }
 
+    /**
+     * 把任意对象转换为去空白字符串。
+     *
+     * @param value 原始值
+     * @return 字符串值
+     */
     private String stringValue(Object value) {
         return value == null ? "" : String.valueOf(value).trim();
     }
 
+    /**
+     * 返回首个非空白文本。
+     *
+     * @param values 候选文本
+     * @return 首个非空白值；若都为空则返回空字符串
+     */
     private String firstNonBlank(String... values) {
         for (String value : values) {
             if (value != null && !value.isBlank()) {

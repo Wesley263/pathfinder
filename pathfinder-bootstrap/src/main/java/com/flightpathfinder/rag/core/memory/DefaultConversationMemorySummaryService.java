@@ -12,11 +12,11 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * Default threshold-triggered summary implementation.
+ * 基于阈值触发的默认摘要实现。
  *
- * <p>This service keeps summary refresh out of the main write path logic while still ensuring long
- * conversations can be compressed into a stable context fragment. Summary only starts once the recent-turn
- * window is no longer enough on its own.</p>
+ * <p>该服务将摘要刷新从主写路径逻辑中解耦，
+ * 同时确保长会话可以压缩为稳定上下文片段。
+ * 仅当近期轮次窗口不足以单独承载上下文时才开始摘要。</p>
  */
 @Service
 public class DefaultConversationMemorySummaryService implements ConversationMemorySummaryService {

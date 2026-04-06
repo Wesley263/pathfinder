@@ -1,4 +1,4 @@
-package com.flightpathfinder.flight.core.graph.snapshot;
+﻿package com.flightpathfinder.flight.core.graph.snapshot;
 
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshot;
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshotEdge;
@@ -18,18 +18,19 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * JDBC-backed snapshot builder on the bootstrap side.
+ * 主应用侧基于 JDBC 的图快照构建器。
  *
- * <p>This class turns normalized airport and route tables into a Redis-friendly graph snapshot
- * read model. It stays separate from publishing so the main program can keep data ownership
- * and snapshot materialization concerns distinct.</p>
+ * <p>该实现把机场与航线表转换为 Redis 友好的图快照读模型。
+ * 构建与发布保持分离，确保主程序对数据所有权和快照物化职责边界清晰。</p>
  */
 @Component
 public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
 
+    /** 快照版本号时间戳格式（UTC）。 */
     private static final DateTimeFormatter VERSION_FORMATTER =
             DateTimeFormatter.ofPattern("yyyyMMddHHmmss").withZone(ZoneOffset.UTC);
 
+    /** 机场基础数据查询语句。 */
     private static final String AIRPORT_SQL = """
             SELECT id, iata_code, icao_code, name_en, name_cn, city, city_cn, country_code,
                    latitude, longitude, timezone, type, source
@@ -39,6 +40,7 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
               AND iata_code <> ''
             """;
 
+            /** 航线与航司聚合查询语句。 */
     private static final String ROUTE_SQL = """
             SELECT r.id, r.airline_iata, r.source_airport_iata, r.dest_airport_iata, r.codeshare,
                    r.stops, r.equipment, r.distance_km, r.base_price_cny, r.duration_minutes, r.competition_count,
@@ -54,17 +56,23 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
               AND r.dest_airport_iata <> ''
             """;
 
+    /** 用于查询的 JDBC 模板。 */
     private final JdbcTemplate jdbcTemplate;
 
+    /**
+     * 构造 JDBC 图快照构建器。
+     *
+     * @param jdbcTemplate JDBC 查询模板
+     */
     public JdbcGraphSnapshotBuilder(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
-     * Builds a fresh snapshot by reading airports and routes from the main program database.
+     * 从主程序数据库读取机场与航线并构建新快照。
      *
-     * @param graphKey logical graph identifier
-     * @return immutable snapshot read model ready for publication
+     * @param graphKey 图逻辑标识
+     * @return 可直接发布的不可变图快照读模型
      */
     @Override
     public GraphSnapshot build(String graphKey) {
@@ -72,8 +80,7 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
         List<GraphSnapshotNode> nodes = jdbcTemplate.query(AIRPORT_SQL, new AirportSnapshotRowMapper());
         List<GraphSnapshotEdge> edges = jdbcTemplate.query(ROUTE_SQL, new RouteSnapshotRowMapper());
 
-        // The snapshot version is generated at build time because Redis stores immutable
-        // read-model versions and the MCP side should only ever consume a published snapshot.
+        // 快照版本在构建时生成：Redis 保存不可变版本，MCP 侧只应消费已发布版本。
         String snapshotVersion = VERSION_FORMATTER.format(generatedAt) + "-" + UUID.randomUUID().toString().substring(0, 8);
         String sourceFingerprint = "airports=" + nodes.size() + ";edges=" + edges.size();
 
@@ -92,16 +99,24 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
                 ));
     }
 
+    /** 机场行到快照节点的映射器。 */
     private static final class AirportSnapshotRowMapper implements RowMapper<GraphSnapshotNode> {
 
+        /**
+         * 把数据库机场行映射为 GraphSnapshotNode。
+         *
+         * @param rs 结果集
+         * @param rowNum 行号
+         * @return 快照节点
+         * @throws SQLException SQL 读取异常
+         */
         @Override
         public GraphSnapshotNode mapRow(ResultSet rs, int rowNum) throws SQLException {
             Map<String, Object> attributes = new LinkedHashMap<>();
             putIfPresent(attributes, "icaoCode", rs.getString("icao_code"));
             putIfPresent(attributes, "type", rs.getString("type"));
             putIfPresent(attributes, "source", rs.getString("source"));
-            // Snapshot nodes deliberately keep only path-search-relevant attributes so the
-            // Redis payload stays stable and the MCP side does not inherit DB entity shape.
+            // 节点只保留路径搜索必要属性，避免 Redis 读模型被数据库实体形状绑死。
             return new GraphSnapshotNode(
                     rs.getString("iata_code"),
                     rs.getString("iata_code"),
@@ -119,15 +134,23 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
         }
     }
 
+    /** 航线行到快照边的映射器。 */
     private static final class RouteSnapshotRowMapper implements RowMapper<GraphSnapshotEdge> {
 
+        /**
+         * 把数据库航线行映射为 GraphSnapshotEdge。
+         *
+         * @param rs 结果集
+         * @param rowNum 行号
+         * @return 快照边
+         * @throws SQLException SQL 读取异常
+         */
         @Override
         public GraphSnapshotEdge mapRow(ResultSet rs, int rowNum) throws SQLException {
             Map<String, Object> attributes = new LinkedHashMap<>();
             putIfPresent(attributes, "codeshare", rs.getString("codeshare"));
             putIfPresent(attributes, "equipment", rs.getString("equipment"));
-            // Route edges are flattened into search-friendly metrics so the MCP server can
-            // restore and search the graph without reaching back to the bootstrap DB schema.
+            // 航线边被压平为搜索友好指标，保证 MCP 恢复与搜索不反查 bootstrap 数据库结构。
             return new GraphSnapshotEdge(
                     "route:" + rs.getLong("id"),
                     rs.getString("source_airport_iata"),
@@ -146,12 +169,25 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
         }
     }
 
+    /**
+     * 当值非空白时写入属性字典。
+     *
+     * @param attributes 属性字典
+     * @param key 属性名
+     * @param value 属性值
+     */
     private static void putIfPresent(Map<String, Object> attributes, String key, String value) {
         if (value != null && !value.isBlank()) {
             attributes.put(key, value);
         }
     }
 
+    /**
+     * 返回首个非空白字符串。
+     *
+     * @param values 候选值
+     * @return 首个非空白值
+     */
     private static String firstNonBlank(String... values) {
         for (String value : values) {
             if (value != null && !value.isBlank()) {
@@ -161,13 +197,30 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
         return "";
     }
 
+    /**
+     * 读取 double 字段并处理 SQL NULL。
+     *
+     * @param resultSet 结果集
+     * @param column 列名
+     * @return 列值，NULL 时返回 0
+     * @throws SQLException SQL 读取异常
+     */
     private static double getDouble(ResultSet resultSet, String column) throws SQLException {
         double value = resultSet.getDouble(column);
         return resultSet.wasNull() ? 0.0 : value;
     }
 
+    /**
+     * 读取 int 字段并处理 SQL NULL。
+     *
+     * @param resultSet 结果集
+     * @param column 列名
+     * @return 列值，NULL 时返回 0
+     * @throws SQLException SQL 读取异常
+     */
     private static int getInt(ResultSet resultSet, String column) throws SQLException {
         int value = resultSet.getInt(column);
         return resultSet.wasNull() ? 0 : value;
     }
 }
+

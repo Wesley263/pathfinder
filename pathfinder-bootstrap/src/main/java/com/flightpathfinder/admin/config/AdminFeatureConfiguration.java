@@ -4,10 +4,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Enables configuration required by the admin feature area.
+ * 启用管理端功能域所需的配置。
  *
- * <p>The admin feature has its own ETL-oriented properties because data import and maintenance concerns
- * belong to the management surface rather than the user-facing API layer.
+ * <p>管理端独立维护 ETL 相关属性，用于数据导入与运维治理，不归属用户侧 API 层。
  */
 @Configuration
 @EnableConfigurationProperties(AdminDataEtlProperties.class)

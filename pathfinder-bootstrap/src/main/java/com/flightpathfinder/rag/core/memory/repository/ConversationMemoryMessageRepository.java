@@ -4,35 +4,35 @@ import com.flightpathfinder.rag.core.memory.ConversationMemoryTurn;
 import java.util.List;
 
 /**
- * Repository for raw conversation message rows.
+ * 原始会话消息行仓储接口。
  *
- * <p>Messages are stored row-by-row instead of as already-assembled turns so user and assistant content can
- * be audited independently and later reassembled into different higher-level projections.
+ * <p>消息按行存储而非直接组装成轮次，
+ * 便于用户与助手内容独立审计，并可在后续重组为不同上层投影视图。
  */
 public interface ConversationMemoryMessageRepository {
 
     /**
-     * Persists one completed conversation turn as explicit USER and ASSISTANT message rows.
+     * 将一轮完成对话持久化为显式 USER 与 ASSISTANT 两条消息行。
      *
-     * @param conversationId stable conversation identifier
-     * @param turn completed turn to persist
+     * @param conversationId 稳定会话标识
+     * @param turn 待持久化的完成轮次
      */
     void saveTurn(String conversationId, ConversationMemoryTurn turn);
 
     /**
-     * Loads the latest message rows for a conversation.
+     * 加载会话近期消息行。
      *
-     * @param conversationId stable conversation identifier
-     * @param limit maximum number of message rows to return
-     * @return recent message rows ordered for turn reassembly
+     * @param conversationId 稳定会话标识
+     * @param limit 最大返回消息行数
+     * @return 为轮次重组准备好的近期消息行
      */
     List<ConversationMemoryMessageRecord> findRecentByConversationId(String conversationId, int limit);
 
     /**
-     * Loads all message rows for a conversation.
+     * 加载会话全部消息行。
      *
-     * @param conversationId stable conversation identifier
-     * @return all message rows ordered oldest to newest
+     * @param conversationId 稳定会话标识
+     * @return 按时间从旧到新排序的完整消息行
      */
     List<ConversationMemoryMessageRecord> findAllByConversationId(String conversationId);
 }

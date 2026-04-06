@@ -6,35 +6,50 @@ import java.util.Locale;
 import org.springframework.stereotype.Service;
 
 /**
- * Rule-based classifier for the first 2.0 intent mainline.
+ * 基于规则的意图分类器。
  *
- * <p>This implementation intentionally keeps the validated 1.0 KB/MCP/SYSTEM classification
- * idea, while staying independent from retrieval and tool execution.</p>
+ * <p>它延续了 1.0 已验证过的 KB/MCP/SYSTEM 分类思想，但保持在 stage one 内部独立存在，
+ * 不与 retrieval 或 MCP 执行链耦合。</p>
  */
 @Service
 public class RuleBasedIntentClassifier implements IntentClassifier {
 
+    /** 默认 system 兜底意图。 */
     private static final String DEFAULT_SYSTEM_INTENT_ID = "general_assistant";
+    /** 路径规划意图标识。 */
     private static final String PATH_OPTIMIZE_INTENT_ID = "path_optimize";
+    /** 航班搜索意图标识。 */
     private static final String FLIGHT_SEARCH_INTENT_ID = "flight_search";
+    /** 比价意图标识。 */
     private static final String PRICE_LOOKUP_INTENT_ID = "price_lookup";
+    /** 签证检查意图标识。 */
     private static final String VISA_CHECK_INTENT_ID = "visa_check";
+    /** 城市成本意图标识。 */
     private static final String CITY_COST_INTENT_ID = "city_cost";
+    /** 风险评估意图标识。 */
     private static final String RISK_EVALUATE_INTENT_ID = "risk_evaluate";
+    /** 候选结果的最低得分阈值。 */
     private static final double MIN_SCORE = 0.58D;
+    /** 单次分类最多返回的候选条数。 */
     private static final int MAX_RESULTS = 5;
 
+    /** 当前启用的静态意图树。 */
     private final IntentTree intentTree;
 
+    /**
+     * 构造规则分类器。
+     *
+     * @param intentTree 当前意图树
+     */
     public RuleBasedIntentClassifier(IntentTree intentTree) {
         this.intentTree = intentTree;
     }
 
     /**
-     * Ranks leaf intents for one rewritten question.
+     * 对单个问题文本进行规则分类。
      *
-     * @param question rewritten question or sub-question
-     * @return scored candidate intents, or the general system intent when nothing matches
+     * @param question 改写后的问题或子问题
+     * @return 命中的候选意图；若没有有效命中则回落到默认 system 意图
      */
     @Override
     public List<IntentNodeScore> classifyTargets(String question) {
@@ -53,6 +68,13 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
         return results.isEmpty() ? List.of(defaultSystemIntent()) : results;
     }
 
+    /**
+     * 计算单个叶子节点的得分。
+     *
+     * @param node 当前待评估节点
+     * @param normalizedQuestion 已归一化的问题文本
+     * @return 节点得分
+     */
     private double score(IntentNode node, String normalizedQuestion) {
         int keywordHits = countHits(normalizedQuestion, node.keywords());
         int aliasHits = countHits(normalizedQuestion, node.aliases());
@@ -104,6 +126,13 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
         return Math.max(0.0D, Math.min(0.99D, score));
     }
 
+    /**
+     * 统计候选词列表命中的数量。
+     *
+     * @param normalizedQuestion 已归一化的问题文本
+     * @param candidates 待匹配的候选词
+     * @return 命中数量
+     */
     private int countHits(String normalizedQuestion, List<String> candidates) {
         int hits = 0;
         for (String candidate : candidates) {
@@ -117,6 +146,12 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
         return hits;
     }
 
+    /**
+     * 判断是否存在明显的路径规划信号。
+     *
+     * @param normalizedQuestion 已归一化的问题文本
+     * @return 命中则返回 true
+     */
     private boolean hasPathOptimizeSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
                 "预算",
@@ -132,6 +167,12 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
                 "route"));
     }
 
+    /**
+     * 判断是否存在明显的航班搜索信号。
+     *
+     * @param normalizedQuestion 已归一化的问题文本
+     * @return 命中则返回 true
+     */
     private boolean hasFlightSearchSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
                 "航班",
@@ -146,6 +187,12 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
                 "ticket"));
     }
 
+    /**
+     * 判断是否存在明显的价格比较信号。
+     *
+     * @param normalizedQuestion 已归一化的问题文本
+     * @return 命中则返回 true
+     */
     private boolean hasPriceLookupSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
                 "比价",
@@ -162,6 +209,12 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
                 "compare price"));
     }
 
+    /**
+     * 判断是否存在明显的签证查询信号。
+     *
+     * @param normalizedQuestion 已归一化的问题文本
+     * @return 命中则返回 true
+     */
     private boolean hasVisaCheckSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
                 "签证",
@@ -173,6 +226,12 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
                 "transit free"));
     }
 
+    /**
+     * 判断是否存在明显的城市成本信号。
+     *
+     * @param normalizedQuestion 已归一化的问题文本
+     * @return 命中则返回 true
+     */
     private boolean hasCityCostSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
                 "城市成本",
@@ -188,6 +247,12 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
                 "daily cost"));
     }
 
+    /**
+     * 判断是否存在明显的风险评估信号。
+     *
+     * @param normalizedQuestion 已归一化的问题文本
+     * @return 命中则返回 true
+     */
     private boolean hasRiskEvaluateSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
                 "风险评估",
@@ -203,22 +268,46 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
                 "buffer time"));
     }
 
+    /**
+     * 判断问题是否更像闲聊或通用问候。
+     *
+     * @param normalizedQuestion 已归一化的问题文本
+     * @return 如果更像 system 场景则返回 true
+     */
     private boolean looksLikeGreeting(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of("你好", "您好", "hello", "hi", "你是谁", "讲个笑话", "写首诗"));
     }
 
+    /**
+     * 判断文本是否包含任一关键词。
+     *
+     * @param normalizedQuestion 已归一化的问题文本
+     * @param keywords 关键词集合
+     * @return 命中则返回 true
+     */
     private boolean containsAny(String normalizedQuestion, List<String> keywords) {
         return keywords.stream()
                 .map(keyword -> keyword.toLowerCase(Locale.ROOT))
                 .anyMatch(normalizedQuestion::contains);
     }
 
+    /**
+     * 返回默认 system 兜底意图。
+     *
+     * @return 默认 system 意图及其分数
+     */
     private IntentNodeScore defaultSystemIntent() {
         IntentNode fallbackNode = intentTree.findLeafNode(DEFAULT_SYSTEM_INTENT_ID)
                 .orElseThrow(() -> new IllegalStateException("Missing default system intent node"));
         return new IntentNodeScore(fallbackNode, 0.66D);
     }
 
+    /**
+     * 统一问题文本的比较格式。
+     *
+     * @param question 原始问题
+     * @return 归一化后的比较文本
+     */
     private String normalize(String question) {
         return question == null ? "" : question.trim().toLowerCase(Locale.ROOT);
     }

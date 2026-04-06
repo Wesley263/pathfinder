@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Entry point for the standalone MCP server process.
+ * 独立 MCP 服务进程启动入口。
  *
- * <p>This application only scans the MCP server protocol layer and framework shared primitives so the
- * server can expose tools without pulling bootstrap business implementations into its runtime.
+ * <p>该应用仅扫描 MCP 服务端协议层与 framework 共享基础组件，
+ * 使服务端在暴露工具时无需把 bootstrap 业务实现拉入本进程运行时。
  */
 @SpringBootApplication(scanBasePackages = {
         "com.flightpathfinder.mcp",
@@ -16,9 +16,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PathfinderMcpServerApplication {
 
     /**
-     * Boots the dedicated MCP server application.
+     * 启动专用 MCP 服务应用。
      *
-     * @param args standard Spring Boot startup arguments
+     * @param args 标准 Spring Boot 启动参数
      */
     public static void main(String[] args) {
         SpringApplication.run(PathfinderMcpServerApplication.class, args);

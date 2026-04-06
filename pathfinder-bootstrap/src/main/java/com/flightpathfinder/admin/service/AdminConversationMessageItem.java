@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminConversationMessageItem(
         String messageId,
         String requestId,
@@ -22,3 +25,4 @@ public record AdminConversationMessageItem(
         messageIndex = Math.max(0, messageIndex);
     }
 }
+

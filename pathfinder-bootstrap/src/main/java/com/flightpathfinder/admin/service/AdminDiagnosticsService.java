@@ -1,15 +1,15 @@
 package com.flightpathfinder.admin.service;
 
 /**
- * Admin-assisted diagnostic query service.
+ * 管理端辅助诊断查询服务。
  *
- * <p>These queries live on the admin surface because they are intended for verification, debugging and
- * operational inspection rather than end-user product workflows.
+ * <p>这些查询用于核验、排障与运维巡检，
+ * 不属于终端用户产品流程。
  */
 public interface AdminDiagnosticsService {
 
     /**
-     * Executes a direct flight diagnostic check.
+        * 执行直飞诊断检查。
      *
      * @param query structured diagnostic query for direct flight search
      * @return admin-facing flight diagnostic result
@@ -17,7 +17,7 @@ public interface AdminDiagnosticsService {
     AdminFlightDiagnosticResult searchFlights(AdminFlightDiagnosticQuery query);
 
     /**
-     * Executes a direct graph-path diagnostic check.
+        * 执行图路径诊断检查。
      *
      * @param query structured diagnostic query for graph path search
      * @return admin-facing path diagnostic result
@@ -25,7 +25,7 @@ public interface AdminDiagnosticsService {
     AdminPathDiagnosticResult searchPaths(AdminPathDiagnosticQuery query);
 
     /**
-     * Looks up one airport from the operational dataset.
+        * 从运维数据集中查询单个机场。
      *
      * @param iataCode airport IATA code to inspect
      * @return admin-facing airport lookup result

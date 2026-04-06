@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminConversationSummaryDetail(
         boolean hasSummary,
         String summaryText,
@@ -13,3 +16,4 @@ public record AdminConversationSummaryDetail(
         summarizedTurnCount = Math.max(0, summarizedTurnCount);
     }
 }
+

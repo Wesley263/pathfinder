@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Admin API for conversation memory inspection.
+ * 会话记忆巡检的管理端 API。
  *
- * <p>This controller exposes management-oriented read models for persisted memory so operators can inspect
- * conversations without coupling admin screens to the runtime memory models.
+ * <p>该控制器提供面向管理场景的持久化记忆读模型，
+ * 使运维能够查看会话而不与运行时记忆模型耦合。
  */
 @RestController
 @RequestMapping("/api/admin/conversations")
@@ -39,7 +39,7 @@ public class AdminMemoryController {
     }
 
     /**
-     * Lists persisted conversations for admin inspection.
+        * 列出持久化会话供管理端巡检。
      *
      * @param request optional list filter and limit
      * @return admin-facing conversation list view
@@ -51,7 +51,7 @@ public class AdminMemoryController {
     }
 
     /**
-     * Loads one persisted conversation detail view.
+        * 加载单个持久化会话详情视图。
      *
      * @param conversationId exact conversation id to inspect
      * @return admin-facing conversation detail

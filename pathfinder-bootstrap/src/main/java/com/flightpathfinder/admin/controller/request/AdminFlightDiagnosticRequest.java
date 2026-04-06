@@ -1,5 +1,8 @@
-package com.flightpathfinder.admin.controller.request;
+﻿package com.flightpathfinder.admin.controller.request;
 
+/**
+ * 管理端请求参数模型。
+ */
 public record AdminFlightDiagnosticRequest(
         String origin,
         String destination,
@@ -7,3 +10,4 @@ public record AdminFlightDiagnosticRequest(
         int flexibilityDays,
         int topK) {
 }
+

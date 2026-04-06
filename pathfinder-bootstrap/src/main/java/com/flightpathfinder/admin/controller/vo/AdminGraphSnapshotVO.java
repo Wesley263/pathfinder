@@ -1,8 +1,11 @@
-package com.flightpathfinder.admin.controller.vo;
+﻿package com.flightpathfinder.admin.controller.vo;
 
 import java.time.Instant;
 import java.util.Map;
 
+/**
+ * 管理端响应视图模型。
+ */
 public record AdminGraphSnapshotVO(
         String graphKey,
         String status,
@@ -16,3 +19,4 @@ public record AdminGraphSnapshotVO(
         String reason,
         Map<String, Object> metadata) {
 }
+

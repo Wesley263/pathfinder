@@ -1,23 +1,34 @@
 package com.flightpathfinder.mcp.graph.search;
 
 /**
- * Frontier and admission policy for bounded best-first search.
+ * bounded best-first 搜索的 frontier 与准入策略。
  *
- * <p>These controls keep the search from drifting into unbounded enumeration while still
- * leaving enough room for good candidates to survive pruning and ranking.</p>
+ * <p>这些策略用于抑制无界枚举，同时保留足够空间让高质量候选通过裁剪和排序。</p>
  */
 final class GraphPathFrontierPolicy {
 
+    /** frontier 最大节点数。 */
     private final int maxFrontierSize;
+    /** 最大扩展次数。 */
     private final int maxExpansions;
+    /** 候选池容量。 */
     private final int candidatePoolSize;
+    /** 触发提前停止所需的最小候选数。 */
     private final int earlyStopCandidateCount;
+    /** 最小 Pareto 选择数量。 */
     private final int minimumParetoSelectionCount;
+    /** 候选准入松弛量。 */
     private final double candidateAdmissionSlack;
+    /** frontier 收敛松弛量。 */
     private final double frontierClosureSlack;
+    /** 绕路基础阈值。 */
     private final double detourBaseThreshold;
+    /** 额外航段对应的绕路阈值增量。 */
     private final double detourPerExtraSegmentThreshold;
 
+    /**
+     * 构造 frontier 策略。
+     */
     private GraphPathFrontierPolicy(int maxFrontierSize,
                                     int maxExpansions,
                                     int candidatePoolSize,
@@ -39,7 +50,7 @@ final class GraphPathFrontierPolicy {
     }
 
     /**
-     * Derives the default frontier policy for one search request.
+     * 为一次搜索请求生成默认 frontier 策略。
      */
     static GraphPathFrontierPolicy defaultPolicy(GraphPathSearchRequest request) {
         int maxFrontierSize = Math.max(320, request.topK() * request.maxSegments() * 160);
@@ -47,8 +58,7 @@ final class GraphPathFrontierPolicy {
         int maxExpansions = Math.max(1600, maxFrontierSize * 8);
         int earlyStopCandidateCount = Math.max(request.topK() * 6, Math.min((candidatePoolSize * 3) / 4, 60));
         int minimumParetoSelectionCount = Math.max(request.topK() * 5, request.topK());
-        // Slack values intentionally leave a narrow buffer so the search does not stop too
-        // aggressively when near-tied candidates still exist deeper in the frontier.
+        // 松弛量保持窄缓冲，避免在 frontier 深处仍有近似同分候选时过早停止搜索。
         return new GraphPathFrontierPolicy(
                 maxFrontierSize,
                 maxExpansions,

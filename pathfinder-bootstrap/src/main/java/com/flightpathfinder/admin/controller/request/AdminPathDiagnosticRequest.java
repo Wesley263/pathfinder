@@ -1,5 +1,8 @@
-package com.flightpathfinder.admin.controller.request;
+﻿package com.flightpathfinder.admin.controller.request;
 
+/**
+ * 管理端请求参数模型。
+ */
 public record AdminPathDiagnosticRequest(
         String graphKey,
         String origin,
@@ -9,3 +12,4 @@ public record AdminPathDiagnosticRequest(
         int maxSegments,
         int topK) {
 }
+

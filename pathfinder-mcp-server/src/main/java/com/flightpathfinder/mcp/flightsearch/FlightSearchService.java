@@ -3,19 +3,19 @@ package com.flightpathfinder.mcp.flightsearch;
 import java.util.List;
 
 /**
- * Server-side contract for direct flight lookup.
+ * 直飞检索的服务端契约。
  *
- * <p>The service lives inside {@code pathfinder-mcp-server} because {@code flight.search} is owned as an
- * independent MCP tool backed by the server's own datasource access rather than shared bootstrap business
- * code.
+ * <p>该服务驻留在 {@code pathfinder-mcp-server}，
+ * 因为 {@code flight.search} 是基于服务端自有数据源访问的独立 MCP 工具，
+ * 不依赖共享的 bootstrap 业务实现。
  */
 public interface FlightSearchService {
 
     /**
-     * Finds direct-flight options for the requested airport pair and date window.
+     * 查询给定机场对与日期窗口下的直飞选项。
      *
-     * @param query normalized flight-search request
-     * @return ranked direct-flight options, or an empty list when no options match
+     * @param query 归一化后的直飞查询请求
+     * @return 排序后的直飞选项；若无匹配则返回空列表
      */
     List<FlightSearchOption> search(FlightSearchQuery query);
 }

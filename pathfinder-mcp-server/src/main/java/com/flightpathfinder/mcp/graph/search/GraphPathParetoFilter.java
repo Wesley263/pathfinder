@@ -8,15 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Pareto-layer selector for admitted candidate paths.
+ * 已准入候选路径的 Pareto 分层选择器。
  *
- * <p>This filter sits between candidate admission and final weighted ranking so the ranker is
- * not forced to choose only from one narrow scalar score ordering.</p>
+ * <p>该过滤器位于候选准入与最终加权排序之间，避免 ranker 只能基于单一标量序做选择。</p>
  */
 final class GraphPathParetoFilter {
 
     /**
-     * Selects enough Pareto layers for the final ranker to work with.
+     * 选择足够数量的 Pareto 分层供最终排序使用。
      */
     GraphPathParetoSelection selectForRanking(List<RestoredCandidatePath> candidates, int minimumSelectedCount) {
         if (candidates.isEmpty()) {
@@ -29,8 +28,7 @@ final class GraphPathParetoFilter {
         int layer = 1;
 
         while (!remaining.isEmpty() && selected.size() < minimumSelectedCount) {
-            // Pareto layers are accumulated until the ranker has enough diversity to choose
-            // from without collapsing everything to the first scalar ordering.
+            // 按层累积到足够规模，保证 ranker 有足够多样性而非退化到单一标量序。
             List<RestoredCandidatePath> front = paretoFront(remaining);
             front.sort(defaultOrder());
             for (RestoredCandidatePath path : front) {
@@ -51,6 +49,9 @@ final class GraphPathParetoFilter {
         return new GraphPathParetoSelection(selected, layerByPath, Math.max(1, layer - 1));
     }
 
+    /**
+     * 计算当前候选集的 Pareto 前沿。
+     */
     private List<RestoredCandidatePath> paretoFront(List<RestoredCandidatePath> candidates) {
         List<RestoredCandidatePath> front = new ArrayList<>();
         for (int i = 0; i < candidates.size(); i++) {
@@ -72,6 +73,9 @@ final class GraphPathParetoFilter {
         return front;
     }
 
+    /**
+     * 判断左侧候选是否支配右侧候选。
+     */
     private boolean dominates(RestoredCandidatePath left, RestoredCandidatePath right) {
         boolean noWorsePrice = left.totalPriceCny() <= right.totalPriceCny();
         boolean noWorseDuration = left.totalDurationMinutes() <= right.totalDurationMinutes();
@@ -95,6 +99,9 @@ final class GraphPathParetoFilter {
                 || (left.baggageIncluded() && !right.baggageIncluded());
     }
 
+    /**
+     * 默认候选排序规则。
+     */
     private Comparator<RestoredCandidatePath> defaultOrder() {
         return Comparator.comparingDouble(RestoredCandidatePath::totalPriceCny)
                 .thenComparingInt(RestoredCandidatePath::totalDurationMinutes)

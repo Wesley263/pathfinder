@@ -3,18 +3,17 @@ package com.flightpathfinder.flight.core.graph.snapshot;
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshot;
 
 /**
- * Publishes graph snapshots to the shared read-model store.
+ * 图快照发布边界。
  *
- * <p>Publishing is separate from building so the main program can evolve storage mechanics
- * without changing how the snapshot content itself is assembled.</p>
+ * <p>发布与构建分离，便于主程序独立演进存储机制，而不影响快照内容装配逻辑。</p>
  */
 public interface GraphSnapshotPublisher {
 
     /**
-     * Publishes a snapshot for the supplied graph key.
+     * 为指定 graphKey 发布快照。
      *
-     * @param graphKey logical graph identifier
-     * @param snapshot snapshot payload to publish
+     * @param graphKey 图逻辑标识
+     * @param snapshot 待发布快照载荷
      */
     void publish(String graphKey, GraphSnapshot snapshot);
 }

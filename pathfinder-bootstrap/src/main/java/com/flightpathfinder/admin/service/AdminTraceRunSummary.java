@@ -1,8 +1,11 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminTraceRunSummary(
         String traceId,
         String requestId,
@@ -49,3 +52,4 @@ public record AdminTraceRunSummary(
                 List.of());
     }
 }
+

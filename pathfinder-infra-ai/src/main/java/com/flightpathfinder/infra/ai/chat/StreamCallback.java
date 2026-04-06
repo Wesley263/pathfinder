@@ -1,5 +1,7 @@
-package com.flightpathfinder.infra.ai.chat;
-
+﻿package com.flightpathfinder.infra.ai.chat;
+/**
+ * 面向 AI 聊天的能力接口定义。
+ */
 public interface StreamCallback {
 
     void onChunk(String chunk);
@@ -10,4 +12,6 @@ public interface StreamCallback {
     default void onError(Throwable throwable) {
     }
 }
+
+
 

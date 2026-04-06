@@ -16,10 +16,10 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * Server-side executor for {@code city.cost}.
+ * {@code city.cost} 的服务端执行器。
  *
- * <p>This tool exposes city-cost lookup as a standalone MCP capability backed by the MCP server's own
- * dataset access. It does not call back into bootstrap because cost data ownership is local to the tool.
+ * <p>该工具将城市成本查询作为独立 MCP 能力对外暴露，底层由 MCP 服务端自有数据集支撑。
+ * 不回调 bootstrap，是因为该数据域归属本工具本地维护。
  */
 @Component
 public class CityCostMcpToolExecutor implements McpToolExecutor {
@@ -34,9 +34,9 @@ public class CityCostMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Describes the MCP contract for city cost lookup.
+     * 描述城市成本查询的 MCP 契约。
      *
-     * @return descriptor for {@code city.cost}
+     * @return {@code city.cost} 的工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -66,11 +66,11 @@ public class CityCostMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Executes a city-cost lookup for one or more normalized city codes.
+     * 对一个或多个归一化城市代码执行成本查询。
      *
-     * @param request MCP request containing structured city or airport codes
-     * @return structured result with {@code SUCCESS}, {@code PARTIAL_SUCCESS}, {@code DATA_NOT_FOUND},
-     *     or request/execution errors
+     * @param request MCP 请求，包含结构化城市/机场代码
+     * @return 结构化结果，状态可为 {@code SUCCESS}、{@code PARTIAL_SUCCESS}、
+     *     {@code DATA_NOT_FOUND} 或请求/执行错误
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -124,8 +124,8 @@ public class CityCostMcpToolExecutor implements McpToolExecutor {
             if (!IATA_CODE_PATTERN.matcher(normalized).matches()) {
                 continue;
             }
-            // Canonicalizing the request here keeps datasource lookup deterministic and avoids duplicate rows
-            // in the management-facing result.
+            // 在入口处做规范化，可保证数据源查询确定性，
+            // 并避免管理侧结果出现重复行。
             if (!codes.contains(normalized)) {
                 codes.add(normalized);
             }

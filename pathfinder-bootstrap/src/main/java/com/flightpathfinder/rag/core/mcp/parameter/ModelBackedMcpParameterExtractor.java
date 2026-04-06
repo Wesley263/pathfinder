@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.mcp.parameter;
+﻿package com.flightpathfinder.rag.core.mcp.parameter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * Model-backed MCP parameter extractor that reuses the schema validator in the rule extractor.
+ * 基于模型的 MCP 参数提取器，复用规则提取器中的 schema 校验器。
  */
 @Service
 @Primary

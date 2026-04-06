@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 /**
- * Default admin-facing MCP catalog service.
+ * 面向 MCP 目录管理的服务默认实现。
  *
- * <p>This service presents MCP tools as managed operational assets with availability and dependency hints,
- * which is why it lives on the admin surface instead of reusing user-facing execution models.
+ * <p>该服务将 MCP 工具视为受管运维资产，提供可用性与依赖提示，
+ * 因此位于管理端能力面而非复用用户侧执行模型。
  */
 @Service
 public class DefaultAdminMcpService implements AdminMcpService {
@@ -50,7 +50,7 @@ public class DefaultAdminMcpService implements AdminMcpService {
     }
 
     /**
-     * Lists managed MCP tools from the current discovery state.
+        * 从当前发现状态列出受管 MCP 工具。
      *
      * @param refresh whether discovery should refresh the local catalog first
      * @return admin-facing tool list
@@ -71,7 +71,7 @@ public class DefaultAdminMcpService implements AdminMcpService {
     }
 
     /**
-     * Loads one managed MCP tool detail view.
+        * 加载单个受管 MCP 工具详情视图。
      *
      * @param toolId managed tool id
      * @param refresh whether discovery should refresh the local catalog first
@@ -136,8 +136,7 @@ public class DefaultAdminMcpService implements AdminMcpService {
                 ? mcpToolDiscoveryService.refreshToolCatalog()
                 : localMcpToolRegistry.listTools();
         if (catalog.isEmpty() && refresh) {
-            // Admin catalog inspection should remain usable even when refresh returns nothing, so the last-known
-            // local registry is treated as a fallback view.
+                        // 即使刷新未返回结果，目录巡检也应可用，因此回退到本地注册表的最近状态视图。
             catalog = localMcpToolRegistry.listTools();
         }
         return catalog.stream()
@@ -152,8 +151,7 @@ public class DefaultAdminMcpService implements AdminMcpService {
         if ("graph.path.search".equals(definition.toolId())) {
             String graphKey = graphSnapshotProperties.getDefaultGraphKey();
             Optional<GraphSnapshot> snapshot = graphSnapshotQueryService.loadCurrent(graphKey);
-            // graph.path.search depends on the published snapshot as a read model, unlike the JDBC-backed tools
-            // that only depend on server datasource availability.
+                        // 图路径检索工具依赖已发布图快照读模型，不同于仅依赖数据源可用性的 JDBC 工具。
             if (snapshot.isPresent()) {
                 GraphSnapshot graphSnapshot = snapshot.get();
                 details.add("Current graph snapshot is ready for graphKey=" + graphKey + ", snapshotVersion=" + graphSnapshot.snapshotVersion());

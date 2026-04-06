@@ -7,15 +7,15 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Final weighted ranker for Pareto-selected candidate paths.
+ * Pareto 选择后候选路径的最终加权排序器。
  *
- * <p>This stage comes after Pareto filtering on purpose: Pareto keeps multiple "good in
- * different ways" candidates alive, then weighted ranking chooses the final top-K.</p>
+ * <p>该阶段位于 Pareto 过滤之后：先保留“各维度都不错”的多样候选，
+ * 再通过加权排序选出最终 top-K。</p>
  */
 final class GraphPathWeightedRanker {
 
     /**
-     * Ranks the selected candidate set and returns the final top-K paths.
+     * 对候选集合执行排序并返回最终 top-K。
      */
     List<RestoredCandidatePath> rank(RestoredFlightGraph graph,
                                      GraphPathParetoSelection selection,
@@ -46,8 +46,7 @@ final class GraphPathWeightedRanker {
                 .toArray());
         ScoreRange layerRange = new ScoreRange(1.0, Math.max(1.0, selection.maxLayer()));
 
-        // Normalizing each metric over the current candidate set keeps one large-magnitude
-        // field such as price from drowning out the rest of the weighted profile.
+        // 按当前候选集归一化各指标，避免价格这类大数值字段淹没其它维度。
         return candidates.stream()
                 .map(path -> new RankedPath(path, score(
                         graph,
@@ -70,6 +69,9 @@ final class GraphPathWeightedRanker {
                 .toList();
     }
 
+    /**
+     * 计算单条候选路径的综合分。
+     */
     private double score(RestoredFlightGraph graph,
                          RestoredCandidatePath path,
                          int paretoLayer,
@@ -102,6 +104,9 @@ final class GraphPathWeightedRanker {
                 + layerScore * profile.paretoLayerWeight();
     }
 
+    /**
+     * 计算绕路效率分。
+     */
     private double detourEfficiency(RestoredFlightGraph graph, RestoredCandidatePath path) {
         if (path.legs().isEmpty()) {
             return 0.0;
@@ -122,6 +127,9 @@ final class GraphPathWeightedRanker {
         return Math.max(0.0, Math.min(1.0, directDistance / path.totalDistanceKm()));
     }
 
+    /**
+     * 计算两地大圆距离（公里）。
+     */
     private double haversineKm(double lat1, double lon1, double lat2, double lon2) {
         double earthRadiusKm = 6371.0;
         double latDistance = Math.toRadians(lat2 - lat1);
@@ -135,11 +143,18 @@ final class GraphPathWeightedRanker {
         return earthRadiusKm * c;
     }
 
+    /** 排序中间对象。 */
     private record RankedPath(RestoredCandidatePath path, double score) {
     }
 
+    /**
+     * 归一化分值区间。
+     */
     private record ScoreRange(double min, double max) {
 
+        /**
+         * 基于 double 数组构建区间。
+         */
         static ScoreRange ofDoubles(double[] values) {
             if (values.length == 0) {
                 return new ScoreRange(0.0, 1.0);
@@ -153,6 +168,9 @@ final class GraphPathWeightedRanker {
             return new ScoreRange(min, max);
         }
 
+        /**
+         * 基于 int 数组构建区间。
+         */
         static ScoreRange ofInts(int[] values) {
             if (values.length == 0) {
                 return new ScoreRange(0.0, 1.0);
@@ -166,6 +184,9 @@ final class GraphPathWeightedRanker {
             return new ScoreRange(min, max);
         }
 
+        /**
+         * 低值更优的归一化。
+         */
         double normalizeLowerIsBetter(double value) {
             if (max <= min) {
                 return 1.0;
@@ -173,6 +194,9 @@ final class GraphPathWeightedRanker {
             return 1.0 - ((value - min) / (max - min));
         }
 
+        /**
+         * 高值更优的归一化。
+         */
         double normalizeHigherIsBetter(double value) {
             if (max <= min) {
                 return 1.0;

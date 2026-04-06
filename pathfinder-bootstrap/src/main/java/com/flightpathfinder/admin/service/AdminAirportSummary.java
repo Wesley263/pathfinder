@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminAirportSummary(
         String iataCode,
         String icaoCode,
@@ -23,3 +26,4 @@ public record AdminAirportSummary(
         String currentSnapshotVersion,
         Instant observedAt) {
 }
+

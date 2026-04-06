@@ -14,14 +14,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.stereotype.Service;
 
 /**
- * First-pass KB retriever backed by a small in-process catalog.
+ * 第一版内置目录式 KB 检索器。
  *
- * <p>This implementation is intentionally lightweight. The current goal is to preserve KB
- * retrieval boundaries and result semantics before introducing a heavier retriever.</p>
+ * <p>它使用进程内小型知识目录实现最基础的 KB 分支能力，重点是先把检索边界、结果模型和空结果语义跑通，
+ * 再逐步升级到更重的检索方案。</p>
  */
 @Service
 public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
 
+    /** 当前内置的知识目录，按 collectionName 分组维护。 */
     private static final Map<String, List<KnowledgeDocument>> KNOWLEDGE_CATALOG = Map.of(
             "policy_edge_cases", List.of(
                     new KnowledgeDocument(
@@ -76,11 +77,11 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
                             List.of("廉航", "行李", "收费", "出行建议", "避坑"))));
 
     /**
-     * Retrieves KB entries for the KB intents selected by stage one.
+     * 按 KB intents 执行知识检索。
      *
-     * @param rewriteResult rewritten question used as retrieval text
-     * @param intentSplitResult split result containing KB intents
-     * @return KB context with success, empty, or error semantics
+     * @param rewriteResult 改写结果，提供检索文本
+     * @param intentSplitResult 分流结果，提供 KB intents
+     * @return 带有 success / empty / error 语义的 KB 上下文
      */
     @Override
     public KbContext retrieve(RewriteResult rewriteResult, IntentSplitResult intentSplitResult) {
@@ -112,6 +113,13 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
         }
     }
 
+    /**
+     * 针对单个 KB intent 执行集合内检索。
+     *
+     * @param rewriteResult 改写结果
+     * @param kbIntent 当前 KB intent
+     * @return 当前 intent 命中的条目列表
+     */
     private List<KbRetrievalItem> retrieveForIntent(RewriteResult rewriteResult, ResolvedIntent kbIntent) {
         String collectionName = kbIntent.kbCollectionName();
         if (collectionName == null || collectionName.isBlank()) {
@@ -127,8 +135,7 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
         AtomicInteger rankCounter = new AtomicInteger(1);
         int limit = kbIntent.kbTopK() == null ? 3 : Math.max(1, kbIntent.kbTopK());
 
-        // Ranking is collection-local on purpose so a future retriever can replace this toy
-        // catalog without changing the external KB context contract.
+        // 排序刻意保持在 collection 内部完成，这样后续替换成真正检索器时无需改外部 KB context 契约。
         return documents.stream()
                 .map(document -> new ScoredDocument(document, score(query, kbIntent, document)))
                 .sorted((left, right) -> Double.compare(right.score(), left.score()))
@@ -137,6 +144,15 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
                 .toList();
     }
 
+    /**
+     * 把内置文档对象转换为统一的 KB 检索条目。
+     *
+     * @param kbIntent 当前 KB intent
+     * @param document 命中文档
+     * @param score 文档得分
+     * @param rank 排名
+     * @return 标准化 KB 条目
+     */
     private KbRetrievalItem toItem(ResolvedIntent kbIntent, KnowledgeDocument document, double score, int rank) {
         return new KbRetrievalItem(
                 kbIntent.intentId(),
@@ -152,6 +168,12 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
                 rank);
     }
 
+    /**
+     * 对检索条目按 intentId + documentId 去重。
+     *
+     * @param items 原始条目列表
+     * @return 去重后的条目列表
+     */
     private List<KbRetrievalItem> deduplicate(List<KbRetrievalItem> items) {
         Map<String, KbRetrievalItem> deduplicated = new LinkedHashMap<>();
         for (KbRetrievalItem item : items) {
@@ -164,6 +186,12 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
         return List.copyOf(deduplicated.values());
     }
 
+    /**
+     * 生成 KB 检索摘要。
+     *
+     * @param items 检索条目列表
+     * @return 按集合统计的摘要文本
+     */
     private String buildSummary(List<KbRetrievalItem> items) {
         Map<String, Long> countsByCollection = new LinkedHashMap<>();
         for (KbRetrievalItem item : items) {
@@ -175,6 +203,14 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
                 .orElse("no KB entries matched");
     }
 
+    /**
+     * 计算文档对当前问题的词法得分。
+     *
+     * @param query 当前检索问题
+     * @param kbIntent 当前 KB intent
+     * @param document 待评分文档
+     * @return 文档得分
+     */
     private double score(String query, ResolvedIntent kbIntent, KnowledgeDocument document) {
         String normalizedQuery = normalize(query);
         double score = 0.55D;
@@ -202,6 +238,13 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
                 .doubleValue();
     }
 
+    /**
+     * 决定本次检索应使用的问题文本。
+     *
+     * @param rewriteResult 改写结果
+     * @param kbIntent 当前 KB intent
+     * @return 优先使用子问题文本，否则退回改写主问题
+     */
     private String resolveQuery(RewriteResult rewriteResult, ResolvedIntent kbIntent) {
         if (kbIntent.question() != null && !kbIntent.question().isBlank()) {
             return kbIntent.question();
@@ -209,10 +252,27 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
         return rewriteResult == null ? "" : rewriteResult.routingQuestion();
     }
 
+    /**
+     * 统一文本比较格式。
+     *
+     * @param value 原始文本
+     * @return 归一化后的比较文本
+     */
     private String normalize(String value) {
         return value == null ? "" : value.trim().toLowerCase(Locale.ROOT);
     }
 
+    /**
+     * 内置知识目录文档模型。
+     *
+     * @param documentId 文档标识
+     * @param title 文档标题
+     * @param content 文档内容
+     * @param collectionName 所属知识集合
+     * @param topic 所属主题
+     * @param source 来源标识
+     * @param tags 用于词法匹配的标签集合
+     */
     private record KnowledgeDocument(
             String documentId,
             String title,
@@ -223,6 +283,12 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
             List<String> tags) {
     }
 
+    /**
+     * 文档评分结果。
+     *
+     * @param document 候选文档
+     * @param score 对应得分
+     */
     private record ScoredDocument(KnowledgeDocument document, double score) {
     }
 }

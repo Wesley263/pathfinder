@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * Server-side executor for {@code risk.evaluate}.
+ * {@code risk.evaluate} 的服务端执行器。
  *
- * <p>This tool stays inside the MCP server because it combines reference-data lookups with server-local rule
- * scoring. The bootstrap side only consumes the structured risk result through MCP.
+ * <p>该工具保留在 MCP 服务端内执行，因为它要结合参考数据查询与本地规则评分。
+ * 引导侧仅通过 MCP 消费结构化风险结果。
  */
 @Component
 public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
@@ -33,9 +33,9 @@ public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Describes the MCP contract for transfer-risk evaluation.
+     * 描述中转风险评估的 MCP 契约。
      *
-     * @return descriptor for {@code risk.evaluate}
+     * @return {@code risk.evaluate} 的工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -78,11 +78,11 @@ public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Executes the transfer-risk rule pipeline.
+     * 执行中转风险规则流水线。
      *
-     * @param request MCP request containing hub, airline and connection-buffer inputs
-     * @return structured risk result with business-level states such as {@code LOW}, {@code MEDIUM},
-     *     {@code HIGH} or {@code DATA_NOT_FOUND}
+     * @param request MCP 请求，包含枢纽机场、航司与中转缓冲时长输入
+     * @return 结构化风险结果，业务状态可能为 {@code LOW}、{@code MEDIUM}、
+     *     {@code HIGH} 或 {@code DATA_NOT_FOUND}
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -141,8 +141,8 @@ public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
         if (bufferHours <= 0D) {
             throw new IllegalArgumentException("bufferHours must be greater than 0");
         }
-        // Validation is strict here so the risk engine can focus on scoring, not on defending against raw
-        // transport-level input shapes.
+        // 在执行器入口保持严格校验，让风险引擎专注评分本身，
+        // 而不是防御传输层原始输入形态。
         return new RiskEvaluateQuery(normalizedHub, normalizedFirstAirline, normalizedSecondAirline, bufferHours);
     }
 

@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Reassembles persisted message rows into turn-level memory objects.
+ * 将持久化消息行重组为“轮次级”记忆对象。
  *
- * <p>Messages are stored separately so USER and ASSISTANT content remain auditable, but the mainline consumes
- * turns. This assembler is the small boundary that converts storage shape into orchestration shape.
+ * <p>消息按行分存可保持 USER/ASSISTANT 内容可审计，
+ * 而主链消费的是轮次对象。本组装器即承担从存储形态到编排形态的边界转换。
  */
 final class ConversationMemoryTurnAssembler {
 
@@ -19,10 +19,10 @@ final class ConversationMemoryTurnAssembler {
     }
 
     /**
-     * Groups message rows into conversation turns ordered by request/message sequence.
+     * 按请求与消息序将消息行分组为会话轮次。
      *
-     * @param messages persisted message rows for one conversation
-     * @return immutable turn list ready for memory-context construction
+     * @param messages 单个会话的持久化消息行
+     * @return 可直接用于构造记忆上下文的不可变轮次列表
      */
     static List<ConversationMemoryTurn> toTurns(List<ConversationMemoryMessageRecord> messages) {
         Map<String, TurnBuilder> grouped = new LinkedHashMap<>();

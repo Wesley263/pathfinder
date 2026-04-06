@@ -1,18 +1,18 @@
 package com.flightpathfinder.mcp.pricelookup;
 
 /**
- * Server-side contract for lowest-price comparison across multiple city pairs.
+ * 多城市对最低价比较的服务端契约。
  *
- * <p>This service stays on the server side even though it reuses {@code flight.search} capability because
- * the exposed MCP tool still owns its own input contract and result semantics.
+ * <p>尽管内部复用 {@code flight.search} 能力，该服务仍留在服务端，
+ * 因为对外 MCP 工具拥有独立输入契约与结果语义。
  */
 public interface PriceLookupService {
 
     /**
-     * Resolves the lowest available option for each requested city pair.
+     * 为每个请求城市对解析可用最低价方案。
      *
-     * @param query normalized lookup request
-     * @return structured result including matched pairs and missing coverage
+     * @param query 归一化查询请求
+     * @return 结构化结果，包含命中城市对与缺失覆盖信息
      */
     PriceLookupResult lookup(PriceLookupQuery query);
 }

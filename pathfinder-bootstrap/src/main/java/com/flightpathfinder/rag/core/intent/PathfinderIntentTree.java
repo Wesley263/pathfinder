@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -7,15 +7,30 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
+/**
+ * 当前 Pathfinder 2.0 启用的静态意图树。
+ *
+ * <p>它定义第一阶段已接入的 MCP、KB 和 SYSTEM 三类叶子节点。之所以仍然保留在 bootstrap/rag 内，
+ * 是因为这棵树描述的是当前主链的业务分流事实，而不是通用框架能力。</p>
+ */
 @Component
 public class PathfinderIntentTree implements IntentTree {
 
+    /** 当前意图树的根路径前缀。 */
     private static final String ROOT_PATH = "flight-travel";
 
+    /** 整棵意图树的根节点。 */
     private final IntentNode root;
+    /** 所有可直接参与分类的叶子节点。 */
     private final List<IntentNode> leafNodes;
+    /** 叶子节点索引，支持按 id、别名和 toolId 快速查找。 */
     private final Map<String, IntentNode> leafIndex;
 
+    /**
+     * 构造默认意图树。
+     *
+     * <p>当前使用静态树而不是可配置树，是因为第一阶段先要把主链边界稳定下来，再考虑配置化演进。</p>
+     */
     public PathfinderIntentTree() {
         IntentNode mcpCategory = IntentNode.category(
                 "structured_query",
@@ -142,16 +157,32 @@ public class PathfinderIntentTree implements IntentTree {
         this.leafIndex = buildLeafIndex(leafNodes);
     }
 
+    /**
+     * 返回意图树根节点。
+     *
+     * @return 根节点
+     */
     @Override
     public IntentNode root() {
         return root;
     }
 
+    /**
+     * 返回全部叶子节点。
+     *
+     * @return 可直接参与分类的叶子节点列表
+     */
     @Override
     public List<IntentNode> leafNodes() {
         return leafNodes;
     }
 
+    /**
+     * 根据标识查找叶子节点。
+     *
+     * @param nodeId 节点 id、别名或 toolId
+     * @return 匹配到的叶子节点
+     */
     @Override
     public Optional<IntentNode> findLeafNode(String nodeId) {
         if (nodeId == null || nodeId.isBlank()) {
@@ -160,6 +191,12 @@ public class PathfinderIntentTree implements IntentTree {
         return Optional.ofNullable(leafIndex.get(normalize(nodeId)));
     }
 
+    /**
+     * 构建叶子节点索引。
+     *
+     * @param leafNodes 叶子节点列表
+     * @return 供快速查找使用的不可变索引表
+     */
     private static Map<String, IntentNode> buildLeafIndex(List<IntentNode> leafNodes) {
         Map<String, IntentNode> index = new LinkedHashMap<>();
         for (IntentNode leafNode : leafNodes) {
@@ -172,7 +209,14 @@ public class PathfinderIntentTree implements IntentTree {
         return Map.copyOf(index);
     }
 
+    /**
+     * 统一节点索引键的比较格式。
+     *
+     * @param value 原始文本
+     * @return 小写化后的索引键
+     */
     private static String normalize(String value) {
         return value.trim().toLowerCase(Locale.ROOT);
     }
 }
+

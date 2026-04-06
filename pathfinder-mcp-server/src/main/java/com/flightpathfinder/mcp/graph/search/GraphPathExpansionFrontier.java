@@ -7,30 +7,30 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 
 /**
- * Ordered frontier of partial search nodes.
+ * 部分搜索节点的有序 frontier。
  *
- * <p>This structure is separate from the candidate pool because partial states and completed
- * paths serve different purposes: the frontier controls expansion order, while the candidate
- * pool controls when search can stop.</p>
+ * <p>该结构与候选池分离：frontier 负责扩展顺序，候选池负责收敛与停止判定。</p>
  */
 final class GraphPathExpansionFrontier {
 
+    /** frontier 排序规则。 */
     private static final Comparator<GraphPathSearchNode> ORDER = Comparator
             .comparingDouble(GraphPathSearchNode::optimisticScore)
             .reversed()
             .thenComparingLong(GraphPathSearchNode::sequence);
 
+    /** frontier 节点集合。 */
     private final NavigableSet<GraphPathSearchNode> nodes = new TreeSet<>(ORDER);
 
     /**
-     * Adds a partial search node to the frontier.
+     * 向 frontier 添加部分搜索节点。
      */
     void offer(GraphPathSearchNode node) {
         nodes.add(node);
     }
 
     /**
-     * Removes and returns the current best frontier node.
+     * 弹出并返回当前最优 frontier 节点。
      */
     GraphPathSearchNode pollBest() {
         if (nodes.isEmpty()) {
@@ -40,7 +40,7 @@ final class GraphPathExpansionFrontier {
     }
 
     /**
-     * Returns the optimistic score of the current best frontier node.
+     * 返回当前最优 frontier 节点的乐观分。
      */
     double peekBestScore() {
         if (nodes.isEmpty()) {
@@ -50,7 +50,7 @@ final class GraphPathExpansionFrontier {
     }
 
     /**
-     * Trims the frontier down to the supplied max size and returns discarded nodes.
+     * 将 frontier 裁剪到指定上限并返回被裁剪节点。
      */
     List<GraphPathSearchNode> trimToSize(int maxFrontierSize) {
         List<GraphPathSearchNode> trimmed = new ArrayList<>();
@@ -64,7 +64,7 @@ final class GraphPathExpansionFrontier {
     }
 
     /**
-     * Returns whether the frontier currently holds any search nodes.
+     * 判断 frontier 是否为空。
      */
     boolean isEmpty() {
         return nodes.isEmpty();

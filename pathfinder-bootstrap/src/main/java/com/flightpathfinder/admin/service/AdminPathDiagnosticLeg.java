@@ -1,5 +1,8 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminPathDiagnosticLeg(
         String origin,
         String destination,
@@ -10,3 +13,4 @@ public record AdminPathDiagnosticLeg(
         int durationMinutes,
         double distanceKm) {
 }
+

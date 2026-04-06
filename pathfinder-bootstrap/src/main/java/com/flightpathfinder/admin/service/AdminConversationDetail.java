@@ -1,8 +1,11 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminConversationDetail(
         String conversationId,
         String lastRequestId,
@@ -22,3 +25,4 @@ public record AdminConversationDetail(
         recentMessages = List.copyOf(recentMessages == null ? List.of() : recentMessages);
     }
 }
+

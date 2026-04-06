@@ -1,5 +1,8 @@
-package com.flightpathfinder.admin.controller.vo;
+﻿package com.flightpathfinder.admin.controller.vo;
 
+/**
+ * 管理端响应视图模型。
+ */
 public record AdminMcpToolSummaryVO(
         String toolId,
         String displayName,
@@ -10,3 +13,4 @@ public record AdminMcpToolSummaryVO(
         String dependencySummary,
         String dependencyStatus) {
 }
+

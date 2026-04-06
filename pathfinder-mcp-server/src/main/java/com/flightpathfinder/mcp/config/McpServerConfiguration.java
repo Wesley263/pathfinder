@@ -9,22 +9,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Wires server-side MCP runtime components.
+ * 装配服务端 MCP 运行时组件。
  *
- * <p>The registry is assembled inside {@code pathfinder-mcp-server} so tool exposure stays owned by the
- * protocol server process instead of leaking bootstrap-side client discovery concerns back into the
- * server.
+ * <p>注册器在 {@code pathfinder-mcp-server} 内完成组装，
+ * 以确保工具暴露能力始终由协议服务进程持有，避免把 bootstrap 侧客户端发现职责反向泄漏回服务端。
  */
 @Configuration
 @EnableConfigurationProperties(McpServerDatasourceProperties.class)
 public class McpServerConfiguration {
 
     /**
-     * Creates the in-process registry used by protocol handlers and dispatchers to discover available
-     * tools.
+     * 创建供协议处理器与分发器发现可用工具的进程内注册器。
      *
-     * @param toolExecutors all server-side tool executors contributed by this module
-     * @return registry backed by the current executor set
+     * @param toolExecutors 本模块提供的全部服务端工具执行器
+     * @return 由当前执行器集合驱动的注册器
      */
     @Bean
     public McpServerToolRegistry mcpServerToolRegistry(List<McpToolExecutor> toolExecutors) {

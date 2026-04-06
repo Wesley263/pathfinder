@@ -1,5 +1,12 @@
 package com.flightpathfinder.rag.controller.vo;
 
+/**
+ * 阶段级 trace 摘要对象。
+ *
+ * @param stageName 阶段名称
+ * @param status 阶段状态
+ * @param summary 阶段摘要
+ */
 public record RagTraceStageVO(
         String stageName,
         String status,

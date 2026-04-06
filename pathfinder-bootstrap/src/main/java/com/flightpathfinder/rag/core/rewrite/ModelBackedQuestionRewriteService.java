@@ -14,16 +14,29 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * Model-backed rewrite service with deterministic fallback.
+ * 基于模型的改写服务实现。
+ *
+ * <p>它在确定性 rewrite 之上增加模型能力，但仍保留本地 fallback。这样即使模型不可用、
+ * 返回空结果或格式不合法，第一阶段也不会失去稳定可运行的改写能力。</p>
  */
 @Service
 @Primary
 public class ModelBackedQuestionRewriteService implements QuestionRewriteService {
 
+    /** 确定性改写服务，作为模型不可用时的兜底实现。 */
     private final DefaultQuestionRewriteService fallbackRewriteService;
+    /** 面向 2.0 AI 基础设施的聊天模型调用入口。 */
     private final ChatService chatService;
+    /** 用于解析模型返回 JSON 的对象映射器。 */
     private final ObjectMapper objectMapper;
 
+    /**
+     * 构造模型增强版改写服务。
+     *
+     * @param fallbackRewriteService 确定性兜底改写服务
+     * @param chatService 模型对话服务
+     * @param objectMapper JSON 解析器
+     */
     public ModelBackedQuestionRewriteService(DefaultQuestionRewriteService fallbackRewriteService,
                                             ChatService chatService,
                                             ObjectMapper objectMapper) {
@@ -32,6 +45,12 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * 先执行本地稳定改写，再尝试用模型生成更自然的改写结果。
+     *
+     * @param request 原始问题及请求上下文
+     * @return 优先使用模型结果，模型不可用时回落到确定性改写结果
+     */
     @Override
     public RewriteResult rewrite(StageOneRagRequest request) {
         RewriteResult fallback = fallbackRewriteService.rewrite(request);
@@ -72,6 +91,11 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
         }
     }
 
+    /**
+     * 构造模型系统提示词。
+     *
+     * @return 约束模型输出结构和改写边界的系统提示词
+     */
     private String rewriteSystemPrompt() {
         return "You rewrite user travel questions for downstream routing. "
                 + "Return JSON only with fields rewrite and sub_questions. "
@@ -81,6 +105,13 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
                 + "Do not invent facts or parameters not implied by the question or memory.";
     }
 
+    /**
+     * 构造模型用户提示词。
+     *
+     * @param request 原始请求
+     * @param fallback 确定性改写结果，用作模型参考与兜底基线
+     * @return 提交给模型的用户提示词
+     */
     private String buildUserPrompt(StageOneRagRequest request, RewriteResult fallback) {
         StringBuilder builder = new StringBuilder();
         builder.append("Original question:\n")
@@ -114,6 +145,13 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
         return builder.toString();
     }
 
+    /**
+     * 解析模型返回的 JSON 改写结果。
+     *
+     * @param raw 模型原始文本输出
+     * @return 解析后的改写结果；缺少子问题时会回填为单问题列表
+     * @throws Exception 当 JSON 不合法或无法解析时抛出异常
+     */
     private ParsedRewrite parseRewrite(String raw) throws Exception {
         String cleaned = stripMarkdownCodeFence(raw);
         JsonNode root = objectMapper.readTree(cleaned);
@@ -134,6 +172,12 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
         return new ParsedRewrite(rewrite, List.copyOf(subQuestions));
     }
 
+    /**
+     * 去掉模型返回内容可能携带的 Markdown 代码块包裹。
+     *
+     * @param raw 模型原始输出
+     * @return 适合 JSON 解析的纯文本内容
+     */
     private String stripMarkdownCodeFence(String raw) {
         String cleaned = raw == null ? "" : raw.trim();
         if (cleaned.startsWith("```") && cleaned.endsWith("```")) {
@@ -145,16 +189,35 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
         return cleaned;
     }
 
+    /**
+     * 构造内部路由问题文本。
+     *
+     * @param question 当前问题或子问题
+     * @param memoryContext 会话记忆上下文
+     * @return 拼入上下文后的路由文本
+     */
     private String buildRoutingQuestion(String question, ConversationMemoryContext memoryContext) {
         return "Conversation context: " + memoryContext.routingHistoryText() + " || Current question: " + question;
     }
 
+    /**
+     * 把字符串列表格式化成接近 JSON 数组的展示文本。
+     *
+     * @param values 待格式化的字符串列表
+     * @return 便于模型理解的数组文本
+     */
     private String toJsonLikeList(List<String> values) {
         List<String> safeValues = values == null ? List.of() : values;
         List<String> quoted = safeValues.stream().map(value -> '"' + value + '"').toList();
         return '[' + String.join(", ", quoted) + ']';
     }
 
+    /**
+     * 模型改写解析结果。
+     *
+     * @param rewrite 模型给出的主改写问题
+     * @param subQuestions 模型给出的子问题列表
+     */
     private record ParsedRewrite(String rewrite, List<String> subQuestions) {
     }
 }

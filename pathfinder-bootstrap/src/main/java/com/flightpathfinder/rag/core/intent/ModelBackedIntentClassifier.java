@@ -12,19 +12,35 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * Model-backed intent classifier with rule-based fallback.
+ * 基于模型的意图分类器。
+ *
+ * <p>它在规则分类器基础上增加模型判别能力，但仍保留规则结果作为兜底与融合基线，
+ * 这样即使模型结果为空或格式异常，也不会破坏第一阶段稳定性。</p>
  */
 @Service
 @Primary
 public class ModelBackedIntentClassifier implements IntentClassifier {
 
+    /** 模型结果最多保留的候选数量。 */
     private static final int MAX_RESULTS = 5;
 
+    /** 规则分类器兜底实现。 */
     private final RuleBasedIntentClassifier fallbackIntentClassifier;
+    /** 当前启用的意图树，用于把模型返回的 id 映射回节点对象。 */
     private final IntentTree intentTree;
+    /** 模型调用入口。 */
     private final ChatService chatService;
+    /** JSON 解析器。 */
     private final ObjectMapper objectMapper;
 
+    /**
+     * 构造模型增强版分类器。
+     *
+     * @param fallbackIntentClassifier 规则兜底分类器
+     * @param intentTree 当前意图树
+     * @param chatService 模型对话服务
+     * @param objectMapper JSON 解析器
+     */
     public ModelBackedIntentClassifier(RuleBasedIntentClassifier fallbackIntentClassifier,
                                        IntentTree intentTree,
                                        ChatService chatService,
@@ -35,6 +51,12 @@ public class ModelBackedIntentClassifier implements IntentClassifier {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * 先拿到规则分类结果，再尝试使用模型进一步排序和增强。
+     *
+     * @param question 待分类的问题文本
+     * @return 融合后的候选意图列表
+     */
     @Override
     public List<IntentNodeScore> classifyTargets(String question) {
         List<IntentNodeScore> fallback = fallbackIntentClassifier.classifyTargets(question);
@@ -62,6 +84,11 @@ public class ModelBackedIntentClassifier implements IntentClassifier {
         }
     }
 
+    /**
+     * 构造模型分类提示词。
+     *
+     * @return 包含意图树说明和输出格式约束的系统提示词
+     */
     private String buildSystemPrompt() {
         StringBuilder builder = new StringBuilder();
         builder.append("You classify one travel question into candidate intents for Flight Pathfinder. ")
@@ -84,6 +111,13 @@ public class ModelBackedIntentClassifier implements IntentClassifier {
         return builder.toString();
     }
 
+    /**
+     * 解析模型返回的候选列表。
+     *
+     * @param raw 模型原始输出
+     * @return 解析后的候选意图列表
+     * @throws Exception 当输出格式非法时抛出异常
+     */
     private List<IntentNodeScore> parseScores(String raw) throws Exception {
         String cleaned = stripMarkdownCodeFence(raw);
         JsonNode root = objectMapper.readTree(cleaned);
@@ -113,6 +147,15 @@ public class ModelBackedIntentClassifier implements IntentClassifier {
         return List.copyOf(scores.values());
     }
 
+    /**
+     * 融合模型分数与规则分数。
+     *
+     * <p>当前策略让模型权重更高，但保留一部分规则基线，避免模型偶发漂移导致结果完全失真。</p>
+     *
+     * @param modelScores 模型分数
+     * @param fallback 规则分数
+     * @return 融合后的候选列表
+     */
     private List<IntentNodeScore> mergeScores(List<IntentNodeScore> modelScores, List<IntentNodeScore> fallback) {
         Map<String, IntentNodeScore> merged = new LinkedHashMap<>();
         for (IntentNodeScore fallbackScore : fallback) {
@@ -129,6 +172,12 @@ public class ModelBackedIntentClassifier implements IntentClassifier {
                 .toList();
     }
 
+    /**
+     * 去掉模型返回内容可能携带的 Markdown 代码块包裹。
+     *
+     * @param raw 模型原始输出
+     * @return 可供 JSON 解析的纯文本
+     */
     private String stripMarkdownCodeFence(String raw) {
         String cleaned = raw == null ? "" : raw.trim();
         if (cleaned.startsWith("```") && cleaned.endsWith("```")) {

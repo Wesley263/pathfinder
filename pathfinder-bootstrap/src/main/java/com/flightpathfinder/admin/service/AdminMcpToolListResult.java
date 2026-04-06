@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.util.List;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminMcpToolListResult(
         String status,
         String message,
@@ -17,3 +20,4 @@ public record AdminMcpToolListResult(
         tools = List.copyOf(tools == null ? List.of() : tools);
     }
 }
+

@@ -14,10 +14,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
- * Default query service for persisted trace runs.
+ * 持久化 trace 运行记录的默认查询服务。
  *
- * <p>This service rebuilds audit-friendly detail views from run, node and tool repositories. It intentionally
- * does not depend on request-scoped trace context, which keeps read queries independent from live requests.
+ * <p>该服务从 run/node/tool 仓储重建面向审计的详情视图。
+ * 它有意不依赖请求作用域 trace 上下文，保证读查询独立于在线请求执行。
  */
 @Service
 public class DefaultRagTraceQueryService implements RagTraceQueryService {
@@ -38,10 +38,10 @@ public class DefaultRagTraceQueryService implements RagTraceQueryService {
     }
 
     /**
-     * Loads a detailed persisted trace view for the given trace id.
+     * 加载指定 traceId 的持久化详情视图。
      *
-     * @param traceId unique trace identifier
-     * @return detailed trace result when the trace exists
+     * @param traceId 唯一 trace 标识
+     * @return trace 存在时返回详情结果
      */
     @Override
     public Optional<RagTraceDetailResult> findDetail(String traceId) {
@@ -59,19 +59,19 @@ public class DefaultRagTraceQueryService implements RagTraceQueryService {
                     List<RagTraceNodeDetail> stages = nodes.stream()
                             .filter(node -> "STAGE".equals(node.nodeType()))
                             .toList();
-                    // The detail view keeps both "stages" and "all nodes" so admin callers can show a clean
-                    // top-level timeline without losing internal nodes such as MCP execution summaries.
+                    // 详情视图同时保留“阶段节点”和“全部节点”，
+                    // 便于管理侧展示清晰主时间线，同时不丢失 MCP 执行摘要等内部节点。
                     return new RagTraceDetailResult(toRunSummary(runRecord), stages, nodes, tools);
                 });
     }
 
     /**
-     * Lists recent trace runs filtered by request or conversation identifiers.
+     * 按请求或会话标识过滤并列出近期 trace 运行记录。
      *
-     * @param requestId optional request id filter
-     * @param conversationId optional conversation id filter
-     * @param limit maximum number of trace runs to return
-     * @return recent trace run summaries
+     * @param requestId 可选请求标识过滤
+     * @param conversationId 可选会话标识过滤
+     * @param limit 最大返回条数
+     * @return 近期 trace 运行摘要
      */
     @Override
     public List<RagTraceRunSummary> listRuns(String requestId, String conversationId, int limit) {
@@ -120,7 +120,7 @@ public class DefaultRagTraceQueryService implements RagTraceQueryService {
                     new TypeReference<Map<String, Object>>() {
                     });
         } catch (Exception exception) {
-            // Query must remain resilient even when historical attribute JSON cannot be parsed perfectly.
+            // 即使历史属性 JSON 解析不完整，查询链路也必须保持韧性。
             return Map.of("rawAttributes", attributesJson == null ? "" : attributesJson);
         }
     }

@@ -20,27 +20,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Read-only trace controller for already-recorded RAG executions.
+ * 已落库 RAG trace 的只读查询控制器。
  *
- * <p>This controller exposes persisted/queryable trace data and does not own trace recording.
- * Recording stays in the orchestration layer so query APIs cannot accidentally become part of
- * the live request lifecycle.</p>
+ * <p>它只暴露 trace 查询视图，不参与 trace 记录流程。记录链路仍在应用编排层，
+ * 这样查询接口不会意外反向耦合进实时主链。</p>
  */
 @RestController
 @RequestMapping("/api/rag/traces")
 public class RagTraceController {
 
+    /** trace 查询服务。 */
     private final RagTraceQueryService ragTraceQueryService;
 
+    /**
+     * 构造 trace 查询控制器。
+     *
+     * @param ragTraceQueryService trace 查询服务
+     */
     public RagTraceController(RagTraceQueryService ragTraceQueryService) {
         this.ragTraceQueryService = ragTraceQueryService;
     }
 
     /**
-     * Returns one trace detail view by trace id.
+     * 按 traceId 查询单条 trace 详情。
      *
-     * @param traceId persisted trace id
-     * @return detailed trace payload for audit and troubleshooting
+     * @param traceId 已持久化的 trace 标识
+     * @return 适用于审计和排障的 trace 详情响应
      */
     @GetMapping("/{traceId}")
     public Result<RagTraceDetailVO> detail(@PathVariable String traceId) {
@@ -50,12 +55,12 @@ public class RagTraceController {
     }
 
     /**
-     * Lists recent traces for a request id or conversation id filter.
+     * 按 requestId 或 conversationId 条件列出最近 trace。
      *
-     * @param requestId optional request id filter
-     * @param conversationId optional conversation id filter
-     * @param limit max number of rows to return
-     * @return recent trace runs matching the supplied filters
+     * @param requestId 可选请求标识过滤条件
+     * @param conversationId 可选会话标识过滤条件
+     * @param limit 返回条数上限
+     * @return 符合过滤条件的 trace 运行摘要列表
      */
     @GetMapping
     public Result<List<RagTraceRunVO>> list(@RequestParam(required = false) String requestId,
@@ -67,6 +72,12 @@ public class RagTraceController {
                 .toList());
     }
 
+    /**
+     * 把 trace 详情结果转换为展示对象。
+     *
+     * @param detailResult trace 详情结果
+     * @return 展示对象
+     */
     private RagTraceDetailVO toDetail(RagTraceDetailResult detailResult) {
         return new RagTraceDetailVO(
                 toRun(detailResult.run()),
@@ -81,6 +92,12 @@ public class RagTraceController {
                         .toList());
     }
 
+    /**
+     * 把 trace 运行摘要转换为展示对象。
+     *
+     * @param runSummary trace 运行摘要
+     * @return 展示对象
+     */
     private RagTraceRunVO toRun(RagTraceRunSummary runSummary) {
         return new RagTraceRunVO(
                 runSummary.traceId(),
@@ -95,6 +112,12 @@ public class RagTraceController {
                 runSummary.toolCount());
     }
 
+    /**
+     * 把 trace 节点详情转换为展示对象。
+     *
+     * @param nodeDetail trace 节点详情
+     * @return 展示对象
+     */
     private RagTraceNodeVO toNode(RagTraceNodeDetail nodeDetail) {
         return new RagTraceNodeVO(
                 nodeDetail.nodeName(),

@@ -5,35 +5,35 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repository for conversation-level memory metadata.
+ * 会话级记忆元数据仓储接口。
  *
- * <p>This repository only manages conversation headers and counters. Individual messages and summaries live in
- * separate repositories so each layer can evolve independently.
+ * <p>该仓储仅管理会话头与计数信息。
+ * 消息明细与摘要分属独立仓储，以便各层能力独立演进。
  */
 public interface ConversationMemoryConversationRepository {
 
     /**
-     * Finds one conversation header by id.
+     * 按会话标识查询单条会话头信息。
      *
-     * @param conversationId stable conversation identifier
-     * @return conversation metadata when present
+     * @param conversationId 稳定会话标识
+     * @return 命中时返回会话元数据
      */
     Optional<ConversationMemoryConversation> findByConversationId(String conversationId);
 
     /**
-     * Lists recent conversations for admin and lookup use cases.
+     * 查询近期会话列表，供管理与检索场景使用。
      *
-     * @param conversationId optional exact filter; blank means "list recent conversations"
-     * @param limit maximum number of rows to return
-     * @return recent conversation headers sorted by update time
+     * @param conversationId 可选精确过滤；为空表示“列出近期会话”
+     * @param limit 最大返回条数
+     * @return 按更新时间排序的近期会话头列表
      */
     List<ConversationMemoryConversation> findRecent(String conversationId, int limit);
 
     /**
-     * Upserts the conversation header after a completed turn is written.
+     * 在写入完成轮次后更新或插入会话头。
      *
-     * @param conversationId stable conversation identifier
-     * @param requestId request id associated with the latest completed turn
+     * @param conversationId 稳定会话标识
+     * @param requestId 与最新完成轮次关联的请求标识
      */
     void upsertAfterTurn(String conversationId, String requestId);
 }

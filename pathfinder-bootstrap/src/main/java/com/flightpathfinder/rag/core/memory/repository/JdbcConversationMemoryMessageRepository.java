@@ -11,10 +11,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * JDBC repository for raw conversation message rows.
+ * 原始会话消息行的 JDBC 仓储实现。
  *
- * <p>One logical turn is written as two rows so user text, rewritten question and assistant answer remain
- * independently auditable.
+ * <p>一轮逻辑对话会写成两条记录，
+ * 以保持用户文本、改写问题与助手回答可独立审计。
  */
 @Repository
 public class JdbcConversationMemoryMessageRepository implements ConversationMemoryMessageRepository {
@@ -55,12 +55,12 @@ public class JdbcConversationMemoryMessageRepository implements ConversationMemo
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    /**
-     * Persists a completed turn as one USER row and one ASSISTANT row.
-     *
-     * @param conversationId stable conversation identifier
-     * @param turn completed turn to persist
-     */
+        /**
+         * 将一轮完成对话持久化为 USER 与 ASSISTANT 两条记录。
+         *
+         * @param conversationId 稳定会话标识
+         * @param turn 待持久化的完成轮次
+         */
     @Override
     public void saveTurn(String conversationId, ConversationMemoryTurn turn) {
         Timestamp createdAt = Timestamp.from(turn.createdAt());
@@ -92,13 +92,13 @@ public class JdbcConversationMemoryMessageRepository implements ConversationMemo
                 ));
     }
 
-    /**
-     * Loads recent message rows for a conversation.
-     *
-     * @param conversationId stable conversation identifier
-     * @param limit maximum number of message rows to return
-     * @return recent rows reordered oldest-to-newest for turn assembly
-     */
+        /**
+         * 加载会话近期消息记录。
+         *
+         * @param conversationId 稳定会话标识
+         * @param limit 最大返回消息行数
+         * @return 按“由旧到新”重排后的近期记录，便于轮次组装
+         */
     @Override
     public List<ConversationMemoryMessageRecord> findRecentByConversationId(String conversationId, int limit) {
         List<ConversationMemoryMessageRecord> rows = jdbcTemplate.query(
@@ -106,16 +106,16 @@ public class JdbcConversationMemoryMessageRepository implements ConversationMemo
                 new MessageRowMapper(),
                 conversationId,
                 Math.max(1, limit));
-        // SQL fetches newest-first for index efficiency; the assembler expects chronological order.
+                // 查询语句为索引效率按“新到旧”拉取；组装器需要时间正序，因此这里反转。
         return rows.reversed();
     }
 
-    /**
-     * Loads the full message history for a conversation.
-     *
-     * @param conversationId stable conversation identifier
-     * @return full chronological message history
-     */
+        /**
+         * 加载会话完整消息历史。
+         *
+         * @param conversationId 稳定会话标识
+         * @return 完整时间序消息历史
+         */
     @Override
     public List<ConversationMemoryMessageRecord> findAllByConversationId(String conversationId) {
         return jdbcTemplate.query(SELECT_ALL_SQL, new MessageRowMapper(), conversationId);

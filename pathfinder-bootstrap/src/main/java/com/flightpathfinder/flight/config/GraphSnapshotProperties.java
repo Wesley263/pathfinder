@@ -1,8 +1,11 @@
-package com.flightpathfinder.flight.config;
+﻿package com.flightpathfinder.flight.config;
 
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshotRedisKeys;
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+/**
+ * 航班功能配置模型。
+ */
 
 @ConfigurationProperties(prefix = "pathfinder.flight.graph.snapshot")
 public class GraphSnapshotProperties {
@@ -26,3 +29,4 @@ public class GraphSnapshotProperties {
         this.ttl = ttl;
     }
 }
+

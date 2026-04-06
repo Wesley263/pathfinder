@@ -3,18 +3,18 @@ package com.flightpathfinder.rag.core.intent;
 import com.flightpathfinder.rag.core.rewrite.RewriteResult;
 
 /**
- * Resolves rewritten questions into merged routing decisions.
+ * 改写结果到最终分流结果的解析边界。
  *
- * <p>The resolver sits above the classifier because it sees all rewritten sub-questions and
- * owns the final KB/MCP/SYSTEM split semantics for downstream retrieval.</p>
+ * <p>resolver 位于 classifier 之上，因为只有它能同时看到所有子问题的分类结果，
+ * 并对外给出统一的 KB/MCP/SYSTEM 分流语义。</p>
  */
 public interface IntentResolver {
 
     /**
-     * Resolves rewrite output into scored sub-question intents and merged split results.
+     * 把改写结果解析成完整的意图视图。
      *
-     * @param rewriteResult rewrite output from stage one
-     * @return merged intent resolution used by retrieval
+     * @param rewriteResult 第一阶段改写输出
+     * @return 包含子问题级打分和汇总分流结果的解析对象
      */
     IntentResolution resolve(RewriteResult rewriteResult);
 }

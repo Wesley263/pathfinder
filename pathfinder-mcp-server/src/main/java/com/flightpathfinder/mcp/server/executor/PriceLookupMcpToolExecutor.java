@@ -19,11 +19,10 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * Server-side executor for {@code price.lookup}.
+ * {@code price.lookup} 的服务端执行器。
  *
- * <p>This tool presents price comparison as its own MCP contract even though the server-side implementation
- * reuses direct-flight search internally. Keeping it as a separate executor lets the MCP surface expose its
- * own input syntax and partial-coverage semantics.
+ * <p>虽然服务端实现内部复用了直飞检索能力，价格比价仍作为独立 MCP 契约对外暴露。
+ * 独立执行器可清晰承载其专属输入语法与部分覆盖语义。
  */
 @Component
 public class PriceLookupMcpToolExecutor implements McpToolExecutor {
@@ -38,9 +37,9 @@ public class PriceLookupMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Describes the MCP contract for lowest-price comparison across city pairs.
+     * 描述跨城市对最低价比较的 MCP 契约。
      *
-     * @return descriptor for {@code price.lookup}
+     * @return {@code price.lookup} 的工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -72,11 +71,11 @@ public class PriceLookupMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Executes a multi-pair price lookup.
+     * 执行多城市对价格查询。
      *
-     * @param request MCP request whose arguments must already be structured rather than free text
-     * @return structured result preserving {@code SUCCESS}, {@code PARTIAL_SUCCESS},
-     *     {@code NO_PRICE_FOUND}, or request/execution errors
+     * @param request MCP 请求，参数应为结构化字段而非自由文本
+     * @return 结构化结果，保留 {@code SUCCESS}、{@code PARTIAL_SUCCESS}、
+     *     {@code NO_PRICE_FOUND} 及请求/执行错误状态
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -159,7 +158,7 @@ public class PriceLookupMcpToolExecutor implements McpToolExecutor {
                 continue;
             }
             PriceLookupCityPair cityPair = new PriceLookupCityPair(tokens[0], tokens[1]);
-            // Deduping at the protocol edge keeps the downstream comparison result stable and easy to audit.
+            // 在协议边界去重，可让下游比价结果保持稳定且便于审计。
             if (!pairs.contains(cityPair)) {
                 pairs.add(cityPair);
             }

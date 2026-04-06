@@ -1,5 +1,8 @@
-package com.flightpathfinder.admin.controller.request;
+﻿package com.flightpathfinder.admin.controller.request;
 
+/**
+ * 管理端请求参数模型。
+ */
 public class AdminTraceListRequest {
 
     private String requestId;
@@ -30,3 +33,4 @@ public class AdminTraceListRequest {
         this.limit = limit;
     }
 }
+

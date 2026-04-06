@@ -1,21 +1,21 @@
-package com.flightpathfinder.rag.core.answer;
+﻿package com.flightpathfinder.rag.core.answer;
 
 import com.flightpathfinder.rag.core.retrieve.RetrievalResult;
 
 /**
- * Assembles answer-generation input from retrieval output.
+ * 最终回答输入装配边界。
  *
- * <p>This extra layer keeps evidence gathering and prompt-shape decisions separate from the
- * text composer, which makes the final-answer stage easier to evolve.</p>
+ * <p>它负责把 retrieval 输出整理成统一的回答输入模型，让证据收集和文本生成保持分层，
+ * 后续无论换 prompt 还是换模型，都不必回改 retrieval 逻辑。</p>
  */
 public interface FinalAnswerAssembler {
 
     /**
-     * Converts retrieval output into the normalized prompt/input model used by the final
-     * answer composer.
+     * 把 retrieval 结果转换成回答生成可直接消费的输入模型。
      *
-     * @param retrievalResult retrieval-stage output
-     * @return normalized answer input model
+     * @param retrievalResult retrieval 阶段输出
+     * @return 统一的回答输入模型
      */
     FinalAnswerPromptInput assemble(RetrievalResult retrievalResult);
 }
+

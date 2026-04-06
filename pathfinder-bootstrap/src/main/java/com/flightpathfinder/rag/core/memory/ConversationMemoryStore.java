@@ -1,29 +1,27 @@
 package com.flightpathfinder.rag.core.memory;
 
 /**
- * Persistence-facing abstraction for recent-turn memory data.
+ * 面向持久化层的近期轮次记忆存储抽象。
  *
- * <p>The store owns conversation and message persistence, while summary generation remains a separate concern.
- * This split keeps raw history retrieval simple and lets summary policies evolve without changing write-path
- * storage contracts.
+ * <p>该存储负责会话头与消息明细持久化，摘要生成保持独立关注点。
+ * 这种拆分让原始历史读取保持简单，也使摘要策略可以独立演进而不影响写路径存储契约。
  */
 public interface ConversationMemoryStore {
 
     /**
-     * Loads the latest recent turns for the given conversation.
+     * 加载指定会话的近期轮次快照。
      *
-     * @param conversationId stable conversation identifier
-     * @param recentTurnLimit number of recent turns requested by the caller
-     * @return conversation snapshot containing metadata and recent turns, or an empty snapshot when no history
-     *     exists
+     * @param conversationId 稳定会话标识
+     * @param recentTurnLimit 调用方请求的近期轮次数量
+     * @return 含会话元信息与近期轮次的快照；无历史时返回空快照
      */
     ConversationMemorySnapshot load(String conversationId, int recentTurnLimit);
 
     /**
-     * Appends one completed user/assistant turn to storage.
+     * 追加写入一轮完整的用户/助手对话。
      *
-     * @param conversationId stable conversation identifier
-     * @param turn normalized turn assembled after final answer generation
+     * @param conversationId 稳定会话标识
+     * @param turn 最终答案产出后组装完成的归一化轮次
      */
     void appendTurn(String conversationId, ConversationMemoryTurn turn);
 }

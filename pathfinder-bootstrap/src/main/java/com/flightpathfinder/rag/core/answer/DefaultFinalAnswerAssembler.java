@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.answer;
+﻿package com.flightpathfinder.rag.core.answer;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
 import com.flightpathfinder.rag.core.retrieve.KbContext;
@@ -13,28 +13,32 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * Default assembler for the final-answer stage.
+ * 最终回答阶段的默认输入装配器。
  *
- * <p>This class transforms retrieval output into one normalized input model so the text
- * composer does not need to understand KB records, MCP result payloads, or retrieval status
- * edge cases directly.</p>
+ * <p>它把 retrieval 阶段输出统一收口为 FinalAnswerPromptInput，
+ * 让文本生成器不必直接理解 KB 条目、MCP 返回结构和检索边界状态。</p>
  */
 @Service
 public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
 
+    /** 路径规划工具标识。 */
     private static final String GRAPH_PATH_TOOL_ID = "graph.path.search";
+    /** 航班搜索工具标识。 */
     private static final String FLIGHT_SEARCH_TOOL_ID = "flight.search";
+    /** 价格比较工具标识。 */
     private static final String PRICE_LOOKUP_TOOL_ID = "price.lookup";
+    /** 签证检查工具标识。 */
     private static final String VISA_CHECK_TOOL_ID = "visa.check";
+    /** 城市成本工具标识。 */
     private static final String CITY_COST_TOOL_ID = "city.cost";
+    /** 风险评估工具标识。 */
     private static final String RISK_EVALUATE_TOOL_ID = "risk.evaluate";
 
     /**
-     * Collects answer-ready evidence from retrieval output and marks whether the final answer
-     * should be considered partial or snapshot-miss affected.
+     * 从 retrieval 结果装配 final answer 输入。
      *
-     * @param retrievalResult retrieval-stage output
-     * @return normalized answer input for the text composer
+     * @param retrievalResult retrieval 阶段输出
+     * @return 文本生成器可直接消费的标准输入
      */
     @Override
     public FinalAnswerPromptInput assemble(RetrievalResult retrievalResult) {
@@ -48,8 +52,7 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
         boolean mcpRequested = !stageOneResult.intentSplitResult().mcpIntents().isEmpty();
 
         List<AnswerEvidenceSummary> evidenceSummaries = new ArrayList<>();
-        // KB and MCP evidence are gathered separately first so the final answer can still
-        // explain partial outcomes instead of flattening everything into one generic summary.
+        // 先分别收集 KB 与 MCP 证据，避免把“部分成功”语义混成一个不可解释的总摘要。
         kbContext.items().stream()
                 .limit(4)
                 .map(this::toKbEvidence)
@@ -85,6 +88,12 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
                 !hasKbAnswerMaterial && !hasMcpAnswerMaterial);
     }
 
+    /**
+     * 把 KB 检索条目转换为回答证据摘要。
+     *
+     * @param item KB 检索条目
+     * @return 证据摘要
+     */
     private AnswerEvidenceSummary toKbEvidence(KbRetrievalItem item) {
         return new AnswerEvidenceSummary(
                 "KB",
@@ -94,6 +103,12 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
                 abbreviate(item.content(), 180));
     }
 
+    /**
+     * 把 MCP 执行记录转换为回答证据摘要。
+     *
+     * @param execution MCP 执行记录
+     * @return 证据摘要
+     */
     private AnswerEvidenceSummary toMcpEvidence(McpExecutionRecord execution) {
         String snippet = switch (execution.status()) {
             case "SUCCESS" -> summarizeSuccessfulMcp(execution.toolId(), execution.toolResult());
@@ -118,6 +133,13 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
                 snippet);
     }
 
+    /**
+     * 根据工具类型汇总成功态 MCP 结果。
+     *
+     * @param toolId 工具标识
+     * @param toolResult 工具返回结果
+     * @return 面向回答拼装的摘要文本
+     */
     private String summarizeSuccessfulMcp(String toolId, McpToolCallResult toolResult) {
         return switch (toolId) {
             case GRAPH_PATH_TOOL_ID -> summarizeSuccessfulPath(toolResult);
@@ -130,6 +152,12 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
         };
     }
 
+    /**
+     * 汇总 DATA_NOT_FOUND 状态下的工具结果。
+     *
+     * @param execution MCP 执行记录
+     * @return 状态说明文本
+     */
     private String summarizeDataNotFound(McpExecutionRecord execution) {
         return switch (execution.toolId()) {
             case VISA_CHECK_TOOL_ID -> firstNonBlank(execution.message(),
@@ -143,6 +171,12 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
         };
     }
 
+    /**
+     * 汇总路径规划工具的成功结果。
+     *
+     * @param toolResult 工具返回结果
+     * @return 路径摘要文本
+     */
     @SuppressWarnings("unchecked")
     private String summarizeSuccessfulPath(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -180,6 +214,12 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
                 + ", totalDurationMinutes=" + stringValue(pathMap.get("totalDurationMinutes"));
     }
 
+    /**
+     * 汇总航班搜索工具的成功结果。
+     *
+     * @param toolResult 工具返回结果
+     * @return 航班摘要文本
+     */
     @SuppressWarnings("unchecked")
     private String summarizeSuccessfulFlightSearch(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -208,6 +248,12 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
                 + stringValue(flightMap.get("durationMinutes"));
     }
 
+    /**
+     * 汇总价格比较工具的成功结果。
+     *
+     * @param toolResult 工具返回结果
+     * @return 价格比较摘要文本
+     */
     @SuppressWarnings("unchecked")
     private String summarizeSuccessfulPriceLookup(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -234,6 +280,12 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
         return summary;
     }
 
+    /**
+     * 汇总签证检查工具的成功结果。
+     *
+     * @param toolResult 工具返回结果
+     * @return 签证结果摘要文本
+     */
     @SuppressWarnings("unchecked")
     private String summarizeSuccessfulVisaCheck(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -256,6 +308,12 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
                 + String.join(", ", summaries);
     }
 
+    /**
+     * 汇总城市成本工具的成功结果。
+     *
+     * @param toolResult 工具返回结果
+     * @return 城市成本摘要文本
+     */
     @SuppressWarnings("unchecked")
     private String summarizeSuccessfulCityCost(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -283,6 +341,12 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
         return summary;
     }
 
+    /**
+     * 汇总风险评估工具的成功结果。
+     *
+     * @param toolResult 工具返回结果
+     * @return 风险评估摘要文本
+     */
     private String summarizeSuccessfulRiskEvaluate(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
             return "Risk evaluation completed, but no structured result was returned.";
@@ -299,6 +363,13 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
                 + stringValue(toolResult.structuredContent().get("suggestedBufferHours"));
     }
 
+    /**
+     * 对长文本做安全截断。
+     *
+     * @param text 原始文本
+     * @param maxLength 最大长度
+     * @return 截断后的文本
+     */
     private String abbreviate(String text, int maxLength) {
         if (text == null) {
             return "";
@@ -310,10 +381,22 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
         return trimmed.substring(0, Math.max(0, maxLength - 3)) + "...";
     }
 
+    /**
+     * 把任意对象转换为去空白字符串。
+     *
+     * @param value 原始值
+     * @return 字符串值
+     */
     private String stringValue(Object value) {
         return value == null ? "" : String.valueOf(value).trim();
     }
 
+    /**
+     * 返回首个非空白文本。
+     *
+     * @param values 候选文本
+     * @return 首个非空白值；若都为空则返回空字符串
+     */
     private String firstNonBlank(String... values) {
         for (String value : values) {
             if (value != null && !value.isBlank()) {
@@ -323,3 +406,4 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
         return "";
     }
 }
+

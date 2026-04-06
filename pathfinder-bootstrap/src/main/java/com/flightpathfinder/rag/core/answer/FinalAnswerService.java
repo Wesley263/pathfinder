@@ -1,20 +1,20 @@
-package com.flightpathfinder.rag.core.answer;
+﻿package com.flightpathfinder.rag.core.answer;
 
 import com.flightpathfinder.rag.core.retrieve.RetrievalResult;
 
 /**
- * Final-answer stage boundary.
+ * 最终回答阶段边界。
  *
- * <p>This service consumes retrieval output and produces the answer contract for user-facing
- * APIs. It does not own retrieval or request orchestration.</p>
+ * <p>它接收 retrieval 结果并产出用户面回答结果，但不接管 retrieval 或请求级编排。</p>
  */
 public interface FinalAnswerService {
 
     /**
-     * Builds the final answer from retrieval output.
+     * 基于 retrieval 输出生成最终回答。
      *
-     * @param retrievalResult retrieval-stage output containing KB and MCP contexts
-     * @return structured answer result, including partial and empty semantics
+     * @param retrievalResult retrieval 阶段结果，包含 KB 与 MCP 上下文
+     * @return 结构化回答结果，包含 partial 与 empty 语义
      */
     AnswerResult answer(RetrievalResult retrievalResult);
 }
+

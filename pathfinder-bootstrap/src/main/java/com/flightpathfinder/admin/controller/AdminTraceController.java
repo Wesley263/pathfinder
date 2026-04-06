@@ -22,10 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Admin API for persisted trace inspection.
+ * 持久化追踪巡检的管理端 API。
  *
- * <p>This controller exposes management-oriented trace views and keeps them separate from any user-facing
- * response models or request execution endpoints.
+ * <p>该控制器提供面向管理场景的追踪视图，并与用户侧响应模型、请求执行端点保持隔离。
  */
 @RestController
 @RequestMapping("/api/admin/traces")
@@ -38,7 +37,7 @@ public class AdminTraceController {
     }
 
     /**
-     * Loads one trace detail view for admin inspection.
+        * 加载单条追踪详情供管理端巡检。
      *
      * @param traceId unique trace id
      * @return admin-facing trace detail
@@ -51,7 +50,7 @@ public class AdminTraceController {
     }
 
     /**
-     * Lists recent traces filtered by request or conversation identifiers.
+        * 按请求或会话标识过滤并列出最近追踪。
      *
      * @param request list request carrying optional filters and a limit
      * @return admin-facing trace run list

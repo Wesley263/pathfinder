@@ -1,19 +1,36 @@
 package com.flightpathfinder.mcp.graph.search;
 
+/**
+ * 路径候选评分配置。
+ */
 final class GraphPathScoringProfile {
 
+    /** 价格权重。 */
     private final double priceWeight;
+    /** 时长权重。 */
     private final double durationWeight;
+    /** 准点率权重。 */
     private final double reliabilityWeight;
+    /** 中转次数权重。 */
     private final double transferWeight;
+    /** 经停次数权重。 */
     private final double stopWeight;
+    /** 行李权重。 */
     private final double baggageWeight;
+    /** 绕路效率权重。 */
     private final double detourWeight;
+    /** 竞争度权重。 */
     private final double competitionWeight;
+    /** Pareto 层级权重。 */
     private final double paretoLayerWeight;
+    /** 绕路参考比值。 */
     private final double detourReferenceRatio;
+    /** 竞争度参考值。 */
     private final double competitionReference;
 
+    /**
+     * 构造评分配置。
+     */
     private GraphPathScoringProfile(double priceWeight,
                                     double durationWeight,
                                     double reliabilityWeight,
@@ -38,6 +55,11 @@ final class GraphPathScoringProfile {
         this.competitionReference = competitionReference;
     }
 
+    /**
+     * 返回默认评分配置。
+     *
+     * @return 默认配置
+     */
     static GraphPathScoringProfile defaultProfile() {
         return new GraphPathScoringProfile(
                 0.28,
@@ -53,46 +75,57 @@ final class GraphPathScoringProfile {
                 8.0);
     }
 
+    /** @return 价格权重 */
     double priceWeight() {
         return priceWeight;
     }
 
+    /** @return 时长权重 */
     double durationWeight() {
         return durationWeight;
     }
 
+    /** @return 准点率权重 */
     double reliabilityWeight() {
         return reliabilityWeight;
     }
 
+    /** @return 中转次数权重 */
     double transferWeight() {
         return transferWeight;
     }
 
+    /** @return 经停次数权重 */
     double stopWeight() {
         return stopWeight;
     }
 
+    /** @return 行李权重 */
     double baggageWeight() {
         return baggageWeight;
     }
 
+    /** @return 绕路权重 */
     double detourWeight() {
         return detourWeight;
     }
 
+    /** @return 竞争度权重 */
     double competitionWeight() {
         return competitionWeight;
     }
 
+    /** @return Pareto 层级权重 */
     double paretoLayerWeight() {
         return paretoLayerWeight;
     }
 
+    /** @return 绕路参考比值 */
     double detourReferenceRatio() {
         return detourReferenceRatio;
     }
 
+    /** @return 竞争度参考值 */
     double competitionReference() {
         return competitionReference;
     }

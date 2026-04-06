@@ -5,19 +5,18 @@ import com.flightpathfinder.mcp.graph.model.RestoredFlightGraph;
 import java.util.List;
 
 /**
- * Search boundary for restored graph path planning.
+ * 恢复图路径规划搜索边界。
  *
- * <p>The search service operates on the restored in-memory graph only. Snapshot loading and
- * MCP protocol handling stay outside this boundary.</p>
+ * <p>该服务仅对恢复后的内存图执行搜索。快照读取与 MCP 协议处理不在此边界内。</p>
  */
 public interface GraphPathSearchService {
 
     /**
-     * Searches candidate paths on the restored graph.
+     * 在恢复图上搜索候选路径。
      *
-     * @param graph restored graph derived from the published snapshot
-     * @param request path search constraints
-     * @return ranked candidate paths compatible with the current MCP contract
+     * @param graph 由已发布快照恢复的内存图
+     * @param request 路径搜索约束
+     * @return 与当前 MCP 契约兼容的排序候选路径
      */
     List<RestoredCandidatePath> search(RestoredFlightGraph graph, GraphPathSearchRequest request);
 }

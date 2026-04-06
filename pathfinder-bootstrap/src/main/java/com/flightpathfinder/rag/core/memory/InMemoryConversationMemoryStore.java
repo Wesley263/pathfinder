@@ -10,10 +10,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.stereotype.Repository;
 
 /**
- * Minimal in-memory fallback for conversation memory.
+ * 会话记忆的最小内存回退实现。
  *
- * <p>This bean only exists when no persistent store is configured, which keeps local development usable
- * without changing the higher-level memory contract.
+ * <p>该 Bean 仅在未配置持久化存储时生效，
+ * 用于保证本地开发场景在不改变上层记忆契约的前提下仍可运行。
  */
 @Repository
 @ConditionalOnMissingBean(ConversationMemoryStore.class)
@@ -24,11 +24,11 @@ public class InMemoryConversationMemoryStore implements ConversationMemoryStore 
     private final Map<String, Deque<ConversationMemoryTurn>> conversations = new ConcurrentHashMap<>();
 
     /**
-     * Loads recent turns from the in-memory fallback store.
+     * 从内存回退存储中加载近期轮次。
      *
-     * @param conversationId stable conversation identifier
-     * @param recentTurnLimit number of recent turns requested
-     * @return recent-turn snapshot or empty snapshot when no turns are stored
+     * @param conversationId 稳定会话标识
+     * @param recentTurnLimit 请求的近期轮次数量
+     * @return 近期轮次快照；无存储轮次时返回空快照
      */
     @Override
     public ConversationMemorySnapshot load(String conversationId, int recentTurnLimit) {
@@ -47,10 +47,10 @@ public class InMemoryConversationMemoryStore implements ConversationMemoryStore 
     }
 
     /**
-     * Appends one completed turn to the in-memory fallback store.
+     * 向内存回退存储追加一轮完成对话。
      *
-     * @param conversationId stable conversation identifier
-     * @param turn completed turn to store
+     * @param conversationId 稳定会话标识
+     * @param turn 待存储的完成轮次
      */
     @Override
     public void appendTurn(String conversationId, ConversationMemoryTurn turn) {
@@ -60,7 +60,7 @@ public class InMemoryConversationMemoryStore implements ConversationMemoryStore 
         conversations.compute(conversationId, (key, existingTurns) -> {
             Deque<ConversationMemoryTurn> turns = existingTurns == null ? new ArrayDeque<>() : new ArrayDeque<>(existingTurns);
             turns.addLast(turn);
-            // The fallback store is intentionally bounded so local/dev sessions cannot grow unbounded in heap.
+            // 回退存储有意设置上界，避免本地开发会话在堆内无限增长。
             while (turns.size() > MAX_STORED_TURNS) {
                 turns.removeFirst();
             }

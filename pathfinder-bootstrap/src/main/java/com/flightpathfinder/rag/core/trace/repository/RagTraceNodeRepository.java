@@ -3,26 +3,26 @@ package com.flightpathfinder.rag.core.trace.repository;
 import java.util.List;
 
 /**
- * Repository for persisted trace nodes.
+ * 持久化 trace 节点仓储接口。
  *
- * <p>Nodes are stored separately from run headers so stage-level and internal execution breadcrumbs can be
- * queried without bloating the run table.
+ * <p>节点与运行头分离存储，
+ * 使阶段级与内部执行 breadcrumb 可独立查询，避免 run 表膨胀。
  */
 public interface RagTraceNodeRepository {
 
     /**
-     * Replaces all persisted nodes for the given trace id.
+     * 替换指定 traceId 的全部持久化节点。
      *
-     * @param traceId unique trace identifier
-     * @param records fully materialized node records for the trace
+     * @param traceId 唯一 trace 标识
+     * @param records 该 trace 的完整节点记录集
      */
     void replaceForTrace(String traceId, List<PersistedRagTraceNodeRecord> records);
 
     /**
-     * Loads all persisted nodes for one trace.
+     * 加载单个 trace 的全部持久化节点。
      *
-     * @param traceId unique trace identifier
-     * @return persisted node records ordered by node index
+     * @param traceId 唯一 trace 标识
+     * @return 按节点序号排序的节点记录
      */
     List<PersistedRagTraceNodeRecord> findByTraceId(String traceId);
 }

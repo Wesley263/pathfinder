@@ -10,21 +10,40 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * Model-backed answer composer with deterministic fallback.
+ * 模型增强版 final answer 文本生成器。
+ *
+ * <p>它在确定性文本生成器之上增加模型润色能力，但仍保留稳定 fallback，
+ * 避免模型不可用时影响主链可用性。</p>
  */
 @Service
 @Primary
 public class ModelBackedFinalAnswerTextComposer implements FinalAnswerTextComposer {
 
+    /** 确定性文本生成器，作为兜底实现。 */
     private final DefaultFinalAnswerTextComposer deterministicComposer;
+    /** 模型调用入口。 */
     private final ChatService chatService;
 
+    /**
+     * 构造模型增强版文本生成器。
+     *
+     * @param deterministicComposer 确定性兜底生成器
+     * @param chatService 模型调用服务
+     */
     public ModelBackedFinalAnswerTextComposer(DefaultFinalAnswerTextComposer deterministicComposer,
                                               ChatService chatService) {
         this.deterministicComposer = deterministicComposer;
         this.chatService = chatService;
     }
 
+    /**
+     * 生成最终回答文本。
+     *
+     * <p>优先尝试模型生成；若模型不可用、占位返回或空响应，则回退到确定性结果。</p>
+     *
+     * @param promptInput 回答输入
+     * @return 最终回答文本
+     */
     @Override
     public String compose(FinalAnswerPromptInput promptInput) {
         String fallbackText = deterministicComposer.compose(promptInput);
@@ -47,6 +66,13 @@ public class ModelBackedFinalAnswerTextComposer implements FinalAnswerTextCompos
         return response.content().trim();
     }
 
+    /**
+     * 构造提交给模型的用户提示词。
+     *
+     * @param promptInput 回答输入
+     * @param fallbackText 确定性草稿
+     * @return 用户提示词
+     */
     private String buildUserPrompt(FinalAnswerPromptInput promptInput, String fallbackText) {
         StringBuilder builder = new StringBuilder();
         builder.append("Question:\n").append(promptInput.rewrittenQuestion()).append("\n\n");

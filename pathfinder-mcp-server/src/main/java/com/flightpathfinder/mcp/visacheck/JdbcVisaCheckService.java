@@ -13,10 +13,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * JDBC-backed implementation of {@link VisaCheckService}.
+ * {@link VisaCheckService} 的 JDBC 实现。
  *
- * <p>This service keeps visa-policy lookup and rule interpretation inside {@code pathfinder-mcp-server} so
- * {@code visa.check} can stay an independent owner tool backed by server-local data.
+ * <p>该服务将签证政策查询与规则解释保留在 {@code pathfinder-mcp-server} 内，
+ * 使 {@code visa.check} 作为由服务端本地数据支撑的独立工具能力。
  */
 @Service
 public class JdbcVisaCheckService implements VisaCheckService {
@@ -44,10 +44,10 @@ public class JdbcVisaCheckService implements VisaCheckService {
     }
 
     /**
-     * Evaluates visa policy outcomes for all requested destination countries.
+     * 为所有请求目的地国家评估签证政策结果。
      *
-     * @param query normalized visa-check request
-     * @return per-country visa outcomes including structured missing-data items
+     * @param query 归一化签证核验请求
+     * @return 按国家返回签证结果，包含结构化数据缺失项
      */
     @Override
     public VisaCheckResult check(VisaCheckQuery query) {
@@ -72,8 +72,8 @@ public class JdbcVisaCheckService implements VisaCheckService {
         String notes = policyRow.notes();
 
         if ("NO".equalsIgnoreCase(policyRow.visaRequired())) {
-            // Visa-free entry is still bounded by the configured stay limit, so extended stays downgrade to
-            // REQUIRED instead of silently reporting VISA_FREE.
+            // 免签入境仍受配置停留时长上限约束；
+            // 超限场景应降级为 REQUIRED，而不是静默返回 VISA_FREE。
             if (maxStayDays > 0 && query.stayDays() > maxStayDays) {
                 return new VisaCheckItem(
                         countryCode,
@@ -97,8 +97,8 @@ public class JdbcVisaCheckService implements VisaCheckService {
         if (transitRule.transitWithoutVisa()) {
             int requestedHours = query.stayDays() * 24;
             Integer maxTransitHours = transitRule.durationLimitHours();
-            // Transit-free treatment is intentionally modeled separately from visa-free entry because the user
-            // may only qualify within a short stopover window.
+            // 过境免签与入境免签有意分开建模，
+            // 因为用户可能只在短时中转窗口内满足条件。
             if (maxTransitHours == null || requestedHours <= maxTransitHours) {
                 return new VisaCheckItem(
                         countryCode,
@@ -156,8 +156,8 @@ public class JdbcVisaCheckService implements VisaCheckService {
                     : null;
             return new TransitRule(transitWithoutVisa, durationLimitHours);
         } catch (Exception exception) {
-            // A malformed transit JSON blob should not take the whole tool down. Falling back to permissive
-            // transit metadata keeps the tool returning a business result instead of an infrastructure error.
+            // 过境规则 JSON 异常不应拖垮整工具。
+            // 回退为宽松过境元数据，可保持返回业务结果而非基础设施错误。
             return new TransitRule(true, null);
         }
     }

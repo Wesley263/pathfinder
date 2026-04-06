@@ -1,8 +1,10 @@
-package com.flightpathfinder.framework.convention;
+﻿package com.flightpathfinder.framework.convention;
 
 import java.io.Serial;
 import java.io.Serializable;
-
+/**
+ * 统一返回约定模型。
+ */
 public class Result<T> implements Serializable {
 
     @Serial
@@ -42,3 +44,4 @@ public class Result<T> implements Serializable {
         return SUCCESS_CODE.equals(code);
     }
 }
+

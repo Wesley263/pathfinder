@@ -1,17 +1,17 @@
 package com.flightpathfinder.rag.core.trace;
 
 /**
- * Persistence-facing write service for finalized traces.
+ * 面向持久化层的最终 trace 写服务。
  *
- * <p>Write concerns are split from query concerns so the request path can record traces without also owning
- * admin-style read models or list queries.
+ * <p>写入关注点与查询关注点分离，
+ * 使请求链路只负责记录 trace 事实，不承担管理侧读模型与列表查询职责。
  */
 public interface RagTraceRecordService {
 
     /**
-     * Persists the finalized trace result.
+     * 持久化单次请求的最终 trace 结果。
      *
-     * @param traceResult completed trace result for one request
+     * @param traceResult 已完成收尾的 trace 结果
      */
     void persist(RagTraceResult traceResult);
 }

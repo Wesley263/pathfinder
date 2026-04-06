@@ -31,10 +31,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * Default admin-assisted diagnostics service.
+ * 管理端辅助诊断服务默认实现。
  *
- * <p>This service keeps direct verification flows on the admin surface. Operators can run raw MCP-backed or
- * JDBC-backed checks without conflating them with user-facing search APIs.
+ * <p>该服务将直接核验流程保留在管理端能力面，
+ * 支持 MCP 或 JDBC 级别的原生检查，避免与用户侧搜索 API 混用。
  */
 @Service
 public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
@@ -87,7 +87,7 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
     }
 
     /**
-     * Runs a direct flight diagnostic against the current MCP catalog.
+        * 基于当前 MCP 目录执行直飞诊断。
      *
      * @param query structured diagnostic query
      * @return admin-facing diagnostic result
@@ -149,7 +149,7 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
     }
 
     /**
-     * Runs a direct graph-path diagnostic against the current MCP catalog.
+        * 基于当前 MCP 目录执行图路径诊断。
      *
      * @param query structured diagnostic query
      * @return admin-facing path diagnostic result
@@ -225,7 +225,7 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
     }
 
     /**
-     * Looks up one airport directly from the imported operational dataset.
+        * 直接从已导入运维数据集中查询单个机场。
      *
      * @param iataCode airport IATA code to inspect
      * @return admin-facing airport lookup result
@@ -260,8 +260,7 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
         boolean presentInCurrentSnapshot = currentSnapshot.stream()
                 .flatMap(snapshot -> snapshot.nodes().stream())
                 .anyMatch(node -> normalizedIataCode.equals(node.airportCode()));
-        // Diagnostics show snapshot presence because operators often need to understand whether an airport is
-        // present in source data only or also in the currently published graph read model.
+        // 诊断结果显式返回快照存在性，便于判断机场仅存在于源数据还是已进入当前发布图读模型。
         String currentSnapshotStatus = currentSnapshot.isPresent() ? "READY" : "SNAPSHOT_MISS";
         String currentSnapshotVersion = currentSnapshot.map(GraphSnapshot::snapshotVersion).orElse("");
         Instant observedAt = Instant.now();
@@ -299,8 +298,7 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
         if (localDescriptor.isPresent()) {
             return localDescriptor;
         }
-        // Diagnostics prefer a fresh catalog view, but they still fall back to the local registry so operators
-        // can inspect the last-known state even if discovery is temporarily unavailable.
+        // 诊断优先使用新鲜目录视图；若刷新不可用则回退本地注册表，确保仍可查看最近一次可见状态。
         List<McpToolDescriptor> refreshedTools = mcpToolDiscoveryService.refreshToolCatalog();
         return localMcpToolRegistry.findByToolId(toolId)
                 .or(() -> refreshedTools.stream().filter(tool -> toolId.equals(tool.toolId())).findFirst());

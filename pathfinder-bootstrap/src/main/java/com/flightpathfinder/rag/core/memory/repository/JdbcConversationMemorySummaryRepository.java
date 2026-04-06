@@ -11,10 +11,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * JDBC repository for persisted conversation summaries.
+ * 会话摘要持久化的 JDBC 仓储实现。
  *
- * <p>Summary rows are stored independently from raw history so compaction can be refreshed without rewriting
- * the underlying message archive.
+ * <p>摘要记录与原始历史独立存储，
+ * 以便刷新压缩结果时无需改写底层消息档案。
  */
 @Repository
 public class JdbcConversationMemorySummaryRepository implements ConversationMemorySummaryRepository {
@@ -48,10 +48,10 @@ public class JdbcConversationMemorySummaryRepository implements ConversationMemo
     }
 
     /**
-     * Finds the persisted summary for the given conversation.
+     * 查询指定会话的持久化摘要。
      *
-     * @param conversationId stable conversation identifier
-     * @return persisted summary when present
+     * @param conversationId 稳定会话标识
+     * @return 命中时返回摘要
      */
     @Override
     public Optional<ConversationMemorySummary> findByConversationId(String conversationId) {
@@ -61,11 +61,11 @@ public class JdbcConversationMemorySummaryRepository implements ConversationMemo
     }
 
     /**
-     * Inserts or updates the summary row for the conversation.
+     * 为会话插入或更新摘要行。
      *
-     * @param conversationId stable conversation identifier
-     * @param summaryText compacted summary text
-     * @param summarizedTurnCount number of historical turns covered by the summary
+     * @param conversationId 稳定会话标识
+     * @param summaryText 压缩后的摘要文本
+     * @param summarizedTurnCount 摘要已覆盖的历史轮次数
      */
     @Override
     public void upsert(String conversationId, String summaryText, int summarizedTurnCount) {

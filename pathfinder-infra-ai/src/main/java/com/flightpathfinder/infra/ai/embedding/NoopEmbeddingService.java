@@ -1,7 +1,10 @@
-package com.flightpathfinder.infra.ai.embedding;
+﻿package com.flightpathfinder.infra.ai.embedding;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
+/**
+ * 向量生成能力的空实现。
+ */
 
 @Component
 @ConditionalOnMissingBean(EmbeddingService.class)

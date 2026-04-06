@@ -1,5 +1,8 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminTraceToolSummary(
         String toolId,
         String status,
@@ -13,3 +16,4 @@ public record AdminTraceToolSummary(
         message = message == null ? "" : message.trim();
     }
 }
+

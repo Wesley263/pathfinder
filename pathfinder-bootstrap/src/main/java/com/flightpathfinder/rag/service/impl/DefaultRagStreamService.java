@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.service.impl;
+﻿package com.flightpathfinder.rag.service.impl;
 
 import com.flightpathfinder.rag.core.answer.AnswerEvidenceSummary;
 import com.flightpathfinder.rag.core.answer.AnswerResult;
@@ -31,24 +31,40 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 /**
- * Default streaming RAG application orchestrator.
+ * 流式 RAG 请求的默认应用编排器。
  *
- * <p>This service reuses the same mainline stages as the synchronous query path, but it emits
- * stage and answer progress as SSE-friendly events. Memory and trace still stay in the
- * orchestration layer rather than leaking into controllers.</p>
+ * <p>它复用同步链路的主阶段能力，但以事件流形式持续输出阶段进度和回答内容。
+ * 记忆与追踪生命周期仍保持在应用编排层，不下沉到 controller。</p>
  */
 @Service
 public class DefaultRagStreamService implements RagStreamService {
 
+    /** 回答分块输出时的默认 chunk 大小。 */
     private static final int ANSWER_CHUNK_SIZE = 160;
 
+    /** 第一阶段编排器。 */
     private final StageOneRagPipeline stageOneRagPipeline;
+    /** 检索阶段编排器。 */
     private final RetrievalService retrievalService;
+    /** 最终回答阶段服务。 */
     private final FinalAnswerService finalAnswerService;
+    /** 会话记忆服务。 */
     private final ConversationMemoryService conversationMemoryService;
+    /** 追踪生命周期服务。 */
     private final RagTraceService ragTraceService;
+    /** 异步任务执行器，用于在后台推送事件流。 */
     private final TaskExecutor taskExecutor;
 
+    /**
+     * 构造流式请求编排器。
+     *
+     * @param stageOneRagPipeline 第一阶段编排器
+     * @param retrievalService retrieval 阶段服务
+     * @param finalAnswerService final answer 阶段服务
+     * @param conversationMemoryService 会话记忆服务
+     * @param ragTraceService trace 生命周期服务
+     * @param taskExecutorProvider 可选任务执行器提供者
+     */
     public DefaultRagStreamService(StageOneRagPipeline stageOneRagPipeline,
                                    RetrievalService retrievalService,
                                    FinalAnswerService finalAnswerService,
@@ -68,11 +84,10 @@ public class DefaultRagStreamService implements RagStreamService {
     }
 
     /**
-     * Starts the streaming RAG mainline asynchronously and writes progress events through the
-     * provided event writer.
+     * 异步启动流式 RAG 主链并输出事件。
      *
-     * @param command request command derived from the streaming API
-     * @param eventWriter sink for stage, chunk, and completion events
+     * @param command 由流式 API 转换而来的命令
+     * @param eventWriter 阶段事件、chunk 事件和完成事件的输出器
      */
     @Override
     public void stream(RagStreamCommand command, RagStreamEventWriter eventWriter) {
@@ -83,6 +98,12 @@ public class DefaultRagStreamService implements RagStreamService {
         taskExecutor.execute(() -> runStream(safeCommand, safeWriter));
     }
 
+    /**
+     * 在后台线程执行完整流式主链。
+     *
+     * @param command 流式命令
+     * @param eventWriter 事件输出器
+     */
     private void runStream(RagStreamCommand command, RagStreamEventWriter eventWriter) {
         AtomicLong sequence = new AtomicLong(1L);
         RagTraceSession traceSession = ragTraceService.startQueryTrace(command.requestId(), command.conversationId());
@@ -90,8 +111,7 @@ public class DefaultRagStreamService implements RagStreamService {
         String currentStage = "query";
         Instant currentStageStartedAt = Instant.now();
         try {
-            // Streaming keeps the same memory load boundary as the synchronous path so
-            // follow-up handling stays consistent across both entry points.
+            // 流式与同步保持相同的 memory load 边界，确保两类入口的追问处理语义一致。
             ConversationMemoryContext memoryContext = conversationMemoryService.loadContext(command.conversationId());
 
             emit(eventWriter, sequence, "stage_one_started", "stage_one", command, traceId, "STARTED", null, null, "",
@@ -155,8 +175,7 @@ public class DefaultRagStreamService implements RagStreamService {
             AnswerResult answerResult = finalAnswerService.answer(retrievalResult);
             ragTraceService.recordFinalAnswer(traceSession, currentStageStartedAt, answerResult);
 
-            // Memory write is still owned here, not by the SSE controller, so both sync and
-            // stream paths share the same persistence semantics.
+            // 记忆写入仍归应用编排层负责，而不是 SSE controller，以保证同步与流式持久化语义一致。
             conversationMemoryService.appendTurn(new ConversationMemoryWriteRequest(
                     command.conversationId(),
                     command.requestId(),
@@ -173,8 +192,7 @@ public class DefaultRagStreamService implements RagStreamService {
 
             List<String> chunks = splitIntoChunks(answerResult.answerText());
             for (int index = 0; index < chunks.size(); index++) {
-                // The current stream is chunked rather than token-native, but the event shape
-                // already matches the phase boundaries needed by later true token streaming.
+                // 当前是 chunk 流而非 token 原生流，但事件形状已与后续 token 化演进所需阶段边界兼容。
                 emit(eventWriter, sequence, "final_answer_chunk", "final_answer", command, traceId, "STREAMING",
                         answerResult.partial(),
                         answerResult.snapshotMissAffected(),
@@ -220,6 +238,21 @@ public class DefaultRagStreamService implements RagStreamService {
         }
     }
 
+    /**
+     * 发送一条标准化流式事件。
+     *
+     * @param eventWriter 事件输出器
+     * @param sequence 序号计数器
+     * @param event 事件名
+     * @param stage 阶段名
+     * @param command 当前命令
+     * @param traceId trace 标识
+     * @param status 事件状态
+     * @param partial 是否部分结果
+     * @param snapshotMissAffected 是否受 SNAPSHOT_MISS 影响
+     * @param error 错误信息
+     * @param data 事件数据体
+     */
     private void emit(RagStreamEventWriter eventWriter,
                       AtomicLong sequence,
                       String event,
@@ -246,20 +279,44 @@ public class DefaultRagStreamService implements RagStreamService {
                 data));
     }
 
+    /**
+     * 安全发送事件。
+     *
+     * @param eventWriter 事件输出器
+     * @param event 事件对象
+     */
     private void emitSafely(RagStreamEventWriter eventWriter, RagStreamEvent event) {
         eventWriter.emit(event);
     }
 
+    /**
+     * 判断 retrieval 阶段是否应视为部分结果。
+     *
+     * @param retrievalResult retrieval 结果
+     * @return 若出现 snapshot miss 或任一分支错误则返回 true
+     */
     private boolean retrievalPartial(RetrievalResult retrievalResult) {
         return retrievalResult.hasSnapshotMiss()
                 || retrievalResult.kbContext().hasError()
                 || retrievalResult.mcpContext().hasErrors();
     }
 
+    /**
+     * 计算 stage one 阶段状态。
+     *
+     * @param stageOneResult 第一阶段结果
+     * @return SUCCESS 或 EMPTY
+     */
     private String stageOneStatus(StageOneRagResult stageOneResult) {
         return isStageOneCompleted(stageOneResult) ? "SUCCESS" : "EMPTY";
     }
 
+    /**
+     * 判断第一阶段是否产出有效结果。
+     *
+     * @param stageOneResult 第一阶段结果
+     * @return 只要改写文本或任一路意图非空就返回 true
+     */
     private boolean isStageOneCompleted(StageOneRagResult stageOneResult) {
         return !stageOneResult.rewriteResult().rewrittenQuestion().isBlank()
                 || stageOneResult.rewriteResult().subQuestions().stream().anyMatch(question -> question != null && !question.isBlank())
@@ -268,6 +325,12 @@ public class DefaultRagStreamService implements RagStreamService {
                 || !stageOneResult.intentSplitResult().systemIntents().isEmpty();
     }
 
+    /**
+     * 按固定长度把回答文本切分为多个 chunk。
+     *
+     * @param answerText 原始回答文本
+     * @return 过滤空白后的 chunk 列表
+     */
     private List<String> splitIntoChunks(String answerText) {
         String safeText = answerText == null ? "" : answerText.trim();
         if (safeText.isBlank()) {
@@ -294,6 +357,12 @@ public class DefaultRagStreamService implements RagStreamService {
         return chunks.stream().filter(chunk -> !chunk.isBlank()).toList();
     }
 
+    /**
+     * 转换单条 MCP 工具摘要，供事件输出。
+     *
+     * @param execution MCP 执行记录
+     * @return 摘要对象
+     */
     private Map<String, Object> toToolSummary(McpExecutionRecord execution) {
         return orderedMap(
                 "toolId", execution.toolId(),
@@ -302,6 +371,12 @@ public class DefaultRagStreamService implements RagStreamService {
                 "snapshotMiss", execution.snapshotMiss());
     }
 
+    /**
+     * 转换单条回答证据摘要，供事件输出。
+     *
+     * @param evidenceSummary 回答证据摘要
+     * @return 摘要对象
+     */
     private Map<String, Object> toEvidenceSummary(AnswerEvidenceSummary evidenceSummary) {
         return orderedMap(
                 "type", evidenceSummary.type(),
@@ -311,6 +386,12 @@ public class DefaultRagStreamService implements RagStreamService {
                 "snippet", evidenceSummary.snippet());
     }
 
+    /**
+     * 按输入顺序构造不可变 Map。
+     *
+     * @param entries 键值交替参数
+     * @return 保序且不可变的 Map
+     */
     private Map<String, Object> orderedMap(Object... entries) {
         LinkedHashMap<String, Object> values = new LinkedHashMap<>();
         for (int index = 0; index + 1 < entries.length; index += 2) {
@@ -319,6 +400,12 @@ public class DefaultRagStreamService implements RagStreamService {
         return Map.copyOf(values);
     }
 
+    /**
+     * 将内部阶段名映射为对外事件阶段名。
+     *
+     * @param stageName 内部阶段名
+     * @return 事件阶段名
+     */
     private String currentStageName(String stageName) {
         return switch (stageName) {
             case "stage-one" -> "stage_one";
@@ -328,6 +415,12 @@ public class DefaultRagStreamService implements RagStreamService {
         };
     }
 
+    /**
+     * 返回首个非空白文本。
+     *
+     * @param values 候选文本
+     * @return 首个非空白值；若都为空则返回空字符串
+     */
     private String firstNonBlank(String... values) {
         for (String value : values) {
             if (value != null && !value.isBlank()) {
@@ -337,3 +430,4 @@ public class DefaultRagStreamService implements RagStreamService {
         return "";
     }
 }
+

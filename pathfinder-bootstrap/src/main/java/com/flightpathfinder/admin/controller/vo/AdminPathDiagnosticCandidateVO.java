@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.controller.vo;
+﻿package com.flightpathfinder.admin.controller.vo;
 
 import java.util.List;
 
+/**
+ * 管理端响应视图模型。
+ */
 public record AdminPathDiagnosticCandidateVO(
         int segmentCount,
         int transferCount,
@@ -12,3 +15,4 @@ public record AdminPathDiagnosticCandidateVO(
         List<String> hubAirports,
         List<AdminPathDiagnosticLegVO> legs) {
 }
+

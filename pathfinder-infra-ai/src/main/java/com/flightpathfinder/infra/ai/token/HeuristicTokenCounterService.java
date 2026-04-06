@@ -1,6 +1,9 @@
-package com.flightpathfinder.infra.ai.token;
+﻿package com.flightpathfinder.infra.ai.token;
 
 import org.springframework.stereotype.Component;
+/**
+ * 基于启发式规则的 Token 估算实现。
+ */
 
 @Component
 public class HeuristicTokenCounterService implements TokenCounterService {
@@ -13,4 +16,5 @@ public class HeuristicTokenCounterService implements TokenCounterService {
         return Math.max(1, (int) Math.ceil(text.length() / 4.0));
     }
 }
+
 

@@ -1,28 +1,25 @@
 package com.flightpathfinder.rag.core.memory;
 
 /**
- * Application-facing entry point for conversation memory.
+ * 会话记忆能力对应用层暴露的统一入口。
  *
- * <p>This service sits above store and summary components so the RAG orchestrator can load and write
- * conversation context without knowing whether memory is backed by JDBC, in-memory fallbacks, or summary
- * compaction policies.
+ * <p>该服务位于存储组件与摘要组件之上，使 RAG 编排层在加载和写入会话上下文时，
+ * 无需感知底层是 JDBC、内存回退实现，还是摘要压缩策略。
  */
 public interface ConversationMemoryService {
 
     /**
-     * Loads the memory context for the given conversation.
+     * 加载指定会话的记忆上下文。
      *
-     * @param conversationId stable conversation identifier carried by the user-facing API; blank means
-     *     "run without memory"
-     * @return memory context containing recent turns and optional summary; empty context when the id is blank
-     *     or no history exists
+     * @param conversationId 用户侧 API 透传的稳定会话标识；为空表示“不启用记忆”
+     * @return 包含近期轮次与可选摘要的记忆上下文；当标识为空或无历史时返回空上下文
      */
     ConversationMemoryContext loadContext(String conversationId);
 
     /**
-     * Appends the current user/assistant turn into memory storage.
+     * 将当前用户/助手轮次追加写入记忆存储。
      *
-     * @param writeRequest normalized write request for the completed turn
+     * @param writeRequest 已归一化的完成轮次写入请求
      */
     void appendTurn(ConversationMemoryWriteRequest writeRequest);
 }

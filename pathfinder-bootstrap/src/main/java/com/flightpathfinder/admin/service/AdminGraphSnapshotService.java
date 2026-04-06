@@ -1,15 +1,15 @@
 package com.flightpathfinder.admin.service;
 
 /**
- * Admin-facing service for graph snapshot management.
+ * 图快照管理的管理端服务。
  *
- * <p>Snapshot lifecycle is exposed separately from generic data reload because graph rebuild and invalidation
- * are operational concerns with different semantics from ETL import.
+ * <p>图快照生命周期与通用数据重载语义不同，
+ * 因此以独立管理能力暴露。
  */
 public interface AdminGraphSnapshotService {
 
     /**
-     * Loads the currently published snapshot status for a graph key.
+        * 加载指定图键当前已发布的快照状态。
      *
      * @param graphKey logical graph identifier; blank means the default graph
      * @return current snapshot status, including structured miss information when absent
@@ -17,7 +17,7 @@ public interface AdminGraphSnapshotService {
     AdminGraphSnapshotStatus currentSnapshot(String graphKey);
 
     /**
-     * Rebuilds the published graph snapshot for a graph key.
+        * 重建指定图键的已发布图快照。
      *
      * @param graphKey logical graph identifier; blank means the default graph
      * @param reason operator-supplied rebuild reason
@@ -26,7 +26,7 @@ public interface AdminGraphSnapshotService {
     AdminGraphSnapshotStatus rebuild(String graphKey, String reason);
 
     /**
-     * Invalidates the currently published graph snapshot for a graph key.
+        * 失效指定图键当前已发布的图快照。
      *
      * @param graphKey logical graph identifier; blank means the default graph
      * @param reason operator-supplied invalidation reason

@@ -17,10 +17,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
- * Default admin-facing adapter over persisted trace queries.
+ * 持久化追踪查询的管理端适配默认实现。
  *
- * <p>This service translates core trace read models into management-oriented shapes so admin APIs can expose
- * partial/error/snapshot-miss semantics without directly leaking runtime trace models.
+ * <p>该服务将核心追踪读模型转换为管理端形态，
+ * 使管理 API 能表达 partial/error/snapshot-miss 语义而不泄露运行时追踪模型。
  */
 @Service
 public class DefaultAdminTraceService implements AdminTraceService {
@@ -32,7 +32,7 @@ public class DefaultAdminTraceService implements AdminTraceService {
     }
 
     /**
-     * Loads one admin-facing trace detail view.
+        * 加载单条追踪的管理端详情视图。
      *
      * @param traceId unique trace identifier
      * @return admin detail result when the trace exists
@@ -44,7 +44,7 @@ public class DefaultAdminTraceService implements AdminTraceService {
     }
 
     /**
-     * Lists recent traces for admin inspection.
+        * 列出最近追踪供管理端巡检。
      *
      * @param requestId optional request id filter
      * @param conversationId optional conversation id filter
@@ -96,8 +96,7 @@ public class DefaultAdminTraceService implements AdminTraceService {
     private AdminTraceRunSummary toRunSummary(RagTraceRunSummary runSummary,
                                               List<AdminTraceNodeSummary> stages,
                                               List<AdminTraceToolSummary> toolSummaries) {
-        // Admin views surface "partial" and "error" explicitly because operators need to distinguish structured
-        // business incompleteness from outright infrastructure failures.
+        // 管理视图显式暴露 partial 与 error，便于区分业务不完整与基础设施故障。
         boolean partial = stages.stream().anyMatch(AdminTraceNodeSummary::partial);
         boolean errorOccurred = isErrorStatus(runSummary.overallStatus())
                 || stages.stream().anyMatch(stage -> isErrorStatus(stage.status()) || !stage.error().isBlank())

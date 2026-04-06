@@ -8,10 +8,10 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 /**
- * Static capability selector backed by configuration only.
- * <p>
- * Pathfinder 2.0 currently keeps provider selection explicit: chat and embedding each choose
- * one configured provider/model pair instead of performing dynamic multi-model routing.
+ * 仅基于配置的静态能力路由选择器。
+ *
+ * <p>Pathfinder 2.0 当前保持显式 provider 选择：chat 与 embedding 分别绑定
+ * 一个已配置的 provider/model 组合，不执行动态多模型路由。
  */
 @Component
 public class StaticModelRoutingService implements ModelRoutingService {

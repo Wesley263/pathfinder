@@ -2,6 +2,21 @@ package com.flightpathfinder.rag.controller.vo;
 
 import java.util.List;
 
+/**
+ * 同步聊天接口响应体。
+ *
+ * @param question 原始问题
+ * @param rewrittenQuestion 改写后的问题
+ * @param subQuestions 子问题列表
+ * @param answerText 最终回答文本
+ * @param partial 是否是部分回答
+ * @param snapshotMissAffected 是否受到图快照缺失影响
+ * @param audit 审计信息
+ * @param kbIntentIds 命中的 KB intent 标识列表
+ * @param mcpIntentIds 命中的 MCP intent 标识列表
+ * @param systemIntentIds 命中的 SYSTEM intent 标识列表
+ * @param evidenceSummaries 证据摘要列表
+ */
 public record RagChatResponseVO(
         String question,
         String rewrittenQuestion,

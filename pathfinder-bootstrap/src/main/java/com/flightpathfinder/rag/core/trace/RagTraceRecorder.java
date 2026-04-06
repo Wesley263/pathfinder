@@ -6,35 +6,36 @@ import java.time.Instant;
 import java.util.Map;
 
 /**
- * Low-level bridge to framework trace primitives.
+ * 框架 trace 原语的低层桥接接口。
  *
- * <p>This contract hides direct {@link com.flightpathfinder.framework.trace.TraceContext} manipulation from
- * the higher-level trace service so recording and persistence policies can evolve independently.
+ * <p>该契约对上层 trace 服务屏蔽
+ * {@link com.flightpathfinder.framework.trace.TraceContext} 的直接操作，
+ * 使记录策略与持久化策略可独立演进。
  */
 public interface RagTraceRecorder {
 
     /**
-     * Starts a new trace root for the given scene.
+     * 为指定场景启动新的 trace 根节点。
      *
-     * @param scene trace scene name, for example the RAG chat mainline
-     * @return new trace root bound to the current request scope
+     * @param scene trace 场景名，例如 RAG chat 主链
+     * @return 绑定当前请求作用域的新 trace 根节点
      */
     TraceRoot startRoot(String scene);
 
     /**
-     * Appends one trace node to the active trace root.
+     * 向活动 trace 根节点追加一个节点。
      *
-     * @param root active trace root
-     * @param name node name, typically a stage or internal sub-step
-     * @param startedAt node start time
-     * @param finishedAt node finish time
-     * @param attributes structured node attributes
-     * @return appended node
+     * @param root 活动 trace 根节点
+     * @param name 节点名称，通常是阶段名或内部子步骤名
+     * @param startedAt 节点开始时间
+     * @param finishedAt 节点结束时间
+     * @param attributes 结构化节点属性
+     * @return 追加后的节点
      */
     TraceNode appendNode(TraceRoot root, String name, Instant startedAt, Instant finishedAt, Map<String, Object> attributes);
 
     /**
-     * Clears the current request-scoped trace context.
+     * 清理当前请求作用域的 trace 上下文。
      */
     void clear();
 }

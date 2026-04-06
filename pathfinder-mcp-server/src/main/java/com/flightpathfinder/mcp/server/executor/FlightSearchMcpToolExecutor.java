@@ -14,11 +14,10 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
- * Server-side executor for {@code flight.search}.
+ * {@code flight.search} 的服务端执行器。
  *
- * <p>This tool exposes a direct-flight lookup contract over MCP while keeping the actual datasource access
- * inside {@code pathfinder-mcp-server}. The bootstrap application only consumes the tool contract and never
- * shares the underlying search implementation.
+ * <p>该工具通过 MCP 暴露直飞检索契约，同时把真实数据源访问保留在
+ * {@code pathfinder-mcp-server} 内。bootstrap 侧仅消费工具契约，不共享底层检索实现。
  */
 @Component
 public class FlightSearchMcpToolExecutor implements McpToolExecutor {
@@ -32,9 +31,9 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Describes the MCP contract for direct flight search.
+     * 描述直飞查询的 MCP 工具契约。
      *
-     * @return descriptor containing request parameters and result schema for {@code flight.search}
+     * @return {@code flight.search} 的请求参数与结果 schema 描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -68,11 +67,11 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Executes a direct flight lookup against the MCP server datasource.
+     * 基于 MCP 服务端数据源执行直飞检索。
      *
-     * @param request MCP request containing structured airport/date constraints
-     * @return structured search result with {@code SUCCESS}, {@code NO_FLIGHTS_FOUND}, or
-     *     {@code INVALID_REQUEST}/{@code EXECUTION_ERROR}
+     * @param request MCP 请求，包含结构化机场/日期约束
+     * @return 结构化检索结果，状态可能为 {@code SUCCESS}、{@code NO_FLIGHTS_FOUND}，
+     *     或 {@code INVALID_REQUEST}/{@code EXECUTION_ERROR}
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -136,7 +135,7 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
         }
 
         try {
-            // The executor normalizes protocol inputs once so downstream JDBC search can assume a typed query.
+            // 执行器统一做一次协议入参归一化，让下游 JDBC 检索可直接依赖强类型查询对象。
             return new FlightSearchQuery(origin, destination, LocalDate.parse(date), flexibilityDays, topK);
         } catch (DateTimeParseException exception) {
             throw new IllegalArgumentException("date must be in yyyy-MM-dd format");

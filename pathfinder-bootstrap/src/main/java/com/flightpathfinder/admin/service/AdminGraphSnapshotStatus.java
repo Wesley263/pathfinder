@@ -1,8 +1,11 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 import java.util.Map;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminGraphSnapshotStatus(
         String graphKey,
         String status,
@@ -16,3 +19,4 @@ public record AdminGraphSnapshotStatus(
         String reason,
         Map<String, Object> metadata) {
 }
+

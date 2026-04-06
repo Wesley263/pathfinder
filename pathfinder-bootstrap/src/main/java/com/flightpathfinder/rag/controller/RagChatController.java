@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.controller;
+﻿package com.flightpathfinder.rag.controller;
 
 import com.flightpathfinder.framework.context.RequestIdHolder;
 import com.flightpathfinder.framework.convention.Result;
@@ -19,27 +19,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Synchronous user-facing RAG controller.
+ * 同步 user-facing RAG 控制器。
  *
- * <p>This controller only adapts HTTP to the synchronous query service. Memory loading,
- * trace lifecycle, retrieval orchestration, and audit assembly all stay in the service layer
- * so the web layer does not become a hidden orchestrator.</p>
+ * <p>它只负责把 HTTP 请求适配成同步查询服务调用。memory 读取、trace 生命周期、
+ * 检索编排和审计组装都留在 service 层，避免 controller 变成隐藏编排器。</p>
  */
 @RestController
 @RequestMapping("/api/rag")
 public class RagChatController {
 
+    /** 同步主链应用服务。 */
     private final RagQueryService ragQueryService;
 
+    /**
+     * 构造同步聊天控制器。
+     *
+     * @param ragQueryService 同步主链应用服务
+     */
     public RagChatController(RagQueryService ragQueryService) {
         this.ragQueryService = ragQueryService;
     }
 
     /**
-     * Runs the synchronous RAG mainline and returns one complete response payload.
+     * 执行同步 RAG 主链并返回完整响应。
      *
-     * @param request chat request from the user-facing API
-     * @return final answer plus audit data derived from the orchestrated mainline
+     * @param request 用户面对话请求
+     * @return 包含回答正文和审计信息的统一响应
      */
     @PostMapping("/chat")
     public Result<RagChatResponseVO> chat(@Valid @RequestBody RagChatRequest request) {
@@ -50,9 +55,15 @@ public class RagChatController {
         return Results.success(toResponse(request.question(), queryResult));
     }
 
+    /**
+     * 把应用层查询结果转换为接口响应对象。
+     *
+     * @param question 原始问题
+     * @param queryResult 应用层总结果
+     * @return 面向接口返回的响应对象
+     */
     private RagChatResponseVO toResponse(String question, RagQueryResult queryResult) {
-        // Audit and trace summaries are flattened here for response readability, but the
-        // underlying lifecycle is still owned by the orchestration service.
+        // 这里只做展示层扁平化，真正的 memory / trace / retrieval 生命周期仍归应用编排层所有。
         return new RagChatResponseVO(
                 question == null ? "" : question.trim(),
                 queryResult.stageOneResult().rewriteResult().rewrittenQuestion(),
@@ -101,3 +112,4 @@ public class RagChatController {
                         .toList());
     }
 }
+

@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.service.impl;
+﻿package com.flightpathfinder.rag.service.impl;
 
 import com.flightpathfinder.rag.core.answer.AnswerResult;
 import com.flightpathfinder.rag.core.answer.FinalAnswerService;
@@ -20,21 +20,35 @@ import java.time.Instant;
 import org.springframework.stereotype.Service;
 
 /**
- * Default synchronous RAG application orchestrator.
+ * 同步 RAG 请求的默认应用编排器。
  *
- * <p>This class owns the end-to-end request lifecycle: memory load, stage one, retrieval,
- * final answer, memory write, and trace completion. That boundary keeps controllers thin and
- * prevents stage-specific services from accumulating cross-cutting orchestration concerns.</p>
+ * <p>它负责一次同步请求的全生命周期：memory load、stage one、retrieval、
+ * 最终回答、记忆写入与追踪收口。这样 controller 可以保持薄层，
+ * 各阶段服务也不会被迫承担跨阶段编排职责。</p>
  */
 @Service
 public class DefaultRagQueryService implements RagQueryService {
 
+    /** 第一阶段编排器。 */
     private final StageOneRagPipeline stageOneRagPipeline;
+    /** 检索阶段编排器。 */
     private final RetrievalService retrievalService;
+    /** 最终回答阶段服务。 */
     private final FinalAnswerService finalAnswerService;
+    /** 会话记忆服务。 */
     private final ConversationMemoryService conversationMemoryService;
+    /** 追踪生命周期服务。 */
     private final RagTraceService ragTraceService;
 
+    /**
+     * 构造同步请求编排器。
+     *
+     * @param stageOneRagPipeline 第一阶段编排器
+     * @param retrievalService retrieval 阶段服务
+     * @param finalAnswerService final answer 阶段服务
+     * @param conversationMemoryService 会话记忆服务
+     * @param ragTraceService trace 生命周期服务
+     */
     public DefaultRagQueryService(StageOneRagPipeline stageOneRagPipeline,
                                   RetrievalService retrievalService,
                                   FinalAnswerService finalAnswerService,
@@ -48,26 +62,24 @@ public class DefaultRagQueryService implements RagQueryService {
     }
 
     /**
-     * Runs the synchronous RAG mainline and returns the full query result.
+     * 执行同步 RAG 主链并返回完整查询结果。
      *
-     * @param command request command derived from the user-facing API
-     * @return stage-one, retrieval, answer, and trace outputs for the current request
+     * @param command 由 user-facing API 转换而来的查询命令
+     * @return 当前请求对应的 stage one、retrieval、answer 与 trace 结果
      */
     @Override
     public RagQueryResult query(RagQueryCommand command) {
         RagQueryCommand safeCommand = command == null
                 ? new RagQueryCommand("", "", "")
                 : command;
-        // Trace starts before any stage executes so both successful stages and early failures can share the
-        // same request-level trace id.
+        // 追踪在任何阶段前启动，确保成功路径和早失败路径都能共享同一个请求级 traceId。
         RagTraceSession traceSession = ragTraceService.startQueryTrace(
                 safeCommand.requestId(),
                 safeCommand.conversationId());
         String currentStage = "query";
         Instant currentStageStartedAt = Instant.now();
         try {
-            // Memory is loaded before stage one so follow-up rewrite and routing can use the
-            // latest conversation context without pushing memory logic into stage services.
+            // 记忆在第一阶段前加载，保证追问改写与路由能使用最新上下文，同时不把 memory 逻辑下沉到阶段服务。
             ConversationMemoryContext memoryContext = conversationMemoryService.loadContext(safeCommand.conversationId());
 
             currentStage = "stage-one";
@@ -89,8 +101,7 @@ public class DefaultRagQueryService implements RagQueryService {
             AnswerResult answerResult = finalAnswerService.answer(retrievalResult);
             ragTraceService.recordFinalAnswer(traceSession, currentStageStartedAt, answerResult);
 
-            // Memory write happens after the final answer is known so later turns can see the
-            // exact rewritten question and answer status that this request produced.
+            // 记忆写入放在最终回答之后，后续轮次才能看到本次请求真实产出的改写问题和回答状态。
             conversationMemoryService.appendTurn(new ConversationMemoryWriteRequest(
                     safeCommand.conversationId(),
                     safeCommand.requestId(),
@@ -100,8 +111,7 @@ public class DefaultRagQueryService implements RagQueryService {
                     answerResult.status(),
                     Instant.now()));
 
-            // Trace is finished after memory write so the persisted trace reflects the full synchronous request
-            // lifecycle rather than only the model-facing stages.
+            // 追踪在记忆写入之后收口，持久化结果才完整覆盖一次同步请求生命周期。
             RagTraceResult traceResult = ragTraceService.finish(
                     traceSession,
                     answerResult.status(),
@@ -112,9 +122,10 @@ public class DefaultRagQueryService implements RagQueryService {
             ragTraceService.finish(traceSession, "FAILED", false);
             throw exception;
         } finally {
-            // Clearing in finally prevents trace context leakage across requests even when persistence or
-            // business logic throws.
+            // 最终在 finally 中清理追踪上下文，避免异常路径把上下文泄漏到下一次请求。
             ragTraceService.clear();
         }
     }
 }
+
+

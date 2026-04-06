@@ -1,4 +1,4 @@
-package com.flightpathfinder.infra.ai.config;
+﻿package com.flightpathfinder.infra.ai.config;
 
 import com.flightpathfinder.infra.ai.model.ModelProvider;
 import java.util.LinkedHashMap;
@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * AI infrastructure configuration split into provider connectivity and capability selection.
- * <p>
- * Providers describe how to reach a vendor endpoint, while chat and embedding describe
- * which configured provider/model pair should currently serve each capability.
+ * 面向 AI 基础设施的配置，按“供应商连接信息”和“能力路由选择”拆分。
+ *
+ * <p>providers 描述如何连接上游厂商端点；chat 与 embedding 描述当前能力使用的
+ * 供应商与模型组合。
  */
 @ConfigurationProperties(prefix = "pathfinder.ai")
 public class AiModelProperties {
@@ -43,7 +43,7 @@ public class AiModelProperties {
     }
 
     /**
-     * Connectivity and authentication settings for one upstream AI provider.
+        * 单个上游 AI 供应商的连接与鉴权配置。
      */
     public static class ProviderProperties {
 
@@ -95,7 +95,7 @@ public class AiModelProperties {
     }
 
     /**
-     * Endpoint suffixes for provider-specific capability calls.
+        * 供应商能力调用的端点后缀配置。
      */
     public static class ProviderEndpoints {
 
@@ -120,7 +120,7 @@ public class AiModelProperties {
     }
 
     /**
-     * Selection and runtime options for chat and streaming chat generation.
+        * 聊天与流式聊天生成的模型选择与运行参数。
      */
     public static class ChatProperties {
 
@@ -190,7 +190,7 @@ public class AiModelProperties {
     }
 
     /**
-     * Selection and runtime options for embedding generation.
+        * 向量生成能力的模型选择与运行参数。
      */
     public static class EmbeddingProperties {
 
@@ -241,3 +241,4 @@ public class AiModelProperties {
         }
     }
 }
+

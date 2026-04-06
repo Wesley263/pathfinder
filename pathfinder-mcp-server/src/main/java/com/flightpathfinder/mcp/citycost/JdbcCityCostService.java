@@ -12,10 +12,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * JDBC-backed implementation of {@link CityCostService}.
+ * {@link CityCostService} 的 JDBC 实现。
  *
- * <p>This service keeps {@code city.cost} independent from bootstrap business modules by reading cost data
- * directly from the MCP server datasource and returning a management-friendly partial-coverage result.
+ * <p>该服务通过直接读取 MCP 服务端数据源中的城市成本数据，
+ * 让 {@code city.cost} 保持对 bootstrap 业务模块的独立性，
+ * 并返回便于管理侧消费的部分覆盖结果。
  */
 @Service
 public class JdbcCityCostService implements CityCostService {
@@ -42,10 +43,10 @@ public class JdbcCityCostService implements CityCostService {
     }
 
     /**
-     * Looks up cost data for each requested code.
+     * 为每个请求代码查询成本数据。
      *
-     * @param query normalized city-cost request
-     * @return matched cost entries sorted by daily cost, plus missing-city information
+     * @param query 归一化城市成本查询请求
+     * @return 按日成本排序的命中条目，以及缺失城市信息
      */
     @Override
     public CityCostResult lookup(CityCostQuery query) {
@@ -56,8 +57,8 @@ public class JdbcCityCostService implements CityCostService {
             if (cityCostItem.isPresent()) {
                 items.add(cityCostItem.get());
             } else {
-                // Missing cities are preserved as a business fact so callers can distinguish partial coverage
-                // from a complete infrastructure failure.
+                // 缺失城市会被保留为业务事实，
+                // 便于调用方区分“部分覆盖”与“基础设施整体故障”。
                 missingCities.add(iataCode);
             }
         }

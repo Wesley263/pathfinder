@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Memory context consumed by the RAG mainline.
+ * 供 RAG 主链消费的记忆上下文。
  *
- * <p>The context intentionally carries both recent turns and optional summary. Recent turns preserve the most
- * recent wording exactly, while summary gives stage one and retrieval enough background once conversations
- * grow beyond the recent-turn window.
+ * <p>该上下文有意同时携带近期轮次与可选摘要。
+ * 近期轮次用于保留最新原话，摘要用于在会话超过近期窗口后为 stage one 与检索提供背景。
  */
 public record ConversationMemoryContext(
         ConversationMemoryConversation conversation,
@@ -24,53 +23,53 @@ public record ConversationMemoryContext(
     }
 
     /**
-     * Indicates whether the context contains any usable memory.
+     * 判断当前上下文是否不含可用记忆。
      *
-     * @return {@code true} when both recent turns and summary are absent
+     * @return 当近期轮次与摘要都缺失时返回 {@code true}
      */
     public boolean empty() {
         return recentTurns.isEmpty() && !summary.exists();
     }
 
     /**
-     * Returns the conversation id associated with this memory context.
+     * 返回与当前记忆上下文关联的会话标识。
      *
-     * @return conversation id, possibly blank when the current request does not use memory
+     * @return 会话标识；当请求不使用记忆时可能为空
      */
     public String conversationId() {
         return conversation.conversationId();
     }
 
     /**
-     * Returns the total persisted turn count known for the conversation.
+     * 返回该会话已持久化的总轮次数。
      *
-     * @return total turn count from conversation metadata
+     * @return 会话元信息中的总轮次
      */
     public int totalTurnCount() {
         return conversation.turnCount();
     }
 
     /**
-     * Indicates whether a summary fragment is available.
+     * 判断是否存在可用摘要片段。
      *
-     * @return {@code true} when summary text exists for older turns
+     * @return 当旧轮次摘要文本存在时返回 {@code true}
      */
     public boolean hasSummary() {
         return summary.exists();
     }
 
     /**
-     * Flattens summary and recent turns into the compact text fragment used by the current mainline.
+     * 将摘要与近期轮次压平成主链使用的紧凑历史文本。
      *
-     * @return routing-friendly history text; empty string when there is no memory to inject
+     * @return 便于路由阶段消费的历史片段；无记忆可注入时返回空字符串
      */
     public String routingHistoryText() {
         List<String> fragments = new ArrayList<>();
         if (summary.exists()) {
             fragments.add("Summary: " + summary.summaryText());
         }
-        // Summary covers older turns, while recent turns preserve the exact latest phrasing. Both are included
-        // so rewrite and routing do not lose either long-horizon context or immediate conversational nuance.
+        // 摘要覆盖较早历史，近期轮次保留最新精确措辞。
+        // 两者共同保留，避免 rewrite 与路由丢失长程上下文或即时语义细节。
         recentTurns.stream()
                 .map(turn -> "User: " + turn.questionForContext() + " | Assistant: " + abbreviate(turn.answerText()))
                 .forEach(fragments::add);
@@ -83,10 +82,10 @@ public record ConversationMemoryContext(
     }
 
     /**
-     * Creates an empty context for requests that have no usable memory.
+     * 为无可用记忆的请求创建空上下文。
      *
-     * @param conversationId conversation identifier to carry forward even when history is absent
-     * @return empty memory context
+     * @param conversationId 即使无历史也需沿用的会话标识
+     * @return 空记忆上下文
      */
     public static ConversationMemoryContext empty(String conversationId) {
         return new ConversationMemoryContext(

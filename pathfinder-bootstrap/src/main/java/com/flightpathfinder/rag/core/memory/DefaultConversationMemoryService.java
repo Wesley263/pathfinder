@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Default orchestrator for memory load and write operations.
+ * 记忆加载与写入流程的默认编排实现。
  *
- * <p>This layer keeps memory lifecycle concerns out of stage-one, retrieval and answer services. It combines
- * recent-turn storage with optional summary loading so the mainline can consume a single memory context.
+ * <p>该层将记忆生命周期职责从 stage-one、检索与回答服务中隔离出来，
+ * 并将近期轮次存储与可选摘要加载统一组合，使主链仅消费单一记忆上下文对象。
  */
 @Service
 public class DefaultConversationMemoryService implements ConversationMemoryService {
@@ -28,12 +28,10 @@ public class DefaultConversationMemoryService implements ConversationMemoryServi
     }
 
     /**
-     * Loads the current memory context for the requested conversation id.
+     * 加载当前请求会话的记忆上下文。
      *
-     * @param conversationId conversation identifier from the current query; blank means the request should not
-     *     use memory
-     * @return empty context when the id is blank or no history exists, otherwise recent turns plus optional
-     *     summary
+     * @param conversationId 当前查询携带的会话标识；为空表示本次请求不使用记忆
+     * @return 标识为空或无历史时返回空上下文，否则返回近期轮次与可选摘要
      */
     @Override
     public ConversationMemoryContext loadContext(String conversationId) {
@@ -50,8 +48,8 @@ public class DefaultConversationMemoryService implements ConversationMemoryServi
             log.warn("Failed to load conversation summary for conversationId={}", conversationId, exception);
             summary = ConversationMemorySummary.empty();
         }
-        // Recent turns and summary are loaded independently so summary failures degrade gracefully instead of
-        // blocking the whole query path.
+        // 近期轮次与摘要独立加载，
+        // 这样摘要失败可降级，不会阻断整条查询路径。
         if (snapshot.turns().isEmpty() && !summary.exists()) {
             return ConversationMemoryContext.empty(conversationId);
         }
@@ -59,9 +57,9 @@ public class DefaultConversationMemoryService implements ConversationMemoryServi
     }
 
     /**
-     * Persists the completed turn and refreshes summary state when needed.
+     * 持久化已完成轮次，并在需要时刷新摘要状态。
      *
-     * @param writeRequest completed-turn payload derived from the current query lifecycle
+     * @param writeRequest 从当前查询生命周期产出的完成轮次负载
      */
     @Override
     public void appendTurn(ConversationMemoryWriteRequest writeRequest) {
@@ -78,8 +76,8 @@ public class DefaultConversationMemoryService implements ConversationMemoryServi
                         writeRequest.answerStatus(),
                         writeRequest.createdAt()));
         try {
-            // Summary refresh is threshold-driven and best-effort: failed compaction must not block the main
-            // write path for the just-finished turn.
+            // 摘要刷新由阈值驱动且采用尽力而为策略：
+            // 压缩失败不能阻塞刚完成轮次的主写路径。
             conversationMemorySummaryService.refreshIfNeeded(writeRequest.conversationId());
         } catch (RuntimeException exception) {
             log.warn("Failed to refresh conversation summary for conversationId={}", writeRequest.conversationId(), exception);

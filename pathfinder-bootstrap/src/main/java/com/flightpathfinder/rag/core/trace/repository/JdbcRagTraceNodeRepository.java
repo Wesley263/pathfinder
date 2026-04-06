@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * JDBC repository for trace nodes.
+ * 跟踪节点的 JDBC 仓储实现。
  *
- * <p>Nodes are replaced as a full ordered set once a trace finishes, which keeps persistence aligned with the
- * immutable "finished trace" mental model.
+ * <p>trace 完成后按有序全量集合替换节点，
+ * 使持久化结果与“完成态 trace 不可变”的心智模型保持一致。
  */
 @Repository
 public class JdbcRagTraceNodeRepository implements RagTraceNodeRepository {
@@ -50,10 +50,10 @@ public class JdbcRagTraceNodeRepository implements RagTraceNodeRepository {
     }
 
     /**
-     * Replaces all node rows for the given trace id.
+     * 替换指定 traceId 的全部节点行。
      *
-     * @param traceId unique trace identifier
-     * @param records full ordered node record set
+     * @param traceId 唯一 trace 标识
+     * @param records 完整有序节点记录集
      */
     @Override
     @Transactional
@@ -62,8 +62,8 @@ public class JdbcRagTraceNodeRepository implements RagTraceNodeRepository {
         if (records == null || records.isEmpty()) {
             return;
         }
-        // Trace nodes are rewritten as a batch at finish time so the stored timeline matches the finalized
-        // request view exactly.
+        // 节点在完成时按批重写，
+        // 以保证落库时间线与最终请求视图严格一致。
         jdbcTemplate.batchUpdate(
                 INSERT_SQL,
                 records,
@@ -84,10 +84,10 @@ public class JdbcRagTraceNodeRepository implements RagTraceNodeRepository {
     }
 
     /**
-     * Loads node rows for one trace.
+     * 加载单个 trace 的节点行。
      *
-     * @param traceId unique trace identifier
-     * @return node records ordered by node index
+     * @param traceId 唯一 trace 标识
+     * @return 按节点序号排序的节点记录
      */
     @Override
     public List<PersistedRagTraceNodeRecord> findByTraceId(String traceId) {

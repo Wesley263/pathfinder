@@ -1,5 +1,7 @@
-package com.flightpathfinder.framework.errorcode;
-
+﻿package com.flightpathfinder.framework.errorcode;
+/**
+ * 错误码体系基础类型。
+ */
 public enum BaseErrorCode implements ErrorCode {
     CLIENT_ERROR("A000001", "Client error"),
     CLIENT_INVALID_PARAM_ERROR("A000300", "Invalid request parameter"),
@@ -24,4 +26,5 @@ public enum BaseErrorCode implements ErrorCode {
         return message;
     }
 }
+
 

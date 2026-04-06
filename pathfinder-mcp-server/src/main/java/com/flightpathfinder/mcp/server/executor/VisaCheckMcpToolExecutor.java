@@ -16,10 +16,10 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * Server-side executor for {@code visa.check}.
+ * {@code visa.check} 的服务端执行器。
  *
- * <p>The tool stays entirely in the MCP server because visa decisions depend on a local policy dataset plus
- * server-side rule interpretation. Bootstrap only needs the contract and result, not the rule engine.
+ * <p>该工具完整驻留在 MCP 服务端，因为签证判定依赖本地政策数据与服务端规则解释。
+ * 引导侧只需要契约与结果，不需要规则引擎实现。
  */
 @Component
 public class VisaCheckMcpToolExecutor implements McpToolExecutor {
@@ -34,9 +34,9 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Describes the MCP contract for visa policy checks.
+     * 描述签证政策核验的 MCP 契约。
      *
-     * @return descriptor for {@code visa.check}
+     * @return {@code visa.check} 的工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -65,11 +65,10 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * Executes visa-policy evaluation for the requested destinations.
+     * 对请求目的地执行签证政策评估。
      *
-     * @param request MCP request containing destination country codes and travel context
-     * @return structured tool result that preserves business states such as {@code DATA_NOT_FOUND} and
-     *     {@code PARTIAL_SUCCESS}
+     * @param request MCP 请求，包含目的地国家代码与出行上下文
+     * @return 结构化工具结果，保留 {@code DATA_NOT_FOUND}、{@code PARTIAL_SUCCESS} 等业务状态
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -132,8 +131,7 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
             if (!COUNTRY_CODE_PATTERN.matcher(normalized).matches()) {
                 continue;
             }
-            // The MCP contract accepts a compact list syntax, but the service layer only sees normalized ISO
-            // country codes with duplicates removed.
+            // 工具契约允许紧凑列表语法，但服务层只接收已归一化且去重后的 ISO 国家代码。
             if (!codes.contains(normalized)) {
                 codes.add(normalized);
             }

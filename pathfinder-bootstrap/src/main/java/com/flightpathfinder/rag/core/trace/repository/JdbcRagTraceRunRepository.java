@@ -11,10 +11,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * JDBC repository for trace-run headers.
+ * 跟踪运行头的 JDBC 仓储实现。
  *
- * <p>This repository supports both direct detail lookup by trace id and recent-run listing by request or
- * conversation identifiers.
+ * <p>该仓储同时支持按 traceId 直查详情入口，
+ * 以及按 requestId / conversationId 维度列出近期运行记录。
  */
 @Repository
 public class JdbcRagTraceRunRepository implements RagTraceRunRepository {
@@ -63,9 +63,9 @@ public class JdbcRagTraceRunRepository implements RagTraceRunRepository {
     }
 
     /**
-     * Inserts or updates a trace-run header row.
+     * 插入或更新一条 trace 运行头记录。
      *
-     * @param record persisted run record for one request
+     * @param record 单次请求对应的持久化运行记录
      */
     @Override
     public void upsert(PersistedRagTraceRunRecord record) {
@@ -87,10 +87,10 @@ public class JdbcRagTraceRunRepository implements RagTraceRunRepository {
     }
 
     /**
-     * Finds one trace-run header by trace id.
+     * 按 traceId 查询单条 trace 运行头记录。
      *
-     * @param traceId unique trace identifier
-     * @return run record when found
+     * @param traceId 唯一 trace 标识
+     * @return 命中时返回运行记录
      */
     @Override
     public Optional<PersistedRagTraceRunRecord> findByTraceId(String traceId) {
@@ -98,12 +98,12 @@ public class JdbcRagTraceRunRepository implements RagTraceRunRepository {
     }
 
     /**
-     * Lists recent trace-run headers filtered by request id or conversation id.
+     * 按请求标识或会话标识过滤并列出近期 trace 运行头。
      *
-     * @param requestId optional request id filter
-     * @param conversationId optional conversation id filter
-     * @param limit maximum number of runs to return
-     * @return recent run records ordered newest-first
+     * @param requestId 可选请求标识过滤
+     * @param conversationId 可选会话标识过滤
+     * @param limit 最大返回条数
+     * @return 按时间倒序排列的近期运行记录
      */
     @Override
     public List<PersistedRagTraceRunRecord> findRecent(String requestId, String conversationId, int limit) {

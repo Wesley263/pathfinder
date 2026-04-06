@@ -5,10 +5,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * Creates the JDBC schema required by persisted traces.
+ * 创建持久化 trace 所需的 JDBC 表结构。
  *
- * <p>Trace persistence is split into run, node and tool tables so list queries stay lightweight while detail
- * queries can still show stage nodes and MCP tool outcomes separately.
+ * <p>trace 持久化拆分为 run、node、tool 三类表，
+ * 使列表查询保持轻量，同时详情查询仍可分别展示阶段节点与 MCP 工具结果。
  */
 @Component
 public class JdbcRagTraceSchemaInitializer {
@@ -80,9 +80,9 @@ public class JdbcRagTraceSchemaInitializer {
     );
 
     /**
-     * Ensures trace tables and indexes exist for the current datasource.
+     * 确保当前数据源具备 trace 相关表与索引。
      *
-     * @param jdbcTemplate JDBC entry point used to execute the trace DDL set
+     * @param jdbcTemplate 用于执行 trace DDL 集合的 JDBC 入口
      */
     public JdbcRagTraceSchemaInitializer(JdbcTemplate jdbcTemplate) {
         DDL.forEach(jdbcTemplate::execute);

@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.controller.vo;
+﻿package com.flightpathfinder.admin.controller.vo;
 
 import java.time.Instant;
 
+/**
+ * 管理端响应视图模型。
+ */
 public record AdminConversationMessageVO(
         String messageId,
         String requestId,
@@ -12,3 +15,4 @@ public record AdminConversationMessageVO(
         String answerStatus,
         Instant createdAt) {
 }
+

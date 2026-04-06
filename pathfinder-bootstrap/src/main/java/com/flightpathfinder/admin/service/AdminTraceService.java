@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Admin-facing query service for persisted traces.
+ * 持久化追踪的管理端查询服务。
  *
- * <p>This service exposes trace data in management-oriented shapes so admin APIs do not have to reuse or leak
- * the internal trace query models used by the RAG core.
+ * <p>该服务以管理端视角组织追踪数据，
+ * 避免管理 API 复用或泄露 RAG 核心内部追踪查询模型。
  */
 public interface AdminTraceService {
 
     /**
-     * Finds one admin-facing trace detail view.
+        * 查询单个追踪的管理端详情视图。
      *
      * @param traceId unique trace identifier
      * @return admin trace detail when found
@@ -20,7 +20,7 @@ public interface AdminTraceService {
     Optional<AdminTraceDetailResult> findDetail(String traceId);
 
     /**
-     * Lists recent traces filtered by request or conversation identifiers.
+        * 按请求或会话标识过滤并列出最近追踪。
      *
      * @param requestId optional request id filter
      * @param conversationId optional conversation id filter

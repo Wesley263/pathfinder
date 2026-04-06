@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.util.List;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminPathDiagnosticCandidate(
         int segmentCount,
         int transferCount,
@@ -17,3 +20,4 @@ public record AdminPathDiagnosticCandidate(
         legs = List.copyOf(legs == null ? List.of() : legs);
     }
 }
+

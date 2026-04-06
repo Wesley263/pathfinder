@@ -1,31 +1,38 @@
-package com.flightpathfinder.rag.core.retrieve;
+﻿package com.flightpathfinder.rag.core.retrieve;
 
 import com.flightpathfinder.rag.core.pipeline.StageOneRagResult;
 import org.springframework.stereotype.Service;
 
 /**
- * Default retrieval-stage orchestrator.
+ * 检索阶段的默认编排器。
  *
- * <p>This class sits above KB and MCP branches because it keeps both branches explicit and
- * auditable before the final answer stage recombines them.</p>
+ * <p>它位于 KB 与 MCP 两条分支之上，负责显式执行两路能力并统一汇总结果，
+ * 这样 final answer 才能继续区分证据来源和部分成功语义。</p>
  */
 @Service
 public class DefaultRetrievalService implements RetrievalService {
 
+    /** 知识库分支检索器。 */
     private final KnowledgeRetriever knowledgeRetriever;
+    /** 工具分支执行器（MCP）。 */
     private final McpContextExecutor mcpContextExecutor;
 
+    /**
+     * 构造 retrieval 默认编排器。
+     *
+     * @param knowledgeRetriever KB 检索器
+     * @param mcpContextExecutor MCP 执行器
+     */
     public DefaultRetrievalService(KnowledgeRetriever knowledgeRetriever, McpContextExecutor mcpContextExecutor) {
         this.knowledgeRetriever = knowledgeRetriever;
         this.mcpContextExecutor = mcpContextExecutor;
     }
 
     /**
-     * Executes KB retrieval and MCP execution independently, then rejoins them into one
-     * retrieval result for answer assembly.
+     * 分别执行 KB 检索和 MCP 调用，再统一汇总成 retrieval 结果。
      *
-     * @param stageOneRagResult rewrite and split output from stage one
-     * @return combined retrieval result with explicit KB and MCP sub-results
+     * @param stageOneRagResult 第一阶段输出
+     * @return 同时保留 KB 与 MCP 子结果的 retrieval 总结果
      */
     @Override
     public RetrievalResult retrieve(StageOneRagResult stageOneRagResult) {
@@ -33,8 +40,7 @@ public class DefaultRetrievalService implements RetrievalService {
                 ? new StageOneRagResult(null, null, null, null)
                 : stageOneRagResult;
 
-        // KB and MCP remain separate here so the answer stage can explain where evidence came
-        // from instead of inheriting a pre-mixed opaque retrieval blob.
+        // 这里刻意保持 KB 与 MCP 分开，避免 final answer 只能接收一个已经混好的黑盒检索结果。
         KbContext kbContext = knowledgeRetriever.retrieve(
                 safeStageOneResult.rewriteResult(),
                 safeStageOneResult.intentSplitResult());
@@ -42,8 +48,7 @@ public class DefaultRetrievalService implements RetrievalService {
                 safeStageOneResult.rewriteResult(),
                 safeStageOneResult.intentSplitResult());
 
-        // Retrieval owns the combined stage status because it is the first place that can see
-        // KB success, MCP misses, and mixed partial outcomes together.
+        // 检索阶段是第一个同时看到 KB 成功、MCP miss 与混合部分成功语义的地方，因此总状态在这里收口。
         return new RetrievalResult(
                 resolveStatus(kbContext, mcpContext),
                 buildSummary(kbContext, mcpContext),
@@ -52,6 +57,13 @@ public class DefaultRetrievalService implements RetrievalService {
                 mcpContext);
     }
 
+    /**
+     * 计算 retrieval 阶段总状态。
+     *
+     * @param kbContext KB 分支结果
+     * @param mcpContext MCP 分支结果
+     * @return retrieval 总状态
+     */
     private String resolveStatus(KbContext kbContext, McpContext mcpContext) {
         boolean kbError = kbContext.hasError();
         boolean mcpSnapshotMiss = mcpContext.hasSnapshotMiss();
@@ -83,8 +95,16 @@ public class DefaultRetrievalService implements RetrievalService {
         return "SUCCESS";
     }
 
+    /**
+     * 生成 retrieval 阶段摘要。
+     *
+     * @param kbContext KB 分支结果
+     * @param mcpContext MCP 分支结果
+     * @return 简洁摘要文本
+     */
     private String buildSummary(KbContext kbContext, McpContext mcpContext) {
         return "kb=" + kbContext.status() + "(" + kbContext.items().size() + ")"
                 + " | mcp=" + mcpContext.status() + "(" + mcpContext.executions().size() + ")";
     }
 }
+

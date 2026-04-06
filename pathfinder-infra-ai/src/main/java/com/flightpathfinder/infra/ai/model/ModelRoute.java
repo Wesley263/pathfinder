@@ -3,7 +3,7 @@ package com.flightpathfinder.infra.ai.model;
 import java.util.Set;
 
 /**
- * Resolved model selection for one capability at runtime.
+ * 单个能力在运行时解析后的模型路由结果。
  */
 public record ModelRoute(
         String routeName,

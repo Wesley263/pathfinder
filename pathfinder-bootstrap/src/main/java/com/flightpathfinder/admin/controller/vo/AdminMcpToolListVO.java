@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.controller.vo;
+﻿package com.flightpathfinder.admin.controller.vo;
 
 import java.util.List;
 
+/**
+ * 管理端响应视图模型。
+ */
 public record AdminMcpToolListVO(
         String status,
         String message,
@@ -9,3 +12,4 @@ public record AdminMcpToolListVO(
         int availableCount,
         List<AdminMcpToolSummaryVO> tools) {
 }
+

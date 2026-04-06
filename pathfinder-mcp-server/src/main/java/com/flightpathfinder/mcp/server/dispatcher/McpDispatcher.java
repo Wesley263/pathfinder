@@ -10,11 +10,10 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
- * Routes protocol-level MCP methods to server-side discovery and execution flows.
+ * 将协议层 MCP 方法路由到服务端发现与执行流程。
  *
- * <p>The dispatcher owns JSON-RPC method branching such as {@code tools/list} and {@code tools/call},
- * while the registry remains responsible only for tool lookup. Keeping these concerns separate avoids
- * turning the registry into a protocol-aware service.
+ * <p>分发器负责 {@code tools/list}、{@code tools/call} 等 JSON-RPC 方法分支，
+ * 注册器仅负责工具查找。分离这两类职责可避免注册器膨胀为协议感知组件。
  */
 @Component
 public class McpDispatcher {
@@ -29,14 +28,14 @@ public class McpDispatcher {
     }
 
     /**
-     * Dispatches the incoming JSON-RPC method to the appropriate server-side MCP branch.
+     * 将入站 JSON-RPC 方法分发到对应的服务端 MCP 分支。
      *
-     * @param request protocol request containing the MCP method and raw parameters
-     * @return JSON-RPC success or error response
+     * @param request 协议请求，包含 MCP 方法与原始参数
+     * @return JSON-RPC 成功或错误响应
      */
     public JsonRpcResponse<?> dispatch(JsonRpcRequest<Map<String, Object>> request) {
-        // The current HTTP bridge only exposes discovery and invocation. An explicit initialize handshake
-        // can be added later without forcing tool executors to understand protocol-level concerns.
+        // 当前 HTTP 桥只暴露发现与调用能力。
+        // 后续可增加显式 initialize 握手，而无需让工具执行器理解协议细节。
         return switch (request.method()) {
             case "tools/list" -> JsonRpcResponse.success(request.id(), new McpToolListResult(mcpServerToolRegistry.listTools()));
             case "tools/call" -> dispatchToolCall(request);

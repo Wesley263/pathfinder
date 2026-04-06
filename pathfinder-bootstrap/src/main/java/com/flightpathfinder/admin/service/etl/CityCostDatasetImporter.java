@@ -15,10 +15,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * ETL importer for city cost reference data.
+ * 城市成本参考数据的 ETL 导入器。
  *
- * <p>This importer belongs to admin because it loads external cost reference data into the operational
- * datasource and reports dataset-level ETL outcomes to operators.
+ * <p>该导入器归属管理端能力，用于将外部成本参考数据写入运维数据源，
+ * 并按数据集粒度向运维侧返回 ETL 结果。
  */
 @Service
 public class CityCostDatasetImporter implements AdminDatasetImporter {
@@ -67,7 +67,7 @@ public class CityCostDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-     * Returns the stable admin dataset id for city cost ETL.
+        * 返回城市成本 ETL 的稳定管理数据集标识。
      *
      * @return {@code city_cost}
      */
@@ -77,7 +77,7 @@ public class CityCostDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-     * Executes city cost ETL from the configured resource location.
+        * 从配置资源位置执行城市成本 ETL。
      *
      * @return dataset-level reload result with processed/upserted/failed counts
      */
@@ -131,7 +131,7 @@ public class CityCostDatasetImporter implements AdminDatasetImporter {
                     failed++;
                 }
             }
-            // Dataset-level result reporting keeps partial import visible instead of hiding row-level data gaps.
+            // 以数据集粒度保留结果，便于识别部分导入成功而非掩盖行级缺口。
             String status = failed > 0 ? "PARTIAL_SUCCESS" : "SUCCESS";
             String reason = failed > 0
                     ? "city cost ETL completed with row-level failures"

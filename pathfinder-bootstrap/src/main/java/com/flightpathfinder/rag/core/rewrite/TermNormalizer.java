@@ -5,16 +5,32 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 术语归一器。
+ *
+ * <p>它负责把自然语言里的机场、城市、航司和常见旅行表达收口成更稳定的内部写法，
+ * 这样 rewrite 与 intent 层就不必在多个地方重复维护同一套别名映射规则。</p>
+ */
 public class TermNormalizer {
 
+    /** 判断源词条是否为纯 ASCII，用于决定是否走大小写不敏感替换。 */
     private static final Pattern ASCII_ONLY_PATTERN = Pattern.compile("^[\\p{ASCII}]+$");
 
+    /** 已按优先级和源词长度排好序的归一化映射表。 */
     private final List<TermMapping> mappings;
 
+    /**
+     * 使用默认映射表创建术语归一器。
+     */
     public TermNormalizer() {
         this(defaultMappings());
     }
 
+    /**
+     * 使用指定映射表创建术语归一器。
+     *
+     * @param mappings 外部传入的术语映射集合
+     */
     public TermNormalizer(List<TermMapping> mappings) {
         this.mappings = List.copyOf((mappings == null ? List.<TermMapping>of() : mappings).stream()
                 .sorted(Comparator.comparingInt(TermMapping::priority).reversed()
@@ -23,6 +39,12 @@ public class TermNormalizer {
                 .toList());
     }
 
+    /**
+     * 对输入文本执行术语归一。
+     *
+     * @param text 待归一化的原始文本
+     * @return 归一化后的文本
+     */
     public String normalize(String text) {
         String normalizedText = text == null ? "" : text.trim();
         for (TermMapping mapping : mappings) {
@@ -31,6 +53,14 @@ public class TermNormalizer {
         return normalizedText;
     }
 
+    /**
+     * 返回默认术语映射表。
+     *
+     * <p>这些映射覆盖当前 2.0 第一阶段最常见的机场、城市、航司和旅行相关表达，
+     * 目的是让主链在无模型参与时也能先得到稳定的路由文本。</p>
+     *
+     * @return 默认映射集合
+     */
     private static List<TermMapping> defaultMappings() {
         return List.of(
                 new TermMapping("上海浦东国际机场", "PVG", 100),
@@ -70,6 +100,13 @@ public class TermNormalizer {
         );
     }
 
+    /**
+     * 对单条映射执行替换。
+     *
+     * @param text 当前待处理文本
+     * @param mapping 当前映射规则
+     * @return 应用本次映射后的文本
+     */
     private String applyMapping(String text, TermMapping mapping) {
         if (text.isBlank() || mapping.sourceTerm().isBlank()) {
             return text;
@@ -83,6 +120,13 @@ public class TermNormalizer {
         return text.replace(mapping.sourceTerm(), mapping.targetTerm());
     }
 
+    /**
+     * 单条术语映射规则。
+     *
+     * @param sourceTerm 原始词条或别名
+     * @param targetTerm 归一化后的目标写法
+     * @param priority 映射优先级，数值越大越先应用
+     */
     public record TermMapping(String sourceTerm, String targetTerm, int priority) {
     }
 }

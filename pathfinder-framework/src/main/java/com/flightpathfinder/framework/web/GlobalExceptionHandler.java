@@ -1,4 +1,4 @@
-package com.flightpathfinder.framework.web;
+﻿package com.flightpathfinder.framework.web;
 
 import com.flightpathfinder.framework.convention.Result;
 import com.flightpathfinder.framework.errorcode.BaseErrorCode;
@@ -10,6 +10,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+/**
+ * 面向 Web 层的通用组件。
+ */
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,3 +38,5 @@ public class GlobalExceptionHandler {
                 .body(Results.failure(BaseErrorCode.SERVICE_ERROR, ex.getMessage()));
     }
 }
+
+

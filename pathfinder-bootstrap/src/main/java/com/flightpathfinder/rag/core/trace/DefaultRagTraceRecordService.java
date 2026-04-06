@@ -19,10 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Default persistence service for finalized traces.
+ * 最终 trace 的默认持久化服务。
  *
- * <p>This service materializes one logical trace into run, node and tool tables. The split mirrors how
- * operators inspect traces: top-level request run first, then stage nodes, then MCP tool details.
+ * <p>该服务将一条逻辑 trace 物化到 run、node、tool 三类表中。
+ * 这种拆分对应运维排障视角：先看请求级 run，再看阶段节点，最后看 MCP 工具细节。
  */
 @Service
 public class DefaultRagTraceRecordService implements RagTraceRecordService {
@@ -43,9 +43,9 @@ public class DefaultRagTraceRecordService implements RagTraceRecordService {
     }
 
     /**
-     * Persists a completed trace into run, node and tool repositories.
+     * 将完成态 trace 写入 run/node/tool 仓储。
      *
-     * @param traceResult finalized trace result for one request
+     * @param traceResult 单次请求的最终 trace 结果
      */
     @Override
     @Transactional
@@ -136,8 +136,8 @@ public class DefaultRagTraceRecordService implements RagTraceRecordService {
             return summary;
         }
         if ("mcp-execution".equals(nodeName)) {
-            // Tool execution is persisted as an internal node because it belongs to retrieval, but operators
-            // still need a dedicated breadcrumb for MCP-specific diagnosis.
+            // 工具执行归属检索阶段，因此以内部节点形式持久化；
+            // 同时仍保留专用 breadcrumb，便于 MCP 专项诊断。
             Object toolCount = attributes.get("toolCount");
             return toolCount == null ? "" : "toolCount=" + toolCount;
         }

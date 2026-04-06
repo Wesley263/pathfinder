@@ -7,24 +7,29 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * Default provider for the current RAG overview endpoint.
+ * 当前 RAG 概览接口的默认实现。
  *
- * <p>This service reports the current wiring as implemented facts, not future roadmap data,
- * and keeps controllers out of MCP registry details.</p>
+ * <p>它报告的是“当前已经实现的事实”，而不是未来蓝图，同时让 controller 不需要直接接触 MCP registry 细节。</p>
  */
 @Service
 public class DefaultRagOverviewService implements RagOverviewService {
 
+    /** 本地 MCP 工具注册表，用于统计当前已接入工具。 */
     private final LocalMcpToolRegistry localMcpToolRegistry;
 
+    /**
+     * 构造概览服务。
+     *
+     * @param localMcpToolRegistry 本地 MCP 工具注册表
+     */
     public DefaultRagOverviewService(LocalMcpToolRegistry localMcpToolRegistry) {
         this.localMcpToolRegistry = localMcpToolRegistry;
     }
 
     /**
-     * Returns a compact overview of the currently wired RAG feature surface.
+     * 返回当前已接入功能面的概览。
      *
-     * @return overview payload for structure/operations introspection
+     * @return 面向结构与运维查看的概览对象
      */
     @Override
     public RagOverviewVO currentOverview() {

@@ -9,19 +9,19 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * Default bridge from the RAG trace layer to framework trace primitives.
+ * 面向 RAG 的跟踪层到 framework trace 原语的默认桥接实现。
  *
- * <p>This implementation keeps the integration with {@link TraceContext} narrow so the higher-level trace
- * lifecycle can stay focused on request semantics rather than low-level context mutation.
+ * <p>该实现将与 {@link TraceContext} 的集成面控制在最小范围，
+ * 使上层 trace 生命周期逻辑聚焦请求语义而非底层上下文改写细节。
  */
 @Service
 public class DefaultRagTraceRecorder implements RagTraceRecorder {
 
     /**
-     * Starts a framework trace root for the given scene.
+     * 为指定场景启动 framework trace 根节点。
      *
-     * @param scene trace scene name
-     * @return started trace root
+     * @param scene trace 场景名
+     * @return 已启动的 trace 根节点
      */
     @Override
     public TraceRoot startRoot(String scene) {
@@ -29,14 +29,14 @@ public class DefaultRagTraceRecorder implements RagTraceRecorder {
     }
 
     /**
-     * Appends one trace node to the provided root.
+     * 向给定根节点追加一个 trace 节点。
      *
-     * @param root active trace root
-     * @param name node name
-     * @param startedAt node start time
-     * @param finishedAt node finish time
-     * @param attributes structured node attributes
-     * @return appended node
+     * @param root 活动 trace 根节点
+     * @param name 节点名
+     * @param startedAt 节点开始时间
+     * @param finishedAt 节点结束时间
+     * @param attributes 结构化节点属性
+     * @return 追加后的节点
      */
     @Override
     public TraceNode appendNode(TraceRoot root,
@@ -54,7 +54,7 @@ public class DefaultRagTraceRecorder implements RagTraceRecorder {
     }
 
     /**
-     * Clears the underlying framework trace context.
+     * 清理底层 framework trace 上下文。
      */
     @Override
     public void clear() {

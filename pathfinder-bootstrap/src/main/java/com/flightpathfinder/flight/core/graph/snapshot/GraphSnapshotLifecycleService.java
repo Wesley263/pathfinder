@@ -1,28 +1,29 @@
-package com.flightpathfinder.flight.core.graph.snapshot;
+﻿package com.flightpathfinder.flight.core.graph.snapshot;
 
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshot;
 
 /**
- * Owns graph snapshot lifecycle operations on the bootstrap side.
+ * 主应用侧图快照生命周期操作边界。
  *
- * <p>This boundary exists so admin and business flows can invalidate or rebuild snapshots
- * without learning how snapshots are built or stored.</p>
+ * <p>该边界让 admin 与业务流程可以直接触发失效和重建，
+ * 而不需要了解快照如何构建或如何存储。</p>
  */
 public interface GraphSnapshotLifecycleService {
 
     /**
-     * Invalidates the published snapshot state for one graph key.
+     * 失效一个 graphKey 的已发布快照状态。
      *
-     * @param graphKey logical graph identifier
+     * @param graphKey 图逻辑标识
      */
     void invalidate(String graphKey);
 
     /**
-     * Rebuilds and republishes the current snapshot for one graph key.
+     * 重建并重新发布一个 graphKey 的当前快照。
      *
-     * @param graphKey logical graph identifier
-     * @param reason operational reason recorded into snapshot metadata
-     * @return rebuilt snapshot that was published
+     * @param graphKey 图逻辑标识
+     * @param reason 本次重建的运维原因
+     * @return 已发布的重建快照
      */
     GraphSnapshot rebuild(String graphKey, String reason);
 }
+

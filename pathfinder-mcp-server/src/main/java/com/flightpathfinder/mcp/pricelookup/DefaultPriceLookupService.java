@@ -9,11 +9,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * Default server-side implementation of {@link PriceLookupService}.
+ * {@link PriceLookupService} 的默认服务端实现。
  *
- * <p>This service deliberately reuses {@link FlightSearchService} rather than duplicating route SQL. The
- * MCP contract still remains separate because price comparison needs pair-level coverage reporting and a
- * different result shape from plain flight search.
+ * <p>该服务有意复用 {@link FlightSearchService}，避免重复维护航线 SQL。
+ * 同时，价格比价仍保持独立 MCP 契约，因为它需要按城市对汇报覆盖情况，
+ * 且结果结构不同于普通直飞查询。
  */
 @Service
 public class DefaultPriceLookupService implements PriceLookupService {
@@ -25,10 +25,10 @@ public class DefaultPriceLookupService implements PriceLookupService {
     }
 
     /**
-     * Resolves the lowest available option for each requested city pair.
+     * 为每个请求城市对解析可用最低价选项。
      *
-     * @param query normalized price-lookup request
-     * @return matched price items plus missing pair information
+     * @param query 归一化价格查询请求
+     * @return 命中价格条目与缺失城市对信息
      */
     @Override
     public PriceLookupResult lookup(PriceLookupQuery query) {
@@ -41,8 +41,8 @@ public class DefaultPriceLookupService implements PriceLookupService {
             try {
                 List<FlightSearchOption> options = flightSearchService.search(
                         new FlightSearchQuery(cityPair.origin(), cityPair.destination(), query.date(), 0, 1));
-                // Partial coverage is a first-class business result for this tool, so individual pair misses
-                // are recorded instead of failing the whole lookup.
+                // “部分覆盖”是该工具的一等业务结果，
+                // 因此记录单个城市对缺失，而不是让整次查询失败。
                 if (options.isEmpty()) {
                     missingPairs.add(cityPair.pairKey());
                     continue;

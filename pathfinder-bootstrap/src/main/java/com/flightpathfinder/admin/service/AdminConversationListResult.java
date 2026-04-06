@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.util.List;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminConversationListResult(
         String status,
         String requestedConversationId,
@@ -19,3 +22,4 @@ public record AdminConversationListResult(
         conversations = List.copyOf(conversations == null ? List.of() : conversations);
     }
 }
+

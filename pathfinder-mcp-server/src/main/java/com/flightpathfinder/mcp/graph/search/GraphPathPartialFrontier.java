@@ -6,17 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Dominance frontier for partial search states.
+ * 部分搜索状态的支配前沿。
  *
- * <p>This structure tracks the best known partial states per airport so the search can drop
- * strictly worse states early instead of letting them crowd the expansion frontier.</p>
+ * <p>该结构按机场追踪当前最优部分状态，用于提前丢弃严格劣势状态，
+ * 防止其挤占 expansion frontier。</p>
  */
 final class GraphPathPartialFrontier {
 
+    /** 机场到部分状态集合的索引。 */
     private final Map<String, List<GraphPathPartialState>> statesByAirport = new HashMap<>();
 
     /**
-     * Checks whether a candidate partial state is already dominated by an existing one.
+     * 判断候选部分状态是否已被已有状态支配。
      */
     boolean isDominated(GraphPathPartialState candidate) {
         for (GraphPathPartialState existing : statesByAirport.getOrDefault(candidate.currentAirport(), List.of())) {
@@ -28,7 +29,7 @@ final class GraphPathPartialFrontier {
     }
 
     /**
-     * Records a candidate partial state and removes states that it now dominates.
+     * 记录候选状态，并移除被其反向支配的旧状态。
      */
     void record(GraphPathPartialState candidate) {
         List<GraphPathPartialState> bucket = statesByAirport.computeIfAbsent(
@@ -39,7 +40,7 @@ final class GraphPathPartialFrontier {
     }
 
     /**
-     * Discards a partial state that has been trimmed from the expansion frontier.
+     * 丢弃已从 expansion frontier 裁掉的部分状态。
      */
     void discard(GraphPathPartialState candidate) {
         List<GraphPathPartialState> bucket = statesByAirport.get(candidate.currentAirport());
@@ -52,12 +53,14 @@ final class GraphPathPartialFrontier {
         }
     }
 
+    /**
+     * 判断 left 是否支配 right。
+     */
     private boolean dominates(GraphPathPartialState left, GraphPathPartialState right) {
         if (!left.currentAirport().equals(right.currentAirport())) {
             return false;
         }
-        // The visited-set containment check protects correctness: a state that already
-        // visited more airports cannot always substitute for one with more future options.
+        // 访问集合包含关系是正确性关键：访问更多机场的状态并不总能替代未来选择更多的状态。
         if (!right.visitedAirports().containsAll(left.visitedAirports())) {
             return false;
         }

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * JDBC repository for persisted MCP tool summaries inside one trace.
+ * 跟踪内 MCP 工具摘要的 JDBC 仓储实现。
  *
- * <p>Tool summaries are stored separately so snapshot miss, partial outcomes and other MCP-specific facts can
- * be queried directly without unpacking retrieval node JSON.
+ * <p>工具摘要独立存储后，
+ * 快照缺失、部分结果等 MCP 特有事实可直接查询，无需解包检索节点 JSON。
  */
 @Repository
 public class JdbcRagTraceToolRepository implements RagTraceToolRepository {
@@ -47,10 +47,10 @@ public class JdbcRagTraceToolRepository implements RagTraceToolRepository {
     }
 
     /**
-     * Replaces all tool summary rows for the given trace id.
+     * 替换指定 traceId 的全部工具摘要行。
      *
-     * @param traceId unique trace identifier
-     * @param records full ordered tool summary set
+     * @param traceId 唯一 trace 标识
+     * @param records 完整有序工具摘要集合
      */
     @Override
     @Transactional
@@ -75,10 +75,10 @@ public class JdbcRagTraceToolRepository implements RagTraceToolRepository {
     }
 
     /**
-     * Loads all tool summary rows for one trace.
+     * 加载单个 trace 的全部工具摘要行。
      *
-     * @param traceId unique trace identifier
-     * @return tool summary rows ordered by tool index
+     * @param traceId 唯一 trace 标识
+     * @return 按工具序号排序的工具摘要行
      */
     @Override
     public List<PersistedRagTraceToolRecord> findByTraceId(String traceId) {

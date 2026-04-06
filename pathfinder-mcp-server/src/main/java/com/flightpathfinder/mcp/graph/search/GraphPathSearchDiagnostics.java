@@ -12,11 +12,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Internal diagnostics runner for graph path search quality checks.
+ * 图路径搜索质量检查的内部诊断运行器。
  *
- * <p>This class is for validation and tuning only. It is not part of the MCP protocol or the
- * main business API surface, and exists purely to compare search quality against diagnostic
- * baselines during algorithm iteration.</p>
+ * <p>该类仅用于验证与调优，不属于 MCP 协议或主业务 API 面，
+ * 主要用于算法迭代时对比搜索质量基线。</p>
  */
 public final class GraphPathSearchDiagnostics {
 
@@ -24,9 +23,9 @@ public final class GraphPathSearchDiagnostics {
     }
 
     /**
-     * Runs internal comparison scenarios and prints bounded-search vs exhaustive-search diagnostics.
+        * 运行内部对比场景并输出 bounded-search 与 exhaustive-search 的诊断结果。
      *
-     * @param args unused command-line arguments
+        * @param args 未使用的命令行参数
      */
     public static void main(String[] args) {
         List<DiagnosticCase> diagnosticCases = List.of(

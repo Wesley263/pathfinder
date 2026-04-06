@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * ETL importer for visa policy data.
+ * 签证政策数据的 ETL 导入器。
  *
- * <p>This importer belongs to admin because it loads external policy content into the operational datasource
- * and reports dataset-level ETL outcomes to operators.
+ * <p>该导入器归属管理端能力，用于将外部签证政策写入运维数据源，
+ * 并按数据集粒度向运维侧返回 ETL 结果。
  */
 @Service
 public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
@@ -58,7 +58,7 @@ public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-     * Returns the stable admin dataset id for visa policy ETL.
+        * 返回签证政策 ETL 的稳定管理数据集标识。
      *
      * @return {@code visa}
      */
@@ -68,7 +68,7 @@ public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-     * Executes visa policy ETL from the configured resource location.
+        * 从配置资源位置执行签证政策 ETL。
      *
      * @return dataset-level reload result with processed/upserted/failed counts
      */
@@ -123,7 +123,7 @@ public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
                     failed++;
                 }
             }
-            // Row-level failures remain visible to operators so partial policy coverage is easier to diagnose.
+            // 保留行级失败信息，便于识别签证政策覆盖不完整的场景。
             String status = failed > 0 ? "PARTIAL_SUCCESS" : "SUCCESS";
             String reason = failed > 0
                     ? "visa policy ETL completed with row-level failures"

@@ -22,7 +22,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * OpenAI-compatible embedding client used for providers such as Bailian.
+ * 兼容 OpenAI 协议的向量生成客户端实现。
+ *
+ * <p>用于对接百炼、SiliconFlow 等兼容接口的 embedding 服务。
  */
 @Service
 @Primary

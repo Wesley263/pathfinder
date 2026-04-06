@@ -14,11 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Default implementation of the request-scoped trace lifecycle.
+ * 请求级 trace 生命周期的默认实现。
  *
- * <p>This service translates stage outputs into trace nodes and tool summaries, then hands the finished trace
- * to the persistence layer. It keeps trace facts separate from business execution so empty results, snapshot
- * misses and structured business failures are still preserved as audit data.
+ * <p>该服务将各阶段输出转换为 trace 节点与工具摘要，
+ * 并在结束后交给持久化层处理。
+ * 它将 trace 事实与业务执行解耦，使空结果、快照缺失、结构化业务失败等信息仍可作为审计数据保存。
  */
 @Service
 public class DefaultRagTraceService implements RagTraceService {
@@ -36,11 +36,11 @@ public class DefaultRagTraceService implements RagTraceService {
     }
 
     /**
-     * Starts a fresh trace root for one RAG query.
+     * 为一次 RAG 查询启动全新 trace 根节点。
      *
-     * @param requestId request identifier for the current query
-     * @param conversationId conversation identifier associated with the query
-     * @return mutable trace session carrying request ids and the active trace root
+     * @param requestId 当前查询请求标识
+     * @param conversationId 与查询关联的会话标识
+     * @return 含请求标识与活动 trace 根节点的可变会话
      */
     @Override
     public RagTraceSession startQueryTrace(String requestId, String conversationId) {
@@ -49,11 +49,11 @@ public class DefaultRagTraceService implements RagTraceService {
     }
 
     /**
-     * Records the stage-one summary into the trace session.
+     * 将 stage-one 汇总信息记录到 trace 会话。
      *
-     * @param session current trace session
-     * @param startedAt stage start time
-     * @param stageOneResult stage-one result to summarize
+     * @param session 当前 trace 会话
+     * @param startedAt 阶段开始时间
+     * @param stageOneResult 待汇总的 stage-one 结果
      */
     @Override
     public void recordStageOne(RagTraceSession session, Instant startedAt, StageOneRagResult stageOneResult) {
@@ -86,11 +86,11 @@ public class DefaultRagTraceService implements RagTraceService {
     }
 
     /**
-     * Records KB/MCP retrieval outcomes and MCP tool summaries.
+     * 记录 KB/MCP 检索结果及 MCP 工具摘要。
      *
-     * @param session current trace session
-     * @param startedAt stage start time
-     * @param retrievalResult retrieval result to summarize
+     * @param session 当前 trace 会话
+     * @param startedAt 阶段开始时间
+     * @param retrievalResult 待汇总的检索结果
      */
     @Override
     public void recordRetrieval(RagTraceSession session, Instant startedAt, RetrievalResult retrievalResult) {
@@ -117,8 +117,8 @@ public class DefaultRagTraceService implements RagTraceService {
             safeRetrievalResult.mcpContext().executions().stream()
                     .map(this::toToolSummary)
                     .forEach(session.mcpToolSummaries()::add);
-            // Tool execution is recorded as a separate internal node so operators can see retrieval as a stage
-            // while still drilling down into MCP-specific outcomes such as snapshot miss or partial results.
+                // 工具执行作为独立内部节点记录，
+                // 便于运营侧在保留检索阶段视图的同时下钻 MCP 细节（如快照缺失、部分结果）。
             ragTraceRecorder.appendNode(
                     session.root(),
                     "mcp-execution",
@@ -136,11 +136,11 @@ public class DefaultRagTraceService implements RagTraceService {
     }
 
     /**
-     * Records the final-answer stage into the trace.
+     * 将最终回答阶段记录到 trace。
      *
-     * @param session current trace session
-     * @param startedAt stage start time
-     * @param answerResult final answer output to summarize
+     * @param session 当前 trace 会话
+     * @param startedAt 阶段开始时间
+     * @param answerResult 待汇总的最终回答输出
      */
     @Override
     public void recordFinalAnswer(RagTraceSession session, Instant startedAt, AnswerResult answerResult) {
@@ -160,12 +160,12 @@ public class DefaultRagTraceService implements RagTraceService {
     }
 
     /**
-     * Records an exceptional stage failure as trace data.
+     * 将异常阶段失败写入 trace 数据。
      *
-     * @param session current trace session
-     * @param stageName stage that failed
-     * @param startedAt stage start time
-     * @param throwable failure thrown by the stage
+     * @param session 当前 trace 会话
+     * @param stageName 失败阶段名
+     * @param startedAt 阶段开始时间
+     * @param throwable 阶段抛出的异常
      */
     @Override
     public void recordFailure(RagTraceSession session, String stageName, Instant startedAt, Throwable throwable) {
@@ -180,12 +180,12 @@ public class DefaultRagTraceService implements RagTraceService {
     }
 
     /**
-     * Finalizes the trace result and attempts to persist it.
+     * 完成 trace 结果收尾并尝试持久化。
      *
-     * @param session current trace session
-     * @param overallStatus overall request status
-     * @param snapshotMissOccurred whether a snapshot miss affected the request
-     * @return finalized trace result
+     * @param session 当前 trace 会话
+     * @param overallStatus 请求整体状态
+     * @param snapshotMissOccurred 快照缺失是否影响请求
+     * @return 已完成收尾的 trace 结果
      */
     @Override
     public RagTraceResult finish(RagTraceSession session, String overallStatus, boolean snapshotMissOccurred) {
@@ -200,8 +200,8 @@ public class DefaultRagTraceService implements RagTraceService {
                 session.stageResults(),
                 session.mcpToolSummaries());
         try {
-            // Persistence is best-effort here because the query response should still succeed even if trace
-            // storage is temporarily unavailable.
+            // 这里采用“尽力持久化”策略：
+            // 即使 trace 存储临时不可用，也不应影响查询主响应成功。
             ragTraceRecordService.persist(result);
         } catch (RuntimeException exception) {
             log.warn("Failed to persist rag trace result, traceId={}", result.traceId(), exception);
@@ -210,7 +210,7 @@ public class DefaultRagTraceService implements RagTraceService {
     }
 
     /**
-     * Clears the thread-local trace context after the request finishes.
+     * 请求结束后清理线程级 trace 上下文。
      */
     @Override
     public void clear() {

@@ -18,10 +18,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
- * Default admin-facing memory query service.
+ * 管理端记忆查询服务默认实现。
  *
- * <p>This service adapts persisted conversation memory into management-oriented result models so admin APIs can
- * inspect memory state without exposing the runtime memory context objects directly.
+ * <p>该服务将持久化会话记忆适配为管理端结果模型，
+ * 使管理 API 能够巡检记忆状态而不直接暴露运行时记忆上下文对象。
  */
 @Service
 public class DefaultAdminMemoryService implements AdminMemoryService {
@@ -41,7 +41,7 @@ public class DefaultAdminMemoryService implements AdminMemoryService {
     }
 
     /**
-     * Lists persisted conversations for admin inspection.
+        * 列出持久化会话供管理端巡检。
      *
      * @param conversationId optional exact conversation filter
      * @param limit maximum number of conversations to return
@@ -84,7 +84,7 @@ public class DefaultAdminMemoryService implements AdminMemoryService {
     }
 
     /**
-     * Loads one persisted conversation detail view.
+        * 加载单个持久化会话详情视图。
      *
      * @param conversationId exact conversation id
      * @param recentMessageLimit maximum number of recent messages to include
@@ -112,8 +112,7 @@ public class DefaultAdminMemoryService implements AdminMemoryService {
 
         ConversationMemorySummary summary = summaryRepository.findByConversationId(normalizedConversationId)
                 .orElse(ConversationMemorySummary.empty());
-        // Admin detail shows raw recent messages plus summary state separately so operators can tell whether a
-        // summary exists and how much of the conversation is still represented as explicit messages.
+        // 详情中分离展示最近原始消息与摘要状态，便于判断是否已生成摘要以及仍保留多少显式消息。
         List<AdminConversationMessageItem> recentMessages = messageRepository.findRecentByConversationId(
                         normalizedConversationId,
                         normalizeRecentMessageLimit(recentMessageLimit))

@@ -1,8 +1,11 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminMcpToolDetail(
         String toolId,
         String displayName,
@@ -33,3 +36,4 @@ public record AdminMcpToolDetail(
         remoteBaseUrl = remoteBaseUrl == null ? "" : remoteBaseUrl.trim();
     }
 }
+

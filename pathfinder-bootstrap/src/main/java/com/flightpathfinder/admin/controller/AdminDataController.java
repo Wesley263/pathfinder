@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Admin API for data ETL, stats and cache maintenance.
+ * 管理端数据 ETL、统计与缓存维护 API。
  *
- * <p>This controller belongs to the management surface because it exposes operational actions on imported
- * datasets and cache state. It is intentionally separate from user-facing APIs and from graph snapshot admin.
+ * <p>该控制器面向运维管理场景，暴露导入数据集与缓存状态的操作能力，
+ * 与用户侧 API 以及图快照管理接口保持职责隔离。
  */
 @RestController
 @RequestMapping("/api/admin/data")
@@ -36,7 +36,7 @@ public class AdminDataController {
     }
 
     /**
-     * Triggers admin-managed external dataset ETL.
+        * 触发管理端外部数据集 ETL。
      *
      * @param request optional reload request carrying graph key and operator reason
      * @return reload summary with dataset-level outcomes and current stats
@@ -50,7 +50,7 @@ public class AdminDataController {
     }
 
     /**
-     * Returns current aggregate stats for admin-managed data tables.
+        * 返回管理端数据表当前聚合统计。
      *
      * @return current data stats snapshot
      */
@@ -60,7 +60,7 @@ public class AdminDataController {
     }
 
     /**
-     * Invalidates cache surfaces that depend on imported data.
+        * 失效依赖导入数据的缓存面。
      *
      * @param request optional invalidate request carrying graph key and operator reason
      * @return cache invalidation summary

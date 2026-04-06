@@ -1,8 +1,11 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminFlightDiagnosticResult(
         String toolId,
         boolean toolAvailable,
@@ -34,3 +37,4 @@ public record AdminFlightDiagnosticResult(
         flights = List.copyOf(flights == null ? List.of() : flights);
     }
 }
+

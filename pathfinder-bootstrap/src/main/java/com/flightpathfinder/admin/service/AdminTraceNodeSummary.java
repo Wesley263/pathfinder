@@ -1,9 +1,12 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminTraceNodeSummary(
         String nodeName,
         String nodeType,
@@ -25,3 +28,4 @@ public record AdminTraceNodeSummary(
         attributes = Map.copyOf(new LinkedHashMap<>(attributes == null ? Map.of() : attributes));
     }
 }
+

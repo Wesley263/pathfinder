@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Mutable in-flight trace session for one query.
+ * 单次查询执行中的可变 trace 会话。
  *
- * <p>{@code requestId} identifies the external request, {@code conversationId} links the query back to
- * conversation memory when present, and {@code root.traceId()} is the unique trace key persisted for audit
- * lookup.
+ * <p>{@code requestId} 标识外部请求，{@code conversationId} 在存在时关联会话记忆，
+ * {@code root.traceId()} 则是用于持久化审计查询的唯一 trace 键。
  */
 public final class RagTraceSession {
 
@@ -20,11 +19,11 @@ public final class RagTraceSession {
     private final List<RagTraceToolSummary> mcpToolSummaries = new ArrayList<>();
 
     /**
-     * Creates a new in-flight trace session.
+     * 创建新的执行中 trace 会话。
      *
-     * @param requestId external request identifier
-     * @param conversationId optional conversation identifier
-     * @param root framework trace root backing this session
+     * @param requestId 外部请求标识
+     * @param conversationId 可选会话标识
+     * @param root 支撑该会话的 framework trace 根节点
      */
     public RagTraceSession(String requestId, String conversationId, TraceRoot root) {
         this.requestId = requestId == null ? "" : requestId.trim();
@@ -32,22 +31,37 @@ public final class RagTraceSession {
         this.root = root;
     }
 
+    /**
+     * 返回请求标识。
+     */
     public String requestId() {
         return requestId;
     }
 
+    /**
+     * 返回会话标识。
+     */
     public String conversationId() {
         return conversationId;
     }
 
+    /**
+     * 返回底层 trace 根节点。
+     */
     public TraceRoot root() {
         return root;
     }
 
+    /**
+     * 返回阶段结果集合（可追加）。
+     */
     public List<RagTraceStageResult> stageResults() {
         return stageResults;
     }
 
+    /**
+     * 返回 MCP 工具汇总集合（可追加）。
+     */
     public List<RagTraceToolSummary> mcpToolSummaries() {
         return mcpToolSummaries;
     }

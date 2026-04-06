@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.controller;
+﻿package com.flightpathfinder.rag.controller;
 
 import com.flightpathfinder.framework.convention.Result;
 import com.flightpathfinder.framework.web.Results;
@@ -9,28 +9,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Read-only overview controller for the current RAG feature wiring.
+ * 面向 RAG 结构概览的只读控制器。
  *
- * <p>This endpoint is operational introspection only. It reports implemented structure and
- * does not participate in request orchestration.</p>
+ * <p>它只用于运维和结构查看，报告的是当前已实现的 wiring 事实，不参与用户请求主链编排。</p>
  */
 @RestController
 @RequestMapping("/api/rag")
 public class RagOverviewController {
 
+    /** 面向 RAG 的概览服务。 */
     private final RagOverviewService ragOverviewService;
 
+    /**
+     * 构造概览控制器。
+     *
+     * @param ragOverviewService RAG 概览服务
+     */
     public RagOverviewController(RagOverviewService ragOverviewService) {
         this.ragOverviewService = ragOverviewService;
     }
 
     /**
-     * Returns the current RAG feature overview.
+     * 返回当前 RAG 结构概览。
      *
-     * @return structure/overview payload for introspection
+     * @return 面向结构查看的概览响应
      */
     @GetMapping("/structure")
     public Result<RagOverviewVO> structure() {
         return Results.success(ragOverviewService.currentOverview());
     }
 }
+

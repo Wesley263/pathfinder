@@ -1,7 +1,10 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
 import java.util.List;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminTraceDetailResult(
         AdminTraceRunSummary run,
         List<AdminTraceNodeSummary> stages,
@@ -15,3 +18,4 @@ public record AdminTraceDetailResult(
         mcpToolSummaries = List.copyOf(mcpToolSummaries == null ? List.of() : mcpToolSummaries);
     }
 }
+

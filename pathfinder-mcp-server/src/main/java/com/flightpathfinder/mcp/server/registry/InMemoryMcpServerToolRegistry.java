@@ -8,11 +8,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * In-process registry backed by the Spring-managed executor list.
+ * 基于 Spring 托管执行器列表的进程内注册器。
  *
- * <p>This registry keeps server-side tool exposure deterministic and cheap at runtime: descriptors are
- * materialized from executors once, while the executors themselves remain the single owners of tool
- * contracts and execution rules.
+ * <p>该实现让服务端工具暴露在运行期保持确定且低成本：
+ * 描述信息一次性由执行器物化，而执行器本身仍是工具契约与执行规则的唯一所有者。
  */
 public class InMemoryMcpServerToolRegistry implements McpServerToolRegistry {
 
@@ -24,9 +23,9 @@ public class InMemoryMcpServerToolRegistry implements McpServerToolRegistry {
     }
 
     /**
-     * Returns tool descriptors in registration order.
+     * 按注册顺序返回工具描述。
      *
-     * @return descriptors exposed by the current server process
+     * @return 当前服务进程对外暴露的工具描述列表
      */
     @Override
     public List<McpToolDescriptor> listTools() {
@@ -37,10 +36,10 @@ public class InMemoryMcpServerToolRegistry implements McpServerToolRegistry {
     }
 
     /**
-     * Looks up the executor that owns the requested tool id.
+     * 查询请求 toolId 的归属执行器。
      *
-     * @param toolId MCP tool id to resolve
-     * @return executor when registered, otherwise empty
+     * @param toolId 待解析的 MCP 工具 id
+     * @return 已注册则返回执行器，否则返回空
      */
     @Override
     public Optional<McpToolExecutor> findExecutor(String toolId) {

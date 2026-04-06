@@ -4,27 +4,27 @@ import com.flightpathfinder.rag.core.memory.ConversationMemorySummary;
 import java.util.Optional;
 
 /**
- * Repository for persisted conversation summaries.
+ * 会话摘要持久化仓储接口。
  *
- * <p>Summary storage is separate from raw messages so summary text can be regenerated or replaced without
- * mutating the underlying conversation history.
+ * <p>摘要存储与原始消息分离，
+ * 以便在不修改底层会话历史的前提下重算或替换摘要文本。
  */
 public interface ConversationMemorySummaryRepository {
 
     /**
-     * Finds the latest summary for the given conversation.
+     * 查询指定会话的最新摘要。
      *
-     * @param conversationId stable conversation identifier
-     * @return persisted summary when present
+     * @param conversationId 稳定会话标识
+     * @return 命中时返回已持久化摘要
      */
     Optional<ConversationMemorySummary> findByConversationId(String conversationId);
 
     /**
-     * Inserts or updates the summary text for the given conversation.
+     * 为指定会话插入或更新摘要文本。
      *
-     * @param conversationId stable conversation identifier
-     * @param summaryText compacted summary text
-     * @param summarizedTurnCount number of historical turns already represented by the summary
+     * @param conversationId 稳定会话标识
+     * @param summaryText 压缩后的摘要文本
+     * @param summarizedTurnCount 已由摘要覆盖的历史轮次数
      */
     void upsert(String conversationId, String summaryText, int summarizedTurnCount);
 }

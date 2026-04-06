@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * HTTP entry point for the server-side MCP protocol bridge.
+ * 服务端 MCP 协议桥的 HTTP 入口。
  *
- * <p>This controller only accepts protocol-level requests and delegates routing to the dispatcher. It
- * intentionally stays thin so JSON-RPC transport concerns do not leak into individual tool
- * implementations.
+ * <p>该控制器只接收协议层请求，并将路由交给分发器处理。
+ * 通过保持轻量职责，避免把 JSON-RPC 传输细节渗透到各个工具实现中。
  */
 @RestController
 @RequestMapping("/mcp")
@@ -33,10 +32,10 @@ public class McpProtocolController {
     }
 
     /**
-     * Handles a JSON-RPC MCP request.
+     * 处理一条 JSON-RPC MCP 请求。
      *
-     * @param request transport-level MCP request carrying the method name and parameters
-     * @return JSON-RPC response produced by the dispatcher
+     * @param request 传输层 MCP 请求，包含方法名与参数
+     * @return 分发器产出的 JSON-RPC 响应
      */
     @PostMapping
     public JsonRpcResponse<?> handle(@RequestBody JsonRpcRequest<Map<String, Object>> request) {
@@ -44,9 +43,9 @@ public class McpProtocolController {
     }
 
     /**
-     * Exposes a lightweight health view for infrastructure checks.
+     * 暴露轻量健康检查视图，供基础设施探活使用。
      *
-     * @return service status plus the number of registered tools currently exposed by this server
+     * @return 服务状态与当前服务端已注册工具数量
      */
     @GetMapping("/health")
     public Result<Map<String, Object>> health() {

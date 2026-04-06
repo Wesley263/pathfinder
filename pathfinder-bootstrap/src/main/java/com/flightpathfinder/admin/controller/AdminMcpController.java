@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Admin API for MCP catalog inspection.
+ * 面向 MCP 目录巡检的管理端 API。
  *
- * <p>This controller belongs to the management surface because it exposes tool descriptors, availability and
- * dependency hints rather than executing user-facing RAG flows.
+ * <p>该控制器用于查看工具描述、可用性与依赖提示，
+ * 而不是执行用户侧 RAG 流程，因此归属管理端能力面。
  */
 @RestController
 @RequestMapping("/api/admin/mcp/tools")
@@ -36,7 +36,7 @@ public class AdminMcpController {
     }
 
     /**
-     * Lists managed MCP tools from the current discovery state.
+        * 基于当前发现状态列出受管 MCP 工具。
      *
      * @param request list request controlling whether discovery should refresh first
      * @return admin-facing MCP tool list
@@ -48,7 +48,7 @@ public class AdminMcpController {
     }
 
     /**
-     * Loads one managed MCP tool detail view.
+        * 加载单个受管 MCP 工具详情视图。
      *
      * @param toolId managed tool id
      * @param refresh whether discovery should refresh the catalog before lookup

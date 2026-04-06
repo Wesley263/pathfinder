@@ -1,26 +1,25 @@
 package com.flightpathfinder.rag.core.memory;
 
 /**
- * Summary-management abstraction for conversation memory.
+ * 会话记忆摘要管理抽象。
  *
- * <p>Summary is modeled separately from raw message storage because compaction rules are policy-driven and
- * optional. The mainline can therefore use recent turns, summary, or both without coupling write storage to
- * summarization strategy.
+ * <p>摘要与原始消息存储分离建模，因为压缩规则是策略驱动且可选能力。
+ * 主链因此可以按需使用近期轮次、摘要或二者组合，而不把写存储与摘要策略耦合在一起。
  */
 public interface ConversationMemorySummaryService {
 
     /**
-     * Loads the latest summary for the conversation if summary support is enabled.
+     * 在启用摘要能力时加载会话最新摘要。
      *
-     * @param conversationId stable conversation identifier
-     * @return persisted summary or an empty summary object when unavailable
+     * @param conversationId 稳定会话标识
+     * @return 已持久化摘要；不可用时返回空摘要对象
      */
     ConversationMemorySummary loadLatestSummary(String conversationId);
 
     /**
-     * Refreshes summary state when the conversation has grown past the configured threshold.
+     * 当会话规模超过阈值时刷新摘要状态。
      *
-     * @param conversationId stable conversation identifier
+     * @param conversationId 稳定会话标识
      */
     void refreshIfNeeded(String conversationId);
 }

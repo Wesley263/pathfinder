@@ -1,5 +1,8 @@
-package com.flightpathfinder.admin.service;
+﻿package com.flightpathfinder.admin.service;
 
+/**
+ * 管理端服务层数据模型。
+ */
 public record AdminMcpToolSummaryItem(
         String toolId,
         String displayName,
@@ -20,3 +23,4 @@ public record AdminMcpToolSummaryItem(
         dependencyStatus = dependencyStatus == null ? "" : dependencyStatus.trim();
     }
 }
+

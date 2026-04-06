@@ -13,11 +13,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * JDBC-backed implementation of {@link FlightSearchService}.
+ * {@link FlightSearchService} 的 JDBC 实现。
  *
- * <p>This service is the server-side owner of {@code flight.search}. It reads airport, airline and route
- * tables directly from the MCP server datasource so the tool can stay independent from bootstrap business
- * modules.
+ * <p>该服务是 {@code flight.search} 的服务端能力承载者，
+ * 直接从 MCP 服务端数据源读取机场、航司与航线表，
+ * 以保持工具对 bootstrap 业务模块的独立性。
  */
 @Service
 public class JdbcFlightSearchService implements FlightSearchService {
@@ -59,10 +59,10 @@ public class JdbcFlightSearchService implements FlightSearchService {
     }
 
     /**
-     * Searches direct routes for the requested airport pair and expands them into a date window.
+     * 查询请求机场对的直飞航线，并扩展到日期窗口。
      *
-     * @param query validated direct-flight query
-     * @return ranked direct-flight options capped by {@code topK}
+     * @param query 已校验的直飞查询请求
+     * @return 按规则排序且受 {@code topK} 限制的直飞选项
      */
     @Override
     public List<FlightSearchOption> search(FlightSearchQuery query) {
@@ -101,8 +101,8 @@ public class JdbcFlightSearchService implements FlightSearchService {
         String airlineType = normalizeAirlineType(route.airlineType(), route.airlineCode());
         boolean lowCostCarrier = "LCC".equals(airlineType);
         double basePrice = route.basePriceCny() > 0D ? route.basePriceCny() : estimateBasePrice(route.distanceKm());
-        // Pricing stays heuristic here on purpose: the tool needs a stable diagnostic/search estimate even
-        // when the dataset only carries a base route price rather than a live fare quote.
+        // 这里有意采用启发式定价：即使数据集只有航线基准价而非实时票价，
+        // 工具仍需给出稳定可诊断的检索估算结果。
         double dynamicPrice = applyPricing(basePrice, airlineType, route.distanceKm(), travelDate, route.routeId());
         int durationMinutes = route.durationMinutes() > 0 ? route.durationMinutes() : estimateDuration(route.distanceKm());
 
@@ -170,8 +170,8 @@ public class JdbcFlightSearchService implements FlightSearchService {
         if (!normalized.isBlank()) {
             return normalized;
         }
-        // The fallback keeps search usable when airline metadata is incomplete, which is common in bootstrap
-        // data imports sourced from third-party route datasets.
+        // 当航司元数据不完整时，回退策略可保持检索可用。
+        // 这在来源于第三方航线数据的导入场景中较常见。
         return switch (airlineCode) {
             case "9C", "AK", "QZ", "FD", "TR", "FR", "W6", "U2" -> "LCC";
             case "CA", "MU", "CZ", "NH", "JL", "SQ", "LH", "BA", "AF" -> "FSC";

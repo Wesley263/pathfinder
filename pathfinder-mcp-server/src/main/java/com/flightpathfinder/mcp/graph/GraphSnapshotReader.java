@@ -4,18 +4,18 @@ import com.flightpathfinder.framework.readmodel.graph.GraphSnapshot;
 import java.util.Optional;
 
 /**
- * Read-only snapshot loading boundary on the MCP server side.
+ * MCP server 侧图快照只读加载边界。
  *
- * <p>The MCP server consumes published graph snapshots instead of owning graph construction,
- * which keeps the server isolated from bootstrap-side DB and rebuild responsibilities.</p>
+ * <p>MCP server 仅消费已发布快照，不拥有图构建职责，
+ * 从而与 bootstrap 侧数据库和重建流程解耦。</p>
  */
 public interface GraphSnapshotReader {
 
     /**
-     * Loads the latest published snapshot for the supplied graph key.
+     * 加载指定 graphKey 的最新已发布快照。
      *
-     * @param graphKey logical graph identifier
-     * @return latest snapshot when present
+     * @param graphKey 图逻辑标识
+     * @return 最新快照（存在时返回）
      */
     Optional<GraphSnapshot> loadLatest(String graphKey);
 }

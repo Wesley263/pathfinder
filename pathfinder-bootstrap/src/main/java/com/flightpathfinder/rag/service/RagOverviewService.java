@@ -3,17 +3,16 @@ package com.flightpathfinder.rag.service;
 import com.flightpathfinder.rag.controller.vo.RagOverviewVO;
 
 /**
- * Read-only overview service for the current RAG wiring.
+ * 当前 RAG 结构概览的只读服务。
  *
- * <p>This service exists so structure/overview endpoints can describe the current feature
- * surface without coupling controllers to MCP registry details.</p>
+ * <p>它为结构说明类接口提供只读视图，让 controller 不需要直接接触 MCP registry 等底层细节。</p>
  */
 public interface RagOverviewService {
 
     /**
-     * Returns the current overview of the RAG feature wiring.
+     * 返回当前已实现的 RAG 结构概览。
      *
-     * @return overview payload for architecture/operations introspection
+     * @return 面向架构/运维查看的概览对象
      */
     RagOverviewVO currentOverview();
 }

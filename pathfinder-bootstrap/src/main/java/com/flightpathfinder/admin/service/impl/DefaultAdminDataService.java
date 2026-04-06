@@ -22,11 +22,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * Default admin orchestration for ETL reload, data stats and cache invalidation.
+ * 管理端 ETL 重载、数据统计与缓存失效的默认编排实现。
  *
- * <p>This service belongs to the admin surface because it performs operational tasks on imported datasets and
- * downstream caches. It intentionally keeps graph snapshot rebuild out of {@code data/reload}; snapshot
- * rebuild remains a separate graph-admin action.
+ * <p>该服务面向管理端运维任务，负责导入数据集及其下游缓存治理。
+ * 其中 {@code data/reload} 不承担图快照重建职责，快照重建保持为独立图管理动作。
  */
 @Service
 public class DefaultAdminDataService implements AdminDataService {
@@ -89,7 +88,7 @@ public class DefaultAdminDataService implements AdminDataService {
     }
 
     /**
-     * Executes admin-triggered external dataset ETL and invalidates dependent read surfaces when data changes.
+        * 执行管理端触发的外部数据集 ETL，并在数据变化时失效依赖读面。
      *
      * @param graphKey graph key whose published snapshot should be invalidated if data changes
      * @param reason operator-supplied reason for the reload
@@ -105,8 +104,7 @@ public class DefaultAdminDataService implements AdminDataService {
                     .map(this::safeReload)
                     .toList();
             boolean hasMaterialChange = datasetResults.stream().anyMatch(result -> result.upsertedCount() > 0L);
-            // data/reload is now strictly "external data import". It only invalidates dependent surfaces so
-            // operators can choose when to rebuild the graph snapshot explicitly from graph admin.
+                    // 该接口严格限定为“外部数据导入”，仅失效依赖面，由运维自行决定何时在图管理侧重建快照。
             List<String> invalidatedScopes = hasMaterialChange
                     ? invalidateDataSurfaces(resolvedGraphKey)
                     : List.of();
@@ -129,7 +127,7 @@ public class DefaultAdminDataService implements AdminDataService {
     }
 
     /**
-     * Returns current aggregate counts for admin-managed datasets.
+        * 返回管理端数据集当前聚合计数。
      *
      * @return current table counts used by the admin stats view
      */
@@ -151,7 +149,7 @@ public class DefaultAdminDataService implements AdminDataService {
     }
 
     /**
-     * Invalidates cache surfaces that depend on imported data.
+        * 失效依赖导入数据的缓存面。
      *
      * @param graphKey graph key whose published snapshot should be invalidated
      * @param reason operator-supplied reason for the invalidation
@@ -193,8 +191,7 @@ public class DefaultAdminDataService implements AdminDataService {
     }
 
     private List<String> invalidateDataSurfaces(String graphKey) {
-        // Invalidation is separated from rebuild so operators can reload datasets first, then decide when to
-        // publish a fresh graph snapshot under controlled timing.
+        // 失效与重建解耦，便于先完成数据重载，再由运维在可控时机发布新图快照。
         graphSnapshotLifecycleService.invalidate(graphKey);
         clearLocalMcpToolRegistry();
         return List.of("graph-snapshot", "mcp-tool-registry");
@@ -225,8 +222,7 @@ public class DefaultAdminDataService implements AdminDataService {
     }
 
     private String determineOverallStatus(List<AdminDatasetReloadResult> datasetResults) {
-        // Dataset-level results are preserved so partial ETL success is visible instead of being flattened into
-        // a single opaque success/failure bit.
+        // 保留数据集粒度结果，避免把部分成功压缩为不可解释的单一成败标记。
         if (datasetResults.isEmpty()) {
             return "FAILED";
         }

@@ -1,4 +1,4 @@
 /**
- * Default admin service implementations backed by the current 2.0 runtime surfaces.
+ * 基于当前 2.0 运行时能力的管理端服务默认实现。
  */
 package com.flightpathfinder.admin.service.impl;
