@@ -1,7 +1,7 @@
-﻿package com.flightpathfinder.rag.core.trace;
+package com.flightpathfinder.rag.core.trace;
 
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param toolId 工具标识
  * @param status 执行状态
@@ -23,3 +23,5 @@ public record RagTraceToolSummary(
         message = message == null ? "" : message.trim();
     }
 }
+
+

@@ -1,12 +1,11 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import java.util.List;
 
 /**
  * 单个问题文本的意图分类边界。
  *
- * 说明。
- * 说明。
+ * 定义“输入问题 -> 候选意图分数”的标准能力。
  */
 public interface IntentClassifier {
 
@@ -18,3 +17,4 @@ public interface IntentClassifier {
      */
     List<IntentNodeScore> classifyTargets(String question);
 }
+

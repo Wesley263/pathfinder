@@ -1,10 +1,10 @@
-﻿package com.flightpathfinder;
+package com.flightpathfinder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 /**
- * 核心组件。
+ * 用于提供当前领域能力的默认实现。
  */
 
 @SpringBootApplication(scanBasePackages = "com.flightpathfinder")
@@ -15,5 +15,7 @@ public class PathfinderBootstrapApplication {
         SpringApplication.run(PathfinderBootstrapApplication.class, args);
     }
 }
+
+
 
 

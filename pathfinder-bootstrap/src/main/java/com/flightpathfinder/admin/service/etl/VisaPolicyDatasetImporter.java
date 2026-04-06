@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.service.etl;
+package com.flightpathfinder.admin.service.etl;
 
 import com.flightpathfinder.admin.config.AdminDataEtlProperties;
 import com.flightpathfinder.admin.service.AdminDatasetReloadResult;
@@ -14,10 +14,9 @@ import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * 说明。
+ * 签证政策数据导入器。
  *
- * 说明。
- * 说明。
+ * 读取 YAML 签证数据并增量写入 t_visa_policy 表。
  */
 @Service
 public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
@@ -58,9 +57,9 @@ public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 说明。
+          * 返回当前导入器负责的数据集标识。
      *
-     * @return 返回结果。
+      * @return 固定数据集标识 visa
      */
     @Override
     public String datasetId() {
@@ -68,9 +67,9 @@ public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 说明。
+          * 执行签证政策数据重载。
      *
-     * @return 返回结果。
+      * @return 本次重载的处理统计与状态
      */
     @Override
     public AdminDatasetReloadResult reload() {

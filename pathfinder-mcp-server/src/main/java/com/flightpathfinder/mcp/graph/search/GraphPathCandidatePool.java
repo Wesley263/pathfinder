@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.search;
+package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredCandidatePath;
 import java.util.ArrayList;
@@ -10,8 +10,7 @@ import java.util.TreeSet;
 /**
  * 已完成候选路径的有界池。
  *
- * 说明。
- * 说明。
+ * 维护准入候选并在容量受限时淘汰最低分项。
  */
 final class GraphPathCandidatePool {
 
@@ -55,9 +54,9 @@ final class GraphPathCandidatePool {
     }
 
     /**
-     * 说明。
+     * 判断是否可以提前停止搜索。
      *
-     * 说明。
+     * 当候选数量达到阈值且 frontier 最优分也无法超过当前最差候选时停止。
      */
     boolean shouldStop(double bestFrontierScore, GraphPathFrontierPolicy policy) {
         return candidates.size() >= policy.earlyStopCandidateCount()

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.flightsearch;
+package com.flightpathfinder.mcp.flightsearch;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,11 +13,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 基于 JDBC 的直飞航班查询服务实现。
  *
- * 说明。
- * 说明。
- * 说明。
+ * 按机场对查询航线，并结合日期窗口生成可排序的候选航班结果。
  */
 @Service
 public class JdbcFlightSearchService implements FlightSearchService {
@@ -62,7 +60,7 @@ public class JdbcFlightSearchService implements FlightSearchService {
      * 查询请求机场对的直飞航线，并扩展到日期窗口。
      *
      * @param query 已校验的直飞查询请求
-     * @return 返回结果。
+        * @return 价格与时长排序后的航班候选列表
      */
     @Override
     public List<FlightSearchOption> search(FlightSearchQuery query) {
@@ -231,3 +229,4 @@ public class JdbcFlightSearchService implements FlightSearchService {
             double distanceKm) {
     }
 }
+

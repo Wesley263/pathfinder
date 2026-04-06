@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.citycost;
+package com.flightpathfinder.mcp.citycost;
 
 import java.util.LinkedHashSet;
 import java.util.List;

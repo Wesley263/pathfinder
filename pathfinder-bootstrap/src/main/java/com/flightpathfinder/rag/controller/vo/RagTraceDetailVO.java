@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.controller.vo;
+package com.flightpathfinder.rag.controller.vo;
 
 import java.util.List;
 

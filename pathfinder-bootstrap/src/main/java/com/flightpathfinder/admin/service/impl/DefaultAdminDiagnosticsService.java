@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.service.impl;
+package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminAirportLookupResult;
 import com.flightpathfinder.admin.service.AdminAirportSummary;
@@ -33,8 +33,7 @@ import org.springframework.stereotype.Service;
 /**
  * 管理端辅助诊断服务默认实现。
  *
- * 说明。
- * 说明。
+ * 聚合 MCP 远端执行结果、数据库观测数据与图快照状态，形成可排障的管理视图。
  */
 @Service
 public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
@@ -87,10 +86,10 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
     }
 
     /**
-        * 说明。
+          * 调用 flight.search 工具并返回结构化诊断结果。
      *
-     * @param query 参数说明。
-     * @return 返回结果。
+      * @param query 航班诊断查询参数
+      * @return 航班诊断结果
      */
     @Override
     public AdminFlightDiagnosticResult searchFlights(AdminFlightDiagnosticQuery query) {
@@ -149,10 +148,10 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
     }
 
     /**
-        * 说明。
+          * 调用 graph.path.search 工具并返回结构化路径诊断结果。
      *
-     * @param query 参数说明。
-     * @return 返回结果。
+      * @param query 路径诊断查询参数
+      * @return 路径诊断结果
      */
     @Override
     public AdminPathDiagnosticResult searchPaths(AdminPathDiagnosticQuery query) {
@@ -227,8 +226,8 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
     /**
         * 直接从已导入运维数据集中查询单个机场。
      *
-     * @param iataCode 参数说明。
-     * @return 返回结果。
+     * @param iataCode 机场 IATA 三字码
+     * @return 机场诊断与快照观测结果
      */
     @Override
     public AdminAirportLookupResult lookupAirport(String iataCode) {

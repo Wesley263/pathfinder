@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 /**
  * 会话记忆的最小内存回退实现。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  * 用于保证本地开发场景在不改变上层记忆契约的前提下仍可运行。
  */
 @Repository
@@ -68,3 +68,5 @@ public class InMemoryConversationMemoryStore implements ConversationMemoryStore 
         });
     }
 }
+
+

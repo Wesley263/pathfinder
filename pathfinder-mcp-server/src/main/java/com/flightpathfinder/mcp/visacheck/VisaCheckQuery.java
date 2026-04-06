@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.visacheck;
+package com.flightpathfinder.mcp.visacheck;
 
 import java.util.List;
 import java.util.Locale;

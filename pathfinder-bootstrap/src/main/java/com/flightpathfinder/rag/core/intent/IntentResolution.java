@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import java.util.Comparator;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * 意图解析总结果。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param subQuestionIntents 每个子问题对应的候选意图打分列表
  * @param splitResult 参数说明。
@@ -42,3 +42,5 @@ public record IntentResolution(List<SubQuestionIntent> subQuestionIntents, Inten
                 .max(Comparator.comparingDouble(IntentNodeScore::score));
     }
 }
+
+

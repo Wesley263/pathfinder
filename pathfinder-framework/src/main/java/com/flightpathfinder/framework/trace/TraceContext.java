@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.trace;
+package com.flightpathfinder.framework.trace;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * 追踪根节点线程上下文持有器。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  */
 public final class TraceContext {
 
@@ -44,4 +44,6 @@ public final class TraceContext {
         ROOT_HOLDER.remove();
     }
 }
+
+
 

@@ -1,13 +1,13 @@
-﻿package com.flightpathfinder.admin.config;
+package com.flightpathfinder.admin.config;
 
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * 管理端数据表结构初始化器。
  *
- * 说明。
+ * 在启动阶段确保机场、航司、航线、签证和城市成本相关表及索引存在。
  */
 @Component
 public class JdbcAdminDataSchemaInitializer {
@@ -161,11 +161,12 @@ public class JdbcAdminDataSchemaInitializer {
     );
 
     /**
-        * 说明。
+        * 执行管理端数据表结构初始化。
      *
-     * @param jdbcTemplate 参数说明。
+     * @param jdbcTemplate JDBC 执行模板
      */
     public JdbcAdminDataSchemaInitializer(JdbcTemplate jdbcTemplate) {
         DDL.forEach(jdbcTemplate::execute);
     }
 }
+

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.server.registry;
+package com.flightpathfinder.mcp.server.registry;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolDescriptor;
 import com.flightpathfinder.mcp.server.executor.McpToolExecutor;
@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * 说明。
+ * 内存版 MCP 工具注册表实现。
  *
- * 说明。
+ * 基于执行器列表构建工具索引并对外提供查询能力，
  * 描述信息一次性由执行器物化，而执行器本身仍是工具契约与执行规则的唯一所有者。
  */
 public class InMemoryMcpServerToolRegistry implements McpServerToolRegistry {
@@ -36,9 +36,9 @@ public class InMemoryMcpServerToolRegistry implements McpServerToolRegistry {
     }
 
     /**
-     * 说明。
+        * 按工具标识查找执行器。
      *
-     * @param toolId 参数说明。
+        * @param toolId 工具标识
      * @return 已注册则返回执行器，否则返回空
      */
     @Override
@@ -46,3 +46,4 @@ public class InMemoryMcpServerToolRegistry implements McpServerToolRegistry {
         return Optional.ofNullable(executorMap.get(toolId));
     }
 }
+

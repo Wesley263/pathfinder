@@ -1,11 +1,11 @@
-﻿package com.flightpathfinder.framework.exception;
+package com.flightpathfinder.framework.exception;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.flightpathfinder.framework.errorcode.BaseErrorCode;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class ServiceExceptionTest {
 
@@ -25,4 +25,6 @@ class ServiceExceptionTest {
         assertEquals("custom message", exception.getErrorMessage());
     }
 }
+
+
 

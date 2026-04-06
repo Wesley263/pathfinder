@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.model;
+package com.flightpathfinder.mcp.graph.model;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 /**
  * 内存恢复后的航旅图。
  *
- * 说明。
+ * 提供节点、邻接关系和航段边集合的只读访问能力，供路径搜索服务消费。
  */
 public class RestoredFlightGraph {
 
-    /** 注释说明。 */
+    /** 机场代码到节点数据的索引。 */
     private final Map<String, RestoredGraphNode> nodes;
-    /** 注释说明。 */
+    /** 起点-终点到边集合的二维索引。 */
     private final Map<String, Map<String, List<RestoredGraphEdge>>> edges;
 
     /**
@@ -34,7 +34,7 @@ public class RestoredFlightGraph {
      * 判断节点是否存在。
      *
      * @param airportCode 机场代码
-     * @return 返回结果。
+     * @return 图中存在该机场节点时返回 true
      */
     public boolean hasNode(String airportCode) {
         return nodes.containsKey(airportCode);
@@ -61,7 +61,7 @@ public class RestoredFlightGraph {
     }
 
     /**
-     * 说明。
+        * 查询两个机场之间的候选航段。
      *
      * @param origin 起点机场
      * @param destination 终点机场

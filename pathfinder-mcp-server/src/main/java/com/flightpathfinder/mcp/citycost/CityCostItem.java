@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.citycost;
+package com.flightpathfinder.mcp.citycost;
 
 /**
  * 单个城市成本条目。

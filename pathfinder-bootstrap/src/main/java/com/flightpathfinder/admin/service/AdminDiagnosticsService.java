@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.admin.service;
+package com.flightpathfinder.admin.service;
 
 /**
  * 管理端辅助诊断查询服务。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  * 不属于终端用户产品流程。
  */
 public interface AdminDiagnosticsService {
@@ -32,3 +32,5 @@ public interface AdminDiagnosticsService {
      */
     AdminAirportLookupResult lookupAirport(String iataCode);
 }
+
+

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.mcp;
+package com.flightpathfinder.rag.core.mcp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class InMemoryLocalMcpToolRegistryTest {
 
@@ -28,4 +28,6 @@ class InMemoryLocalMcpToolRegistryTest {
         assertTrue(registry.findByToolId("missing.tool").isEmpty());
     }
 }
+
+
 

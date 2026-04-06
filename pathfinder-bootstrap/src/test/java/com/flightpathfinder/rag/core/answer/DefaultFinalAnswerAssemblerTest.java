@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.answer;
+package com.flightpathfinder.rag.core.answer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class DefaultFinalAnswerAssemblerTest {
 
@@ -192,4 +192,6 @@ class DefaultFinalAnswerAssemblerTest {
         return new McpContext("PARTIAL_FAILURE", "snapshot miss", List.of(mcpIntent()), List.of(execution));
     }
 }
+
+
 

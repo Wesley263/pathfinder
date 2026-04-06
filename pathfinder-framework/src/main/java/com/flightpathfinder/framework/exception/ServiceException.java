@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.exception;
+package com.flightpathfinder.framework.exception;
 
 import com.flightpathfinder.framework.errorcode.ErrorCode;
 /**

@@ -1,11 +1,11 @@
-﻿package com.flightpathfinder.framework.readmodel.graph;
+package com.flightpathfinder.framework.readmodel.graph;
 
 /**
- * 说明。
+ * 图快照 schema 版本常量与兼容性判断工具。
  */
 public final class GraphSnapshotVersions {
 
-    /** 注释说明。 */
+    /** 当前服务支持的图快照 schema 版本。 */
     public static final String CURRENT_SCHEMA_VERSION = "1.0";
 
     /** 工具类禁止实例化。 */
@@ -13,10 +13,10 @@ public final class GraphSnapshotVersions {
     }
 
     /**
-     * 说明。
+     * 判断给定 schema 版本是否受当前服务支持。
      *
      * @param schemaVersion 待判断版本
-     * @return 返回结果。
+     * @return 受支持时返回 true
      */
     public static boolean supports(String schemaVersion) {
         return CURRENT_SCHEMA_VERSION.equals(schemaVersion);

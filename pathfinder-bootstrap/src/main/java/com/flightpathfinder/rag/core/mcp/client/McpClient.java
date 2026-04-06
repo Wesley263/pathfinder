@@ -1,11 +1,11 @@
-﻿package com.flightpathfinder.rag.core.mcp.client;
+package com.flightpathfinder.rag.core.mcp.client;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
 import com.flightpathfinder.framework.protocol.mcp.McpToolDescriptor;
 import java.util.List;
 /**
- * 核心组件。
+ * 用于提供当前领域能力的默认实现。
  */
 public interface McpClient {
 
@@ -13,5 +13,7 @@ public interface McpClient {
 
     McpToolCallResult callTool(McpToolCallRequest request);
 }
+
+
 
 

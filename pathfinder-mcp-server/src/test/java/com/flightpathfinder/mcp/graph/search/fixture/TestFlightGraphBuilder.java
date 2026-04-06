@@ -1,10 +1,10 @@
-﻿package com.flightpathfinder.mcp.graph.search.fixture;
+package com.flightpathfinder.mcp.graph.search.fixture;
 
 import com.flightpathfinder.mcp.graph.model.RestoredFlightGraph;
 import com.flightpathfinder.mcp.graph.model.RestoredGraphEdge;
 import com.flightpathfinder.mcp.graph.model.RestoredGraphNode;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 public final class TestFlightGraphBuilder {
 
@@ -54,4 +54,6 @@ public final class TestFlightGraphBuilder {
         return delegate.build();
     }
 }
+
+
 

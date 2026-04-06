@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory.repository;
+package com.flightpathfinder.rag.core.memory.repository;
 
 import java.time.Instant;
 

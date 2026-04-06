@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.trace;
+package com.flightpathfinder.rag.core.trace;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,10 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 说明。
+ * Rag 追踪持久化服务默认实现。
  *
- * 说明。
- * 说明。
+ * 将运行结果转换为 run、node、tool 三类持久化记录并写入数据库。
  */
 @Service
 public class DefaultRagTraceRecordService implements RagTraceRecordService {
@@ -43,9 +42,9 @@ public class DefaultRagTraceRecordService implements RagTraceRecordService {
     }
 
     /**
-     * 说明。
+        * 持久化一次完整的 Rag 追踪结果。
      *
-     * @param traceResult 参数说明。
+        * @param traceResult 请求执行完成后的追踪结果
      */
     @Override
     @Transactional
@@ -137,7 +136,7 @@ public class DefaultRagTraceRecordService implements RagTraceRecordService {
         }
         if ("mcp-execution".equals(nodeName)) {
             // 工具执行归属检索阶段，因此以内部节点形式持久化；
-            // 说明。
+            // 摘要里保留工具数量，便于管理端快速判断检索阶段调用规模。
             Object toolCount = attributes.get("toolCount");
             return toolCount == null ? "" : "toolCount=" + toolCount;
         }
@@ -157,3 +156,4 @@ public class DefaultRagTraceRecordService implements RagTraceRecordService {
         return text.isBlank() ? defaultValue : text;
     }
 }
+

@@ -1,7 +1,7 @@
-﻿/**
- * 说明。
+/**
+ * Rag 阶段编排核心包。
  *
- * 说明。
- * 说明。
+ * 包含阶段一输入输出模型与默认编排实现。
  */
 package com.flightpathfinder.rag.core.pipeline;
+

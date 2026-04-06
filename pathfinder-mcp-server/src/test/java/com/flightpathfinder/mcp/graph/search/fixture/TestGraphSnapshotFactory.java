@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.search.fixture;
+package com.flightpathfinder.mcp.graph.search.fixture;
 
 import com.flightpathfinder.mcp.graph.model.RestoredCandidatePath;
 import com.flightpathfinder.mcp.graph.model.RestoredFlightGraph;
@@ -7,7 +7,7 @@ import com.flightpathfinder.mcp.graph.model.RestoredPathLeg;
 import java.util.Arrays;
 import java.util.List;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 public final class TestGraphSnapshotFactory {
 
@@ -82,4 +82,6 @@ public final class TestGraphSnapshotFactory {
         return new RestoredCandidatePath(legs, totalPrice, totalDuration, totalDistance, averageOnTime);
     }
 }
+
+
 

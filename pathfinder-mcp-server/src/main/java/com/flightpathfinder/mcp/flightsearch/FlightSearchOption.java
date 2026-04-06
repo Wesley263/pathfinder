@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.flightsearch;
+package com.flightpathfinder.mcp.flightsearch;
 
 /**
  * 直飞检索候选项。

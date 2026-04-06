@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.rag.service.model;
+package com.flightpathfinder.rag.service.model;
 
 /**
  * 流式查询命令。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param question 用户问题
  * @param conversationId 会话标识
@@ -20,3 +20,5 @@ public record RagStreamCommand(String question, String conversationId, String re
         requestId = requestId == null ? "" : requestId.trim();
     }
 }
+
+

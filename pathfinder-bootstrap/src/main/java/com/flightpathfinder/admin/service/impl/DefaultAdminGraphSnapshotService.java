@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.service.impl;
+package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminGraphSnapshotService;
 import com.flightpathfinder.admin.service.AdminGraphSnapshotStatus;
@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 /**
  * 图快照巡检与生命周期控制的管理端默认服务。
  *
- * 说明。
- * 说明。
+ * 负责查询当前快照状态，并提供重建与失效控制能力。
  */
 @Service
 public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotService {
@@ -37,8 +36,8 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
     /**
         * 加载指定图键当前已发布的快照状态。
      *
-     * @param graphKey 参数说明。
-     * @return 返回结果。
+     * @param graphKey 图标识
+     * @return 当前快照状态
      */
     @Override
     public AdminGraphSnapshotStatus currentSnapshot(String graphKey) {
@@ -70,9 +69,9 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
     /**
         * 重建并重新发布图快照。
      *
-     * @param graphKey 参数说明。
-     * @param reason 参数说明。
-     * @return 返回结果。
+     * @param graphKey 图标识
+     * @param reason 重建原因
+     * @return 重建后快照状态
      */
     @Override
     public AdminGraphSnapshotStatus rebuild(String graphKey, String reason) {
@@ -93,9 +92,9 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
     /**
         * 失效当前已发布快照，不执行重建。
      *
-     * @param graphKey 参数说明。
-     * @param reason 参数说明。
-     * @return 返回结果。
+     * @param graphKey 图标识
+     * @param reason 失效原因
+     * @return 失效结果
      */
     @Override
     public AdminGraphSnapshotStatus invalidate(String graphKey, String reason) {
@@ -151,3 +150,4 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
                 : reason.trim();
     }
 }
+

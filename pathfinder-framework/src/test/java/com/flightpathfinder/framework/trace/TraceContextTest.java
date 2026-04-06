@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.trace;
+package com.flightpathfinder.framework.trace;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class TraceContextTest {
 
@@ -34,4 +34,6 @@ class TraceContextTest {
         assertTrue(TraceContext.currentRoot().isEmpty());
     }
 }
+
+
 

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.retrieve;
+package com.flightpathfinder.rag.core.retrieve;
 
 import com.flightpathfinder.infra.ai.embedding.EmbeddingService;
 import com.flightpathfinder.rag.core.intent.IntentSplitResult;
@@ -19,27 +19,27 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 向量增强知识检索器。
  *
- * 说明。
- * 说明。
+ * 先执行向量相似度检索，再混合词法得分排序；
+ * 当向量检索不可用时自动回退到目录式检索器。
  */
 @Service
 @Primary
 public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
 
-    /** 注释说明。 */
+    /** 目录式兜底检索器。 */
     private final DefaultKnowledgeRetriever fallbackKnowledgeRetriever;
-    /** 注释说明。 */
+    /** 向量服务。 */
     private final EmbeddingService embeddingService;
-    /** 注释说明。 */
+    /** 文档向量缓存，降低重复向量化开销。 */
     private final Map<String, List<Float>> documentEmbeddingCache = new ConcurrentHashMap<>();
 
     /**
-     * 说明。
+     * 构造向量增强检索器。
      *
      * @param fallbackKnowledgeRetriever 目录式兜底检索器
-     * @param embeddingService 参数说明。
+     * @param embeddingService 向量服务
      */
     public EmbeddingKnowledgeRetriever(DefaultKnowledgeRetriever fallbackKnowledgeRetriever,
                                        EmbeddingService embeddingService) {
@@ -48,11 +48,11 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 执行向量增强检索，失败时回退目录式检索。
      *
      * @param rewriteResult 改写结果
      * @param intentSplitResult 分流结果
-     * @return 返回结果。
+        * @return 知识库检索上下文
      */
     @Override
     public KbContext retrieve(RewriteResult rewriteResult, IntentSplitResult intentSplitResult) {
@@ -88,12 +88,12 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 针对单个意图执行向量检索。
      *
      * @param catalog 当前知识目录
      * @param rewriteResult 改写结果
-     * @param kbIntent 参数说明。
-     * @return 返回结果。
+        * @param kbIntent KB 意图
+        * @return 检索条目
      * @throws Exception 当反射读取文档字段失败时抛出异常
      */
     private List<KbRetrievalItem> retrieveForIntent(Map<String, List<Object>> catalog,
@@ -137,10 +137,10 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 计算并返回文档向量。
      *
      * @param document 文档对象
-     * @return 返回结果。
+        * @return 文档向量
      */
     private List<Float> embedDocument(Object document) {
         try {
@@ -154,13 +154,13 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 把候选文档映射为检索条目。
      *
-     * @param kbIntent 参数说明。
+        * @param kbIntent 命中意图
      * @param document 原始文档对象
      * @param score 文档得分
      * @param rank 排名
-     * @return 返回结果。
+        * @return 检索条目
      */
     private KbRetrievalItem toItem(ResolvedIntent kbIntent, Object document, double score, int rank) {
         try {
@@ -182,7 +182,7 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 去重同一意图下重复文档，保留高分项。
      *
      * @param items 原始条目列表
      * @return 去重后的条目列表
@@ -200,7 +200,7 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 按集合维度构建摘要。
      *
      * @param items 检索条目列表
      * @return 按集合统计的摘要文本
@@ -220,8 +220,6 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     /**
      * 通过反射读取目录式检索器中的知识目录。
      *
-     * 说明。
-     *
      * @return 当前知识目录
      * @throws Exception 当反射读取失败时抛出异常
      */
@@ -236,7 +234,7 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
      * 决定本次检索应使用的问题文本。
      *
      * @param rewriteResult 改写结果
-     * @param kbIntent 参数说明。
+    * @param kbIntent KB 意图
      * @return 优先使用子问题文本，否则退回改写主问题
      */
     private String resolveQuery(RewriteResult rewriteResult, ResolvedIntent kbIntent) {
@@ -250,7 +248,7 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
      * 计算词法得分，用于与向量相似度混合。
      *
      * @param query 当前检索问题
-     * @param kbIntent 参数说明。
+    * @param kbIntent KB 意图
      * @param document 待评分文档
      * @return 词法得分
      * @throws Exception 当文档字段读取失败时抛出异常

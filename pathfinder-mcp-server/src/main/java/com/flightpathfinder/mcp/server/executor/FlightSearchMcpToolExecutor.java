@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.server.executor;
+package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -14,10 +14,9 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * flight.search MCP 工具执行器。
  *
- * 说明。
- * 说明。
+ * 面向服务端数据库能力提供直飞航班查询。
  */
 @Component
 public class FlightSearchMcpToolExecutor implements McpToolExecutor {
@@ -31,9 +30,9 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 说明。
+        * 返回 flight.search 的工具描述。
      *
-     * @return 返回结果。
+        * @return MCP 工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -67,11 +66,10 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 说明。
+        * 执行一次航班查询。
      *
-     * @param request 参数说明。
-     * @return 返回结果。
-     * 说明。
+        * @param request 工具调用请求
+        * @return 结构化航班查询结果
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -135,7 +133,7 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
         }
 
         try {
-            // 说明。
+            // 在入口层统一校验日期格式，避免下游服务处理非法时间文本。
             return new FlightSearchQuery(origin, destination, LocalDate.parse(date), flexibilityDays, topK);
         } catch (DateTimeParseException exception) {
             throw new IllegalArgumentException("date must be in yyyy-MM-dd format");
@@ -210,3 +208,4 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
         return Integer.parseInt(String.valueOf(rawValue));
     }
 }
+

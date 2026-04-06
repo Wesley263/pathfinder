@@ -1,11 +1,14 @@
-﻿package com.flightpathfinder.infra.ai.chat;
+package com.flightpathfinder.infra.ai.chat;
 
 import com.flightpathfinder.infra.ai.model.ModelCapability;
 import com.flightpathfinder.infra.ai.model.ModelRoutingService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 /**
- * 说明。
+ * 默认占位聊天实现。
+ *
+ * 当业务侧未提供真实 ChatService Bean 时启用，
+ * 用于保持链路可运行并返回明确的占位提示。
  */
 
 @Component

@@ -1,11 +1,11 @@
-﻿package com.flightpathfinder.rag.core.trace;
+package com.flightpathfinder.rag.core.trace;
 
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param nodeName 节点名称
  * @param nodeType 参数说明。
@@ -35,3 +35,5 @@ public record RagTraceNodeDetail(
         attributes = Map.copyOf(new LinkedHashMap<>(attributes == null ? Map.of() : attributes));
     }
 }
+
+

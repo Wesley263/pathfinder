@@ -1,11 +1,11 @@
-﻿package com.flightpathfinder.mcp.riskevaluate;
+package com.flightpathfinder.mcp.riskevaluate;
 
 /**
  * 中转风险评估的服务端契约。
  *
- * 说明。
+ * 定义中转风险评估统一入口，
  * 因为它需要同时执行数据源查询与本地规则评分；
- * 说明。
+ * 输出可解释的风险等级、分数与建议。
  */
 public interface RiskEvaluateService {
 
@@ -17,3 +17,4 @@ public interface RiskEvaluateService {
      */
     RiskEvaluateResult evaluate(RiskEvaluateQuery query);
 }
+

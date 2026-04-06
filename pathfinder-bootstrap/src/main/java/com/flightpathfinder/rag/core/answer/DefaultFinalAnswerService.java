@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.answer;
+package com.flightpathfinder.rag.core.answer;
 
 import com.flightpathfinder.rag.core.retrieve.RetrievalResult;
 import org.springframework.stereotype.Service;
@@ -6,19 +6,18 @@ import org.springframework.stereotype.Service;
 /**
  * 最终回答阶段的默认编排器。
  *
- * 说明。
- * 说明。
+ * 串联输入装配器与文本生成器，输出结构化回答结果。
  */
 @Service
 public class DefaultFinalAnswerService implements FinalAnswerService {
 
-    /** 注释说明。 */
+    /** 负责装配回答输入。 */
     private final FinalAnswerAssembler finalAnswerAssembler;
     /** 负责生成最终回答文本。 */
     private final FinalAnswerTextComposer finalAnswerTextComposer;
 
     /**
-     * 说明。
+        * 构造最终回答编排器。
      *
      * @param finalAnswerAssembler 回答输入装配器
      * @param finalAnswerTextComposer 回答文本生成器
@@ -30,9 +29,9 @@ public class DefaultFinalAnswerService implements FinalAnswerService {
     }
 
     /**
-     * 说明。
+        * 生成最终回答结果。
      *
-     * @param retrievalResult 参数说明。
+        * @param retrievalResult 检索阶段结果
      * @return 结构化回答结果
      */
     @Override
@@ -55,7 +54,7 @@ public class DefaultFinalAnswerService implements FinalAnswerService {
     }
 
     /**
-     * 说明。
+        * 根据回答输入推导回答状态。
      *
      * @param promptInput 回答输入模型
      * @return 回答状态

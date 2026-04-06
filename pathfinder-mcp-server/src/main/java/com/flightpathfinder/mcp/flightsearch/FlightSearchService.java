@@ -1,13 +1,11 @@
-﻿package com.flightpathfinder.mcp.flightsearch;
+package com.flightpathfinder.mcp.flightsearch;
 
 import java.util.List;
 
 /**
  * 直飞检索的服务端契约。
  *
- * 说明。
- * 说明。
- * 说明。
+ * 定义面向机场对和日期窗口的直飞检索能力。
  */
 public interface FlightSearchService {
 
@@ -19,3 +17,4 @@ public interface FlightSearchService {
      */
     List<FlightSearchOption> search(FlightSearchQuery query);
 }
+

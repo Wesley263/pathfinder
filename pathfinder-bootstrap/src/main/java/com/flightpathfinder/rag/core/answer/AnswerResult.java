@@ -1,11 +1,11 @@
-﻿package com.flightpathfinder.rag.core.answer;
+package com.flightpathfinder.rag.core.answer;
 
 import java.util.List;
 
 /**
  * 最终回答结果。
  *
- * 说明。
+ * 封装回答文本、状态及证据摘要。
  *
  * @param status 回答总体状态
  * @param answerText 最终回答文本

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.answer;
+package com.flightpathfinder.rag.core.answer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class DefaultFinalAnswerServiceTest {
 
@@ -132,4 +132,6 @@ class DefaultFinalAnswerServiceTest {
         return new KbContext("SUCCESS", "kb ready", List.of(), List.of(item), false, "");
     }
 }
+
+
 

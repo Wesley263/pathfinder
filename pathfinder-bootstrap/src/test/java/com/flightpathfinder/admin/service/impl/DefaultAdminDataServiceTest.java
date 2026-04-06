@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.service.impl;
+package com.flightpathfinder.admin.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -31,7 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 
 @ExtendWith(MockitoExtension.class)
@@ -188,4 +188,6 @@ class DefaultAdminDataServiceTest {
                 Map.of());
     }
 }
+
+
 

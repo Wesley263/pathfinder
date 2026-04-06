@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * 会话记忆模块配置项。
  *
- * 说明。
- * 说明。
+ * 统一管理近期轮次保留与摘要压缩相关参数。
  */
 @Component
 @ConfigurationProperties(prefix = "pathfinder.rag.memory")
@@ -78,3 +77,4 @@ public class ConversationMemoryProperties {
         this.summaryMaxChars = Math.max(120, summaryMaxChars);
     }
 }
+

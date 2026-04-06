@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.mcp;
+package com.flightpathfinder.rag.core.mcp;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolDescriptor;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.stereotype.Component;
 /**
- * 核心组件。
+ * 用于提供当前领域能力的默认实现。
  */
 
 @Component
@@ -31,5 +31,7 @@ public class InMemoryLocalMcpToolRegistry implements LocalMcpToolRegistry {
         toolsHolder.set(List.copyOf(tools));
     }
 }
+
+
 
 

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.controller;
+package com.flightpathfinder.rag.controller;
 
 import com.flightpathfinder.framework.context.RequestIdHolder;
 import com.flightpathfinder.rag.controller.request.RagChatRequest;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
- * 说明。
+ * RAG 流式对话控制器。
  *
- * 说明。
- * 说明。
+ * 提供 `POST /api/rag/chat/stream` SSE 接口，
+ * 将流式编排服务产出的事件推送给前端。
  */
 @RestController
 @RequestMapping("/api/rag")
@@ -38,10 +38,10 @@ public class RagChatStreamController {
     }
 
     /**
-     * 说明。
+        * 发起流式对话。
      *
      * @param request 用户面对话请求
-     * @return 返回结果。
+        * @return SSE 发射器
      */
     @PostMapping(path = "/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter chatStream(@Valid @RequestBody RagChatRequest request) {
@@ -57,24 +57,24 @@ public class RagChatStreamController {
     /**
      * 流式事件写入器实现。
      *
-     * 说明。
+     * 负责把领域事件转换为 SSE event 并发送。
      */
     private static final class SseRagStreamEventWriter implements RagStreamEventWriter {
 
-        /** 注释说明。 */
+        /** SSE 发射器。 */
         private final SseEmitter emitter;
 
         /**
-         * 说明。
+         * 构造 SSE 事件写入器。
          *
-         * @param emitter 参数说明。
+         * @param emitter SSE 发射器
          */
         private SseRagStreamEventWriter(SseEmitter emitter) {
             this.emitter = emitter;
         }
 
         /**
-         * 说明。
+         * 发送单条流式事件。
          *
          * @param event 待发送事件
          */
@@ -91,7 +91,7 @@ public class RagChatStreamController {
         }
 
         /**
-         * 说明。
+         * 标记流式输出完成。
          */
         @Override
         public void complete() {

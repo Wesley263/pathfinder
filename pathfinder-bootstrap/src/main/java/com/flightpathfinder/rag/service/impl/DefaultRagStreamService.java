@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.service.impl;
+package com.flightpathfinder.rag.service.impl;
 
 import com.flightpathfinder.rag.core.answer.AnswerEvidenceSummary;
 import com.flightpathfinder.rag.core.answer.AnswerResult;
@@ -31,15 +31,14 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * RAG 流式响应编排服务默认实现。
  *
- * 说明。
- * 说明。
+ * 负责驱动 stage one、retrieval、final answer 三阶段并输出事件流。
  */
 @Service
 public class DefaultRagStreamService implements RagStreamService {
 
-    /** 注释说明。 */
+    /** 最终回答分块大小（字符数）。 */
     private static final int ANSWER_CHUNK_SIZE = 160;
 
     /** 第一阶段编排器。 */
@@ -59,10 +58,10 @@ public class DefaultRagStreamService implements RagStreamService {
      * 构造流式请求编排器。
      *
      * @param stageOneRagPipeline 第一阶段编排器
-     * @param retrievalService 参数说明。
-     * @param finalAnswerService 参数说明。
+    * @param retrievalService 检索阶段编排器
+    * @param finalAnswerService 最终回答阶段服务
      * @param conversationMemoryService 会话记忆服务
-     * @param ragTraceService 参数说明。
+    * @param ragTraceService 追踪生命周期服务
      * @param taskExecutorProvider 可选任务执行器提供者
      */
     public DefaultRagStreamService(StageOneRagPipeline stageOneRagPipeline,
@@ -84,10 +83,10 @@ public class DefaultRagStreamService implements RagStreamService {
     }
 
     /**
-     * 说明。
+        * 提交一次流式请求。
      *
-     * @param command 参数说明。
-     * @param eventWriter 参数说明。
+        * @param command 流式请求命令
+        * @param eventWriter 事件写出器
      */
     @Override
     public void stream(RagStreamCommand command, RagStreamEventWriter eventWriter) {
@@ -111,7 +110,7 @@ public class DefaultRagStreamService implements RagStreamService {
         String currentStage = "query";
         Instant currentStageStartedAt = Instant.now();
         try {
-            // 说明。
+            // 先加载会话记忆，保证 stage one 的上下文完整。
             ConversationMemoryContext memoryContext = conversationMemoryService.loadContext(command.conversationId());
 
             emit(eventWriter, sequence, "stage_one_started", "stage_one", command, traceId, "STARTED", null, null, "",
@@ -175,7 +174,7 @@ public class DefaultRagStreamService implements RagStreamService {
             AnswerResult answerResult = finalAnswerService.answer(retrievalResult);
             ragTraceService.recordFinalAnswer(traceSession, currentStageStartedAt, answerResult);
 
-            // 说明。
+                // 主链成功后写回本轮问答到会话记忆。
             conversationMemoryService.appendTurn(new ConversationMemoryWriteRequest(
                     command.conversationId(),
                     command.requestId(),
@@ -192,7 +191,7 @@ public class DefaultRagStreamService implements RagStreamService {
 
             List<String> chunks = splitIntoChunks(answerResult.answerText());
             for (int index = 0; index < chunks.size(); index++) {
-                // 说明。
+                // 以 chunk 事件输出回答正文，兼容前端分段渲染。
                 emit(eventWriter, sequence, "final_answer_chunk", "final_answer", command, traceId, "STREAMING",
                         answerResult.partial(),
                         answerResult.snapshotMissAffected(),
@@ -246,10 +245,10 @@ public class DefaultRagStreamService implements RagStreamService {
      * @param event 事件名
      * @param stage 阶段名
      * @param command 当前命令
-     * @param traceId 参数说明。
+    * @param traceId trace 标识
      * @param status 事件状态
      * @param partial 是否部分结果
-     * @param snapshotMissAffected 参数说明。
+    * @param snapshotMissAffected 是否受快照缺失影响
      * @param error 错误信息
      * @param data 事件数据体
      */
@@ -290,10 +289,10 @@ public class DefaultRagStreamService implements RagStreamService {
     }
 
     /**
-     * 说明。
+        * 判断检索阶段是否为部分结果。
      *
-     * @param retrievalResult 参数说明。
-     * @return 返回结果。
+        * @param retrievalResult 检索阶段结果
+        * @return 是否部分结果
      */
     private boolean retrievalPartial(RetrievalResult retrievalResult) {
         return retrievalResult.hasSnapshotMiss()
@@ -302,10 +301,10 @@ public class DefaultRagStreamService implements RagStreamService {
     }
 
     /**
-     * 说明。
+        * 计算 stage one 事件状态。
      *
      * @param stageOneResult 第一阶段结果
-     * @return 返回结果。
+        * @return 事件状态
      */
     private String stageOneStatus(StageOneRagResult stageOneResult) {
         return isStageOneCompleted(stageOneResult) ? "SUCCESS" : "EMPTY";
@@ -315,7 +314,7 @@ public class DefaultRagStreamService implements RagStreamService {
      * 判断第一阶段是否产出有效结果。
      *
      * @param stageOneResult 第一阶段结果
-     * @return 返回结果。
+    * @return 是否产出有效结果
      */
     private boolean isStageOneCompleted(StageOneRagResult stageOneResult) {
         return !stageOneResult.rewriteResult().rewrittenQuestion().isBlank()
@@ -326,10 +325,10 @@ public class DefaultRagStreamService implements RagStreamService {
     }
 
     /**
-     * 说明。
+        * 将回答文本按块切分。
      *
      * @param answerText 原始回答文本
-     * @return 返回结果。
+        * @return 文本分块列表
      */
     private List<String> splitIntoChunks(String answerText) {
         String safeText = answerText == null ? "" : answerText.trim();
@@ -358,9 +357,9 @@ public class DefaultRagStreamService implements RagStreamService {
     }
 
     /**
-     * 说明。
+        * 转换工具执行记录为事件摘要对象。
      *
-     * @param execution 参数说明。
+        * @param execution 工具执行记录
      * @return 摘要对象
      */
     private Map<String, Object> toToolSummary(McpExecutionRecord execution) {
@@ -387,10 +386,10 @@ public class DefaultRagStreamService implements RagStreamService {
     }
 
     /**
-     * 说明。
+        * 构造保持插入顺序的只读 Map。
      *
      * @param entries 键值交替参数
-     * @return 返回结果。
+        * @return 有序只读 Map
      */
     private Map<String, Object> orderedMap(Object... entries) {
         LinkedHashMap<String, Object> values = new LinkedHashMap<>();

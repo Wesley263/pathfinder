@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 import com.flightpathfinder.infra.ai.chat.ChatRequest;
 import com.flightpathfinder.infra.ai.chat.ChatResponse;
@@ -14,9 +14,8 @@ import org.springframework.stereotype.Service;
 /**
  * 基于阈值触发的默认摘要实现。
  *
- * 说明。
+ * 负责按会话轮次阈值决定是否生成摘要，
  * 同时确保长会话可以压缩为稳定上下文片段。
- * 说明。
  */
 @Service
 public class DefaultConversationMemorySummaryService implements ConversationMemorySummaryService {
@@ -124,3 +123,4 @@ public class DefaultConversationMemorySummaryService implements ConversationMemo
         return safeValue.substring(0, Math.max(0, maxLength - 3)) + "...";
     }
 }
+

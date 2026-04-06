@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.visacheck;
+package com.flightpathfinder.mcp.visacheck;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,10 +13,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 基于 JDBC 的签证核验服务实现。
  *
- * 说明。
- * 说明。
+ * 按目的地与护照国家查询签证政策，并输出可解释的签证结论。
  */
 @Service
 public class JdbcVisaCheckService implements VisaCheckService {
@@ -73,7 +72,7 @@ public class JdbcVisaCheckService implements VisaCheckService {
 
         if ("NO".equalsIgnoreCase(policyRow.visaRequired())) {
             // 免签入境仍受配置停留时长上限约束；
-            // 说明。
+            // 超出免签时长时应回落为 REQUIRED，避免错误放行。
             if (maxStayDays > 0 && query.stayDays() > maxStayDays) {
                 return new VisaCheckItem(
                         countryCode,
@@ -156,7 +155,7 @@ public class JdbcVisaCheckService implements VisaCheckService {
                     : null;
             return new TransitRule(transitWithoutVisa, durationLimitHours);
         } catch (Exception exception) {
-            // 说明。
+            // 解析失败时回退宽松过境元数据，保证接口返回业务态而非基础设施异常。
             // 回退为宽松过境元数据，可保持返回业务结果而非基础设施错误。
             return new TransitRule(true, null);
         }
@@ -214,3 +213,4 @@ public class JdbcVisaCheckService implements VisaCheckService {
     private record TransitRule(boolean transitWithoutVisa, Integer durationLimitHours) {
     }
 }
+

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory.repository;
+package com.flightpathfinder.rag.core.memory.repository;
 
 import com.flightpathfinder.rag.core.memory.ConversationMemorySummary;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * 会话摘要持久化仓储接口。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  * 以便在不修改底层会话历史的前提下重算或替换摘要文本。
  */
 public interface ConversationMemorySummaryRepository {
@@ -28,3 +28,5 @@ public interface ConversationMemorySummaryRepository {
      */
     void upsert(String conversationId, String summaryText, int summarizedTurnCount);
 }
+
+

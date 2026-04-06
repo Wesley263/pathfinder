@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.infra.ai.model;
+package com.flightpathfinder.infra.ai.model;
 
 import com.flightpathfinder.infra.ai.config.AiModelProperties;
 import com.flightpathfinder.infra.ai.config.AiModelProperties.ProviderProperties;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 /**
  * 仅基于配置的静态能力路由选择器。
  *
- * 说明。
- * 说明。
+ * 根据能力类型从配置中选择可用模型路由，
+ * 不依赖运行时探测或动态策略。
  */
 @Component
 public class StaticModelRoutingService implements ModelRoutingService {
@@ -97,3 +97,4 @@ public class StaticModelRoutingService implements ModelRoutingService {
         return EnumSet.of(ModelCapability.CHAT);
     }
 }
+

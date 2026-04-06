@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.infra.ai.config;
+package com.flightpathfinder.infra.ai.config;
 
 import com.flightpathfinder.infra.ai.model.ModelProvider;
 import java.util.LinkedHashMap;
@@ -6,10 +6,9 @@ import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 说明。
+ * AI 模型路由配置。
  *
- * 说明。
- * 供应商与模型组合。
+ * 包含供应商列表，以及聊天与向量能力的默认路由参数。
  */
 @ConfigurationProperties(prefix = "pathfinder.ai")
 public class AiModelProperties {
@@ -43,7 +42,7 @@ public class AiModelProperties {
     }
 
     /**
-        * 说明。
+     * 单个模型供应商配置。
      */
     public static class ProviderProperties {
 

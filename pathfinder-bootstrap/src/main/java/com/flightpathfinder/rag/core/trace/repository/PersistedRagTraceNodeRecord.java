@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.rag.core.trace.repository;
+package com.flightpathfinder.rag.core.trace.repository;
 
 import java.time.Instant;
 
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param traceId 参数说明。
  * @param nodeIndex 节点序号
@@ -26,3 +26,5 @@ public record PersistedRagTraceNodeRecord(
         Instant finishedAt,
         String attributesJson) {
 }
+
+

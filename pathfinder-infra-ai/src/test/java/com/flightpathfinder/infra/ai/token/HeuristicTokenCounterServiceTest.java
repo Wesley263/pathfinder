@@ -1,10 +1,10 @@
-﻿package com.flightpathfinder.infra.ai.token;
+package com.flightpathfinder.infra.ai.token;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * HeuristicTokenCounterService 单元测试。
  */
 class HeuristicTokenCounterServiceTest {
 

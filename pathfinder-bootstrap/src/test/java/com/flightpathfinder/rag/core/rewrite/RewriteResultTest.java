@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.rewrite;
+package com.flightpathfinder.rag.core.rewrite;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class RewriteResultTest {
 
@@ -34,4 +34,6 @@ class RewriteResultTest {
         assertEquals(List.of(""), result.routingSubQuestions());
     }
 }
+
+
 

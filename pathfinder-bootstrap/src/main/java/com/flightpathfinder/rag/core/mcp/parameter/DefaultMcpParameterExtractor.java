@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.mcp.parameter;
+package com.flightpathfinder.rag.core.mcp.parameter;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolDescriptor;
 import com.flightpathfinder.rag.core.intent.ResolvedIntent;
@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
 /**
- * 核心组件。
+ * 用于提供当前领域能力的默认实现。
  */
 
 @Service
@@ -1050,4 +1050,6 @@ public class DefaultMcpParameterExtractor implements McpParameterExtractor {
     private record RoutePair(String origin, String destination) {
     }
 }
+
+
 

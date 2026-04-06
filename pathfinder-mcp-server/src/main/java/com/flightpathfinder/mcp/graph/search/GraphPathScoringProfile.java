@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.search;
+package com.flightpathfinder.mcp.graph.search;
 
 /**
  * 路径候选评分配置。
@@ -21,7 +21,7 @@ final class GraphPathScoringProfile {
     private final double detourWeight;
     /** 竞争度权重。 */
     private final double competitionWeight;
-    /** 注释说明。 */
+    /** Pareto 层级权重。 */
     private final double paretoLayerWeight;
     /** 绕路参考比值。 */
     private final double detourReferenceRatio;
@@ -75,57 +75,57 @@ final class GraphPathScoringProfile {
                 8.0);
     }
 
-    /** 注释说明。 */
+    /** 价格维度权重。 */
     double priceWeight() {
         return priceWeight;
     }
 
-    /** 注释说明。 */
+    /** 时长维度权重。 */
     double durationWeight() {
         return durationWeight;
     }
 
-    /** 注释说明。 */
+    /** 准点率维度权重。 */
     double reliabilityWeight() {
         return reliabilityWeight;
     }
 
-    /** 注释说明。 */
+    /** 中转次数维度权重。 */
     double transferWeight() {
         return transferWeight;
     }
 
-    /** 注释说明。 */
+    /** 经停次数维度权重。 */
     double stopWeight() {
         return stopWeight;
     }
 
-    /** 注释说明。 */
+    /** 行李保障维度权重。 */
     double baggageWeight() {
         return baggageWeight;
     }
 
-    /** 注释说明。 */
+    /** 绕路效率维度权重。 */
     double detourWeight() {
         return detourWeight;
     }
 
-    /** 注释说明。 */
+    /** 竞争度维度权重。 */
     double competitionWeight() {
         return competitionWeight;
     }
 
-    /** 注释说明。 */
+    /** Pareto 层级维度权重。 */
     double paretoLayerWeight() {
         return paretoLayerWeight;
     }
 
-    /** 注释说明。 */
+    /** 绕路效用归一化参考比值。 */
     double detourReferenceRatio() {
         return detourReferenceRatio;
     }
 
-    /** 注释说明。 */
+    /** 竞争度归一化参考值。 */
     double competitionReference() {
         return competitionReference;
     }

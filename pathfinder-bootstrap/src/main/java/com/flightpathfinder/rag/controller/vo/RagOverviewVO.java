@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.rag.controller.vo;
+package com.flightpathfinder.rag.controller.vo;
 
 import java.util.List;
 
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param feature 功能域名称
  * @param module 所属模块
@@ -13,4 +13,6 @@ import java.util.List;
  */
 public record RagOverviewVO(String feature, String module, String status, int mcpToolCount, List<String> boundaries) {
 }
+
+
 

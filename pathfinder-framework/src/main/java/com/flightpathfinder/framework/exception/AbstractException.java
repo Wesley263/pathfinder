@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.exception;
+package com.flightpathfinder.framework.exception;
 
 import com.flightpathfinder.framework.errorcode.ErrorCode;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * 业务异常基类。
  *
- * 说明。
+ * 统一封装错误码与对外错误消息，便于全局异常处理组件标准化输出。
  */
 public abstract class AbstractException extends RuntimeException {
 
@@ -47,12 +47,12 @@ public abstract class AbstractException extends RuntimeException {
         this.errorMessage = Optional.ofNullable(message).filter(value -> !value.isBlank()).orElse(errorCode.message());
     }
 
-    /** 注释说明。 */
+    /** 返回标准化错误码。 */
     public String getErrorCode() {
         return errorCode;
     }
 
-    /** 注释说明。 */
+    /** 返回标准化错误消息。 */
     public String getErrorMessage() {
         return errorMessage;
     }

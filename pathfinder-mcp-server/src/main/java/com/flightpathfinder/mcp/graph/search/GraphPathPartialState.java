@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.search;
+package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredGraphEdge;
 import java.util.HashSet;
@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * 路径搜索中的部分状态。
  *
- * 说明。
+ * 在搜索过程中累积路径代价、访问机场集合与服务质量统计。
  */
 final class GraphPathPartialState {
 
@@ -105,32 +105,32 @@ final class GraphPathPartialState {
                 baggageIncluded && edge.baggageIncluded());
     }
 
-    /** 注释说明。 */
+    /** 返回当前机场。 */
     String currentAirport() {
         return currentAirport;
     }
 
-    /** 注释说明。 */
+    /** 返回已访问机场集合。 */
     Set<String> visitedAirports() {
         return visitedAirports;
     }
 
-    /** 注释说明。 */
+    /** 返回已使用航段数。 */
     int segmentsUsed() {
         return segmentsUsed;
     }
 
-    /** 注释说明。 */
+    /** 返回累计价格。 */
     double totalPriceCny() {
         return totalPriceCny;
     }
 
-    /** 注释说明。 */
+    /** 返回累计时长（分钟）。 */
     int totalDurationMinutes() {
         return totalDurationMinutes;
     }
 
-    /** 注释说明。 */
+    /** 返回累计距离（公里）。 */
     double totalDistanceKm() {
         return totalDistanceKm;
     }
@@ -159,12 +159,12 @@ final class GraphPathPartialState {
         return (double) competitionCountSum / segmentsUsed;
     }
 
-    /** 注释说明。 */
+    /** 返回累计经停次数。 */
     int totalStops() {
         return totalStops;
     }
 
-    /** 注释说明。 */
+    /** 返回是否全程含托运行李。 */
     boolean baggageIncluded() {
         return baggageIncluded;
     }

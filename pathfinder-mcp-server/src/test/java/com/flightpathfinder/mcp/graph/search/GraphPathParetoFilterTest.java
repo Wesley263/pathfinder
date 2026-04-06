@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.search;
+package com.flightpathfinder.mcp.graph.search;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,7 +9,7 @@ import com.flightpathfinder.mcp.graph.model.RestoredPathLeg;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class GraphPathParetoFilterTest {
 
@@ -87,4 +87,6 @@ class GraphPathParetoFilterTest {
                 onTimeRate);
     }
 }
+
+
 

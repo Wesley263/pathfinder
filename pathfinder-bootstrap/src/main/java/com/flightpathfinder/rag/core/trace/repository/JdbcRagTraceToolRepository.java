@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.trace.repository;
+package com.flightpathfinder.rag.core.trace.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,10 +11,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 说明。
+ * 基于 JDBC 的 Rag 工具调用摘要仓储实现。
  *
- * 说明。
- * 说明。
+ * 提供工具摘要的整批替换写入与按 traceId 有序查询能力。
  */
 @Repository
 public class JdbcRagTraceToolRepository implements RagTraceToolRepository {
@@ -47,9 +46,9 @@ public class JdbcRagTraceToolRepository implements RagTraceToolRepository {
     }
 
     /**
-     * 说明。
+        * 使用新工具摘要集合整体替换指定 trace 的工具记录。
      *
-     * @param traceId 参数说明。
+        * @param traceId 链路追踪标识
      * @param records 完整有序工具摘要集合
      */
     @Override
@@ -75,9 +74,9 @@ public class JdbcRagTraceToolRepository implements RagTraceToolRepository {
     }
 
     /**
-     * 说明。
+     * 查询指定 trace 的工具摘要记录。
      *
-     * @param traceId 参数说明。
+     * @param traceId 链路追踪标识
      * @return 按工具序号排序的工具摘要行
      */
     @Override

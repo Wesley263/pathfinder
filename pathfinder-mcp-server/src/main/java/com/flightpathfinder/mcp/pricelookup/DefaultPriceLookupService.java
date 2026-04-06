@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.pricelookup;
+package com.flightpathfinder.mcp.pricelookup;
 
 import com.flightpathfinder.mcp.flightsearch.FlightSearchOption;
 import com.flightpathfinder.mcp.flightsearch.FlightSearchQuery;
@@ -9,11 +9,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
- * 说明。
- * 说明。
- * 且结果结构不同于普通直飞查询。
+ * 价格比对服务默认实现。
+ *
+ * 基于直飞查询能力组合多个城市对最低价，
  */
 @Service
 public class DefaultPriceLookupService implements PriceLookupService {
@@ -73,3 +73,5 @@ public class DefaultPriceLookupService implements PriceLookupService {
                 List.copyOf(missingPairs));
     }
 }
+
+

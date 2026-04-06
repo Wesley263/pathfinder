@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.trace;
+package com.flightpathfinder.rag.core.trace;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,10 +14,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * Rag 追踪查询服务默认实现。
  *
- * 说明。
- * 说明。
+ * 聚合 run/node/tool 三类持久化记录，生成管理端可展示的追踪摘要与详情视图。
  */
 @Service
 public class DefaultRagTraceQueryService implements RagTraceQueryService {
@@ -38,10 +37,10 @@ public class DefaultRagTraceQueryService implements RagTraceQueryService {
     }
 
     /**
-     * 说明。
+        * 查询单条 trace 的完整详情。
      *
-     * @param traceId 参数说明。
-     * @return 返回结果。
+        * @param traceId 链路追踪标识
+        * @return 命中时返回聚合详情
      */
     @Override
     public Optional<RagTraceDetailResult> findDetail(String traceId) {
@@ -60,18 +59,18 @@ public class DefaultRagTraceQueryService implements RagTraceQueryService {
                             .filter(node -> "STAGE".equals(node.nodeType()))
                             .toList();
                     // 详情视图同时保留“阶段节点”和“全部节点”，
-                    // 说明。
+                        // 便于前端同时支持阶段摘要视图与逐节点排障视图。
                     return new RagTraceDetailResult(toRunSummary(runRecord), stages, nodes, tools);
                 });
     }
 
     /**
-     * 说明。
+                 * 查询近期运行记录列表。
      *
      * @param requestId 可选请求标识过滤
      * @param conversationId 可选会话标识过滤
      * @param limit 最大返回条数
-     * @return 返回结果。
+                 * @return 运行摘要列表
      */
     @Override
     public List<RagTraceRunSummary> listRuns(String requestId, String conversationId, int limit) {
@@ -120,7 +119,7 @@ public class DefaultRagTraceQueryService implements RagTraceQueryService {
                     new TypeReference<Map<String, Object>>() {
                     });
         } catch (Exception exception) {
-            // 说明。
+            // 属性 JSON 损坏时降级返回原始文本，避免查询接口因单条脏数据失败。
             return Map.of("rawAttributes", attributesJson == null ? "" : attributesJson);
         }
     }

@@ -1,10 +1,10 @@
-﻿package com.flightpathfinder.rag.core.mcp.parameter;
+package com.flightpathfinder.rag.core.mcp.parameter;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 /**
- * 核心组件。
+ * 用于提供当前领域能力的默认实现。
  */
 public record McpParameterExtractionResult(
         String toolId,
@@ -25,4 +25,6 @@ public record McpParameterExtractionResult(
         return "READY".equals(status);
     }
 }
+
+
 

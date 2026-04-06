@@ -1,13 +1,12 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明。
+ * 会话记忆上下文。
  *
- * 说明。
- * 说明。
+ * 聚合会话元信息、摘要与近期轮次，供路由改写阶段拼装历史上下文。
  */
 public record ConversationMemoryContext(
         ConversationMemoryConversation conversation,
@@ -25,7 +24,7 @@ public record ConversationMemoryContext(
     /**
      * 判断当前上下文是否不含可用记忆。
      *
-     * @return 返回结果。
+     * @return 无摘要且无近期轮次时返回 true
      */
     public boolean empty() {
         return recentTurns.isEmpty() && !summary.exists();
@@ -52,7 +51,7 @@ public record ConversationMemoryContext(
     /**
      * 判断是否存在可用摘要片段。
      *
-     * @return 返回结果。
+     * @return 存在摘要时返回 true
      */
     public boolean hasSummary() {
         return summary.exists();
@@ -69,7 +68,7 @@ public record ConversationMemoryContext(
             fragments.add("Summary: " + summary.summaryText());
         }
         // 摘要覆盖较早历史，近期轮次保留最新精确措辞。
-        // 说明。
+        // 以稳定模板拼接历史文本，便于下游提示词与日志对齐。
         recentTurns.stream()
                 .map(turn -> "User: " + turn.questionForContext() + " | Assistant: " + abbreviate(turn.answerText()))
                 .forEach(fragments::add);
@@ -102,3 +101,4 @@ public record ConversationMemoryContext(
         return safeValue.substring(0, 117) + "...";
     }
 }
+

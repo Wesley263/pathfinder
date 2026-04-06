@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.pricelookup;
+package com.flightpathfinder.mcp.pricelookup;
 
 import java.util.Locale;
 
@@ -19,7 +19,7 @@ public record PriceLookupCityPair(String origin, String destination) {
     }
 
     /**
-     * 说明。
+     * 用于定义当前类型或方法在模块内的职责边界。
      *
      * @return 城市对字符串键
      */
@@ -31,3 +31,5 @@ public record PriceLookupCityPair(String origin, String destination) {
         return value == null ? "" : value.trim().toUpperCase(Locale.ROOT);
     }
 }
+
+

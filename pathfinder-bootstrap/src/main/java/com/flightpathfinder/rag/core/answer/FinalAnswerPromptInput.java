@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.answer;
+package com.flightpathfinder.rag.core.answer;
 
 import com.flightpathfinder.rag.core.intent.IntentSplitResult;
 import com.flightpathfinder.rag.core.memory.ConversationMemoryContext;
@@ -9,12 +9,12 @@ import java.util.List;
 /**
  * 最终回答阶段的标准输入模型。
  *
- * 说明。
+ * 汇聚改写、检索、记忆和证据信息，供回答文本生成器消费。
  *
  * @param rewrittenQuestion 当前问题的展示型改写文本
  * @param intentSplitResult 当前问题的分流结果
- * @param kbContext 参数说明。
- * @param mcpContext 参数说明。
+ * @param kbContext 知识库检索上下文
+ * @param mcpContext MCP 执行上下文
  * @param memoryContext 当前会话记忆上下文
  * @param evidenceSummaries 已汇总的证据摘要
  * @param partial 是否应按部分回答处理
@@ -33,7 +33,7 @@ public record FinalAnswerPromptInput(
         boolean empty) {
 
     /**
-     * 说明。
+     * 归一化输入字段并补齐默认值。
      */
     public FinalAnswerPromptInput {
         rewrittenQuestion = rewrittenQuestion == null ? "" : rewrittenQuestion.trim();

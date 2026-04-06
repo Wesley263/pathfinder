@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.pipeline;
+package com.flightpathfinder.rag.core.pipeline;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -20,7 +20,7 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 
 @ExtendWith(MockitoExtension.class)
@@ -84,4 +84,6 @@ class DefaultStageOneRagPipelineTest {
         assertTrue(result.memoryContext().empty());
     }
 }
+
+
 

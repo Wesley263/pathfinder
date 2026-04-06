@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class DefaultIntentResolverTest {
 
@@ -95,4 +95,6 @@ class DefaultIntentResolverTest {
         assertEquals("general_assistant", resolution.splitResult().systemIntents().get(0).intentId());
     }
 }
+
+
 

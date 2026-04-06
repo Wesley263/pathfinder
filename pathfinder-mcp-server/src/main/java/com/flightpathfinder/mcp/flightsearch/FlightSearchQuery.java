@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.flightsearch;
+package com.flightpathfinder.mcp.flightsearch;
 
 import java.time.LocalDate;
 import java.util.Locale;

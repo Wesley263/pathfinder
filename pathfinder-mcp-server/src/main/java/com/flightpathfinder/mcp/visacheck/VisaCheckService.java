@@ -1,11 +1,9 @@
-﻿package com.flightpathfinder.mcp.visacheck;
+package com.flightpathfinder.mcp.visacheck;
 
 /**
  * 签证政策评估的服务端契约。
  *
- * 说明。
- * 说明。
- * 说明。
+ * 定义按目的地国家与护照国家执行签证核验的标准入口。
  */
 public interface VisaCheckService {
 
@@ -17,3 +15,4 @@ public interface VisaCheckService {
      */
     VisaCheckResult check(VisaCheckQuery query);
 }
+

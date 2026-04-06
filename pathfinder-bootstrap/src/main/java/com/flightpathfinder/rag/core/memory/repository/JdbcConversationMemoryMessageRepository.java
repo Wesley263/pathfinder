@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory.repository;
+package com.flightpathfinder.rag.core.memory.repository;
 
 import com.flightpathfinder.rag.core.memory.ConversationMemoryTurn;
 import java.sql.ResultSet;
@@ -11,9 +11,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * 说明。
+ * 会话消息仓储 JDBC 实现。
  *
- * 说明。
+ * 负责会话轮次消息行的写入与读取，
  * 以保持用户文本、改写问题与助手回答可独立审计。
  */
 @Repository
@@ -56,7 +56,7 @@ public class JdbcConversationMemoryMessageRepository implements ConversationMemo
     }
 
         /**
-         * 说明。
+         * 持久化一轮完整会话消息。
          *
          * @param conversationId 稳定会话标识
          * @param turn 待持久化的完成轮次
@@ -106,7 +106,7 @@ public class JdbcConversationMemoryMessageRepository implements ConversationMemo
                 new MessageRowMapper(),
                 conversationId,
                 Math.max(1, limit));
-                // 查询语句为索引效率按“新到旧”拉取；组装器需要时间正序，因此这里反转。
+        // 查询语句为索引效率按“新到旧”拉取；组装器需要时间正序，因此这里反转。
         return rows.reversed();
     }
 
@@ -139,3 +139,4 @@ public class JdbcConversationMemoryMessageRepository implements ConversationMemo
         }
     }
 }
+

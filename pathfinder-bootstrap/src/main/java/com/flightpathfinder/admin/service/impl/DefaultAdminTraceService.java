@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.service.impl;
+package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminTraceDetailResult;
 import com.flightpathfinder.admin.service.AdminTraceNodeSummary;
@@ -19,8 +19,7 @@ import org.springframework.stereotype.Service;
 /**
  * 持久化追踪查询的管理端适配默认实现。
  *
- * 说明。
- * 说明。
+ * 负责把追踪领域模型转换为管理端可展示的汇总与详情视图。
  */
 @Service
 public class DefaultAdminTraceService implements AdminTraceService {
@@ -34,8 +33,8 @@ public class DefaultAdminTraceService implements AdminTraceService {
     /**
         * 加载单条追踪的管理端详情视图。
      *
-     * @param traceId 参数说明。
-     * @return 返回结果。
+     * @param traceId 追踪标识
+     * @return 追踪详情
      */
     @Override
     public Optional<AdminTraceDetailResult> findDetail(String traceId) {
@@ -46,10 +45,10 @@ public class DefaultAdminTraceService implements AdminTraceService {
     /**
         * 列出最近追踪供管理端巡检。
      *
-     * @param requestId 参数说明。
-     * @param conversationId 参数说明。
-     * @param limit 参数说明。
-     * @return 返回结果。
+     * @param requestId 可选请求标识过滤
+     * @param conversationId 可选会话标识过滤
+     * @param limit 最大返回条数
+     * @return 追踪运行汇总列表
      */
     @Override
     public List<AdminTraceRunSummary> listRuns(String requestId, String conversationId, int limit) {
@@ -96,7 +95,7 @@ public class DefaultAdminTraceService implements AdminTraceService {
     private AdminTraceRunSummary toRunSummary(RagTraceRunSummary runSummary,
                                               List<AdminTraceNodeSummary> stages,
                                               List<AdminTraceToolSummary> toolSummaries) {
-        // 说明。
+        // 汇总节点和工具状态，生成管理端可直接判读的 partial 与 error 标志。
         boolean partial = stages.stream().anyMatch(AdminTraceNodeSummary::partial);
         boolean errorOccurred = isErrorStatus(runSummary.overallStatus())
                 || stages.stream().anyMatch(stage -> isErrorStatus(stage.status()) || !stage.error().isBlank())
@@ -184,3 +183,4 @@ public class DefaultAdminTraceService implements AdminTraceService {
         return "";
     }
 }
+

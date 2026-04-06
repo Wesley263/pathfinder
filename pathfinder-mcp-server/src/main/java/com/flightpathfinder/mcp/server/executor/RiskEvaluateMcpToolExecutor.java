@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.server.executor;
+package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -14,10 +14,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * risk.evaluate MCP 工具执行器。
  *
- * 说明。
- * 说明。
+ * 基于枢纽机场、航司组合与缓冲时间执行中转风险评估。
  */
 @Component
 public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
@@ -33,9 +32,9 @@ public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 说明。
+        * 返回 risk.evaluate 的工具描述。
      *
-     * @return 返回结果。
+        * @return MCP 工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -80,9 +79,8 @@ public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
     /**
      * 执行中转风险规则流水线。
      *
-     * @param request 参数说明。
-     * @return 返回结果。
-     * 说明。
+        * @param request 工具调用请求
+        * @return 结构化风险评估结果
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -222,3 +220,4 @@ public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
         return Double.parseDouble(String.valueOf(rawValue));
     }
 }
+

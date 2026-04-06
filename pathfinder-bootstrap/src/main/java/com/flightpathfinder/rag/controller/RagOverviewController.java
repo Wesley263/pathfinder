@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.controller;
+package com.flightpathfinder.rag.controller;
 
 import com.flightpathfinder.framework.convention.Result;
 import com.flightpathfinder.framework.web.Results;
@@ -9,28 +9,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 说明。
+ * Rag 概览查询控制器。
  *
- * 说明。
+ * 对外暴露意图树与路由结构等只读视图，供管理端页面展示。
  */
 @RestController
 @RequestMapping("/api/rag")
 public class RagOverviewController {
 
-    /** 注释说明。 */
+    /** Rag 概览查询服务。 */
     private final RagOverviewService ragOverviewService;
 
     /**
      * 构造概览控制器。
      *
-     * @param ragOverviewService 参数说明。
+     * @param ragOverviewService 概览查询服务
      */
     public RagOverviewController(RagOverviewService ragOverviewService) {
         this.ragOverviewService = ragOverviewService;
     }
 
     /**
-     * 说明。
+     * 获取当前 Rag 结构概览。
      *
      * @return 面向结构查看的概览响应
      */

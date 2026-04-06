@@ -1,12 +1,11 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import com.flightpathfinder.rag.core.rewrite.RewriteResult;
 
 /**
  * 改写结果到最终分流结果的解析边界。
  *
- * 说明。
- * 说明。
+ * 负责把改写后的问题映射为可执行的意图分流视图。
  */
 public interface IntentResolver {
 
@@ -18,3 +17,4 @@ public interface IntentResolver {
      */
     IntentResolution resolve(RewriteResult rewriteResult);
 }
+

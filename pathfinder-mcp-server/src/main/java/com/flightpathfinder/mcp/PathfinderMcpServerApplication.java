@@ -1,13 +1,12 @@
-﻿package com.flightpathfinder.mcp;
+package com.flightpathfinder.mcp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * 说明。
+ * MCP Server 启动入口。
  *
- * 说明。
- * 说明。
+ * 启动 MCP 服务端进程并加载 mcp 与 framework 相关组件。
  */
 @SpringBootApplication(scanBasePackages = {
         "com.flightpathfinder.mcp",
@@ -16,11 +15,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PathfinderMcpServerApplication {
 
     /**
-     * 说明。
+     * 启动应用。
      *
-     * @param args 参数说明。
+     * @param args 启动参数
      */
     public static void main(String[] args) {
         SpringApplication.run(PathfinderMcpServerApplication.class, args);
     }
 }
+

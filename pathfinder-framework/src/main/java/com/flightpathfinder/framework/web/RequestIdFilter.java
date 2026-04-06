@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.web;
+package com.flightpathfinder.framework.web;
 
 import com.flightpathfinder.framework.context.RequestIdHolder;
 import jakarta.servlet.FilterChain;
@@ -10,7 +10,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  */
 
 @Component
@@ -35,6 +35,8 @@ public class RequestIdFilter extends OncePerRequestFilter {
         }
     }
 }
+
+
 
 
 

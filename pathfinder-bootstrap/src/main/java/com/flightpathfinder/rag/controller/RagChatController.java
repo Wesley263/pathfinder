@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.controller;
+package com.flightpathfinder.rag.controller;
 
 import com.flightpathfinder.framework.context.RequestIdHolder;
 import com.flightpathfinder.framework.convention.Result;
@@ -19,10 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 说明。
+ * Rag 同步对话控制器。
  *
- * 说明。
- * 说明。
+ * 接收用户问题并调用应用服务返回可审计的回答结果。
  */
 @RestController
 @RequestMapping("/api/rag")
@@ -41,7 +40,7 @@ public class RagChatController {
     }
 
     /**
-     * 说明。
+        * 执行一次同步对话请求。
      *
      * @param request 用户面对话请求
      * @return 包含回答正文和审计信息的统一响应
@@ -63,7 +62,7 @@ public class RagChatController {
      * @return 面向接口返回的响应对象
      */
     private RagChatResponseVO toResponse(String question, RagQueryResult queryResult) {
-        // 说明。
+                // 控制器层只做模型转换，保持领域编排逻辑留在应用服务层。
         return new RagChatResponseVO(
                 question == null ? "" : question.trim(),
                 queryResult.stageOneResult().rewriteResult().rewrittenQuestion(),
@@ -112,4 +111,5 @@ public class RagChatController {
                         .toList());
     }
 }
+
 

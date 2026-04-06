@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.web;
+package com.flightpathfinder.framework.web;
 
 import com.flightpathfinder.framework.convention.Result;
 import com.flightpathfinder.framework.errorcode.BaseErrorCode;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  */
 
 @RestControllerAdvice
@@ -38,5 +38,7 @@ public class GlobalExceptionHandler {
                 .body(Results.failure(BaseErrorCode.SERVICE_ERROR, ex.getMessage()));
     }
 }
+
+
 
 

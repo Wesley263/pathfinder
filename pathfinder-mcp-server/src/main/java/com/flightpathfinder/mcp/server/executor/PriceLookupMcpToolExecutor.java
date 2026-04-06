@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.server.executor;
+package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -19,9 +19,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * price.lookup MCP 工具执行器。
  *
- * 说明。
+ * 负责解析城市对输入并返回比价结果，
  * 独立执行器可清晰承载其专属输入语法与部分覆盖语义。
  */
 @Component
@@ -37,9 +37,9 @@ public class PriceLookupMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 说明。
+        * 返回 price.lookup 的工具描述。
      *
-     * @return 返回结果。
+        * @return MCP 工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -73,9 +73,8 @@ public class PriceLookupMcpToolExecutor implements McpToolExecutor {
     /**
      * 执行多城市对价格查询。
      *
-     * @param request 参数说明。
-     * @return 返回结果。
-     * 说明。
+        * @param request 工具调用请求
+        * @return 结构化比价结果
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -222,3 +221,4 @@ public class PriceLookupMcpToolExecutor implements McpToolExecutor {
         return value.isEmpty() ? null : value;
     }
 }
+

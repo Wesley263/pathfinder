@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.controller.vo;
+package com.flightpathfinder.admin.controller.vo;
 
 import java.util.List;
 

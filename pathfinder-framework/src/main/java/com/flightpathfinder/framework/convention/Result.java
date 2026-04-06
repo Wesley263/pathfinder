@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.convention;
+package com.flightpathfinder.framework.convention;
 
 import java.io.Serial;
 import java.io.Serializable;

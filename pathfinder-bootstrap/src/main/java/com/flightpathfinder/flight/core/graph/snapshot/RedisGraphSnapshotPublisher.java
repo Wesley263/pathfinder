@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.flight.core.graph.snapshot;
+package com.flightpathfinder.flight.core.graph.snapshot;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,15 +9,14 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * Redis 图快照发布器。
  *
- * 说明。
- * 说明。
+ * 负责持久化版本化快照载荷，并同步更新 latest 版本指针。
  */
 @Component
 public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
 
-    /** 注释说明。 */
+    /** Redis 字符串操作模板，用于写入快照键。 */
     private final StringRedisTemplate stringRedisTemplate;
     /** 快照序列化对象映射器。 */
     private final ObjectMapper objectMapper;
@@ -25,10 +24,10 @@ public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
     private final GraphSnapshotProperties graphSnapshotProperties;
 
     /**
-     * 说明。
+        * 构造 Redis 图快照发布器。
      *
-     * @param stringRedisTemplate 参数说明。
-     * @param objectMapper 参数说明。
+        * @param stringRedisTemplate Redis 字符串操作模板
+        * @param objectMapper JSON 序列化对象映射器
      * @param graphSnapshotProperties 图快照配置
      */
     public RedisGraphSnapshotPublisher(StringRedisTemplate stringRedisTemplate,
@@ -40,10 +39,10 @@ public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
     }
 
     /**
-        * 说明。
+      * 发布指定图标识的快照到 Redis。
      *
-        * @param graphKey 图逻辑标识
-        * @param snapshot 待发布快照
+      * @param graphKey 图逻辑标识
+      * @param snapshot 待发布快照
      */
     @Override
     public void publish(String graphKey, GraphSnapshot snapshot) {
@@ -52,13 +51,13 @@ public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
         String snapshotKey = GraphSnapshotRedisKeys.snapshotKey(normalizedGraphKey, snapshot.snapshotVersion());
         String payload = toJson(snapshot);
 
-        // 说明。
+          // 快照载荷与 latest 指针使用同一 TTL，避免出现版本指针悬挂。
         stringRedisTemplate.opsForValue().set(snapshotKey, payload, graphSnapshotProperties.getTtl());
         stringRedisTemplate.opsForValue().set(latestKey, snapshot.snapshotVersion(), graphSnapshotProperties.getTtl());
     }
 
     /**
-     * 说明。
+      * 归一化图标识，缺省时回退到默认图标识。
      *
      * @param graphKey 原始图标识
      * @return 归一化后的图标识
@@ -73,7 +72,7 @@ public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
      * 序列化快照对象。
      *
      * @param snapshot 图快照
-     * @return 返回结果。
+        * @return 快照 JSON 载荷
      */
     private String toJson(GraphSnapshot snapshot) {
         try {

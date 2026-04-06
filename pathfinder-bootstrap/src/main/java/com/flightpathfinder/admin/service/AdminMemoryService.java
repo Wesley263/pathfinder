@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.admin.service;
+package com.flightpathfinder.admin.service;
 
 /**
  * 持久化会话记忆的管理端查询服务。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  * 避免在运维视图中直接暴露运行时记忆流水线的内部持久化模型。
  */
 public interface AdminMemoryService {
@@ -26,3 +26,5 @@ public interface AdminMemoryService {
      */
     AdminConversationDetailResult findConversationDetail(String conversationId, int recentMessageLimit);
 }
+
+

@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 /**
  * 面向持久化层的近期轮次记忆存储抽象。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  * 这种拆分让原始历史读取保持简单，也使摘要策略可以独立演进而不影响写路径存储契约。
  */
 public interface ConversationMemoryStore {
@@ -25,3 +25,5 @@ public interface ConversationMemoryStore {
      */
     void appendTurn(String conversationId, ConversationMemoryTurn turn);
 }
+
+

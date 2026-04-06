@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.infra.ai.chat;
+package com.flightpathfinder.infra.ai.chat;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +25,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * OpenAI 兼容协议聊天服务实现。
  *
- * 说明。
+ * 基于模型路由配置调用兼容接口，并提供同步与流式两种对话能力。
  */
 @Service
 @Primary
@@ -240,3 +240,4 @@ public class OpenAiCompatibleChatService implements ChatService, StreamingChatSe
         return value == null || value.isBlank();
     }
 }
+

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.infra.ai.embedding;
+package com.flightpathfinder.infra.ai.embedding;
 
 import java.util.List;
 /**

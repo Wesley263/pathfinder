@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.controller;
+package com.flightpathfinder.rag.controller;
 
 import com.flightpathfinder.framework.convention.Result;
 import com.flightpathfinder.framework.errorcode.BaseErrorCode;
@@ -20,32 +20,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 说明。
+ * RAG trace 查询接口。
  *
- * 说明。
- * 说明。
+ * 提供 trace 详情查询和运行记录列表查询能力。
  */
 @RestController
 @RequestMapping("/api/rag/traces")
 public class RagTraceController {
 
-    /** 注释说明。 */
+    /** trace 查询服务。 */
     private final RagTraceQueryService ragTraceQueryService;
 
     /**
-     * 说明。
+     * 构造 trace 控制器。
      *
-     * @param ragTraceQueryService 参数说明。
+     * @param ragTraceQueryService trace 查询服务
      */
     public RagTraceController(RagTraceQueryService ragTraceQueryService) {
         this.ragTraceQueryService = ragTraceQueryService;
     }
 
     /**
-     * 说明。
+        * 查询指定 traceId 的完整详情。
      *
-     * @param traceId 参数说明。
-     * @return 返回结果。
+        * @param traceId trace 标识
+        * @return trace 详情视图
      */
     @GetMapping("/{traceId}")
     public Result<RagTraceDetailVO> detail(@PathVariable String traceId) {
@@ -55,12 +54,12 @@ public class RagTraceController {
     }
 
     /**
-     * 说明。
+        * 按条件分页查询 trace 运行摘要。
      *
      * @param requestId 可选请求标识过滤条件
      * @param conversationId 可选会话标识过滤条件
      * @param limit 返回条数上限
-     * @return 返回结果。
+        * @return trace 运行摘要列表
      */
     @GetMapping
     public Result<List<RagTraceRunVO>> list(@RequestParam(required = false) String requestId,
@@ -73,9 +72,9 @@ public class RagTraceController {
     }
 
     /**
-     * 说明。
+        * 转换 trace 详情领域对象为展示对象。
      *
-     * @param detailResult 参数说明。
+        * @param detailResult 详情领域对象
      * @return 展示对象
      */
     private RagTraceDetailVO toDetail(RagTraceDetailResult detailResult) {
@@ -93,9 +92,9 @@ public class RagTraceController {
     }
 
     /**
-     * 说明。
+        * 转换运行摘要领域对象为展示对象。
      *
-     * @param runSummary 参数说明。
+        * @param runSummary 运行摘要领域对象
      * @return 展示对象
      */
     private RagTraceRunVO toRun(RagTraceRunSummary runSummary) {
@@ -113,9 +112,9 @@ public class RagTraceController {
     }
 
     /**
-     * 说明。
+        * 转换节点详情领域对象为展示对象。
      *
-     * @param nodeDetail 参数说明。
+        * @param nodeDetail 节点详情领域对象
      * @return 展示对象
      */
     private RagTraceNodeVO toNode(RagTraceNodeDetail nodeDetail) {

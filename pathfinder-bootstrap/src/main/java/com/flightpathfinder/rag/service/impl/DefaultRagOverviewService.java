@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.service.impl;
+package com.flightpathfinder.rag.service.impl;
 
 import com.flightpathfinder.rag.core.mcp.LocalMcpToolRegistry;
 import com.flightpathfinder.rag.controller.vo.RagOverviewVO;
@@ -7,20 +7,20 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * Rag 概览服务默认实现。
  *
- * 说明。
+ * 汇总当前接入能力与运行形态，供管理端页面展示系统结构状态。
  */
 @Service
 public class DefaultRagOverviewService implements RagOverviewService {
 
-    /** 注释说明。 */
+    /** 当前本地 MCP 工具注册表。 */
     private final LocalMcpToolRegistry localMcpToolRegistry;
 
     /**
      * 构造概览服务。
      *
-     * @param localMcpToolRegistry 参数说明。
+     * @param localMcpToolRegistry 本地 MCP 工具注册表
      */
     public DefaultRagOverviewService(LocalMcpToolRegistry localMcpToolRegistry) {
         this.localMcpToolRegistry = localMcpToolRegistry;
@@ -51,3 +51,4 @@ public class DefaultRagOverviewService implements RagOverviewService {
                 ));
     }
 }
+

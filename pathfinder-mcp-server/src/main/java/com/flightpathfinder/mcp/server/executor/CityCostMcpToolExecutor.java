@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.server.executor;
+package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -16,10 +16,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * city.cost MCP 工具执行器。
  *
- * 说明。
- * 说明。
+ * 提供多城市生活成本查询，并返回缺失城市与覆盖率信息。
  */
 @Component
 public class CityCostMcpToolExecutor implements McpToolExecutor {
@@ -34,9 +33,9 @@ public class CityCostMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 说明。
+        * 返回 city.cost 的工具描述。
      *
-     * @return 返回结果。
+        * @return MCP 工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -68,9 +67,8 @@ public class CityCostMcpToolExecutor implements McpToolExecutor {
     /**
      * 对一个或多个归一化城市代码执行成本查询。
      *
-     * @param request 参数说明。
-     * @return 返回结果。
-     * 说明。
+        * @param request 工具调用请求
+        * @return 结构化城市成本查询结果
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -202,3 +200,4 @@ public class CityCostMcpToolExecutor implements McpToolExecutor {
         return value.isEmpty() ? null : value;
     }
 }
+

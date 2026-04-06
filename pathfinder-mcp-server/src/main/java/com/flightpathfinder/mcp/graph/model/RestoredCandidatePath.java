@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.model;
+package com.flightpathfinder.mcp.graph.model;
 
 import java.util.List;
 

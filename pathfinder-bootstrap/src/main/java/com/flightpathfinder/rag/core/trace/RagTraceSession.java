@@ -1,14 +1,13 @@
-﻿package com.flightpathfinder.rag.core.trace;
+package com.flightpathfinder.rag.core.trace;
 
 import com.flightpathfinder.framework.trace.TraceRoot;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明。
+ * Rag 单次请求的追踪会话上下文。
  *
- * 说明。
- * 说明。
+ * 聚合请求标识、追踪根节点、阶段执行结果与工具调用摘要，便于统一输出审计视图。
  */
 public final class RagTraceSession {
 
@@ -19,11 +18,11 @@ public final class RagTraceSession {
     private final List<RagTraceToolSummary> mcpToolSummaries = new ArrayList<>();
 
     /**
-     * 说明。
+        * 构造追踪会话。
      *
      * @param requestId 外部请求标识
      * @param conversationId 可选会话标识
-     * @param root 参数说明。
+        * @param root 当前请求对应的追踪根节点
      */
     public RagTraceSession(String requestId, String conversationId, TraceRoot root) {
         this.requestId = requestId == null ? "" : requestId.trim();
@@ -46,7 +45,7 @@ public final class RagTraceSession {
     }
 
     /**
-     * 说明。
+     * 返回追踪根节点。
      */
     public TraceRoot root() {
         return root;
@@ -60,7 +59,7 @@ public final class RagTraceSession {
     }
 
     /**
-     * 说明。
+     * 返回工具调用摘要集合（可追加）。
      */
     public List<RagTraceToolSummary> mcpToolSummaries() {
         return mcpToolSummaries;

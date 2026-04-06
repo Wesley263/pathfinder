@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.server.dispatcher;
+package com.flightpathfinder.mcp.server.dispatcher;
 
 import com.flightpathfinder.framework.protocol.mcp.JsonRpcError;
 import com.flightpathfinder.framework.protocol.mcp.JsonRpcRequest;
@@ -10,9 +10,9 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * MCP 协议分发器。
  *
- * 说明。
+ * 负责把 JSON-RPC 请求路由到工具列表查询或工具执行分支，
  * 注册器仅负责工具查找。分离这两类职责可避免注册器膨胀为协议感知组件。
  */
 @Component
@@ -28,14 +28,13 @@ public class McpDispatcher {
     }
 
     /**
-     * 说明。
+     * 分发 JSON-RPC 请求并返回标准响应。
      *
-     * @param request 参数说明。
-     * @return 返回结果。
+     * @param request JSON-RPC 请求
+     * @return JSON-RPC 响应
      */
     public JsonRpcResponse<?> dispatch(JsonRpcRequest<Map<String, Object>> request) {
-        // 说明。
-        // 说明。
+        // 在统一入口完成方法分派，确保协议错误与业务错误都走一致响应模型。
         return switch (request.method()) {
             case "tools/list" -> JsonRpcResponse.success(request.id(), new McpToolListResult(mcpServerToolRegistry.listTools()));
             case "tools/call" -> dispatchToolCall(request);
@@ -69,3 +68,4 @@ public class McpDispatcher {
         return new McpToolCallRequest(toolIdValue, argumentMap);
     }
 }
+

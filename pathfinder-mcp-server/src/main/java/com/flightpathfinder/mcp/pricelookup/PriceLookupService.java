@@ -1,10 +1,9 @@
-﻿package com.flightpathfinder.mcp.pricelookup;
+package com.flightpathfinder.mcp.pricelookup;
 
 /**
  * 多城市对最低价比较的服务端契约。
  *
- * 说明。
- * 说明。
+ * 定义同日期多城市对比价能力的统一入口。
  */
 public interface PriceLookupService {
 
@@ -16,3 +15,4 @@ public interface PriceLookupService {
      */
     PriceLookupResult lookup(PriceLookupQuery query);
 }
+

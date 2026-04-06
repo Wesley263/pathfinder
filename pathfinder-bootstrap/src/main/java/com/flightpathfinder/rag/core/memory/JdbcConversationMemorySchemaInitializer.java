@@ -1,13 +1,13 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * 会话记忆表结构初始化器。
  *
- * 说明。
+ * 在启动阶段创建会话头、消息明细与摘要表及相关索引，
  * 以保证原始轮次可完整审计，同时允许摘要层作为独立压缩能力演进。
  */
 @Component
@@ -64,9 +64,10 @@ public class JdbcConversationMemorySchemaInitializer {
     /**
      * 确保当前数据源具备记忆相关表与索引。
      *
-     * @param jdbcTemplate 参数说明。
+     * @param jdbcTemplate JDBC 执行模板
      */
     public JdbcConversationMemorySchemaInitializer(JdbcTemplate jdbcTemplate) {
         DDL.forEach(jdbcTemplate::execute);
     }
 }
+

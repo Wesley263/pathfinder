@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.rewrite;
+package com.flightpathfinder.rag.core.rewrite;
 
 import java.util.Comparator;
 import java.util.List;
@@ -8,12 +8,11 @@ import java.util.regex.Pattern;
 /**
  * 术语归一器。
  *
- * 说明。
- * 说明。
+ * 把机场、城市、航司等常见表达统一为标准写法。
  */
 public class TermNormalizer {
 
-    /** 注释说明。 */
+    /** ASCII 术语判断规则。 */
     private static final Pattern ASCII_ONLY_PATTERN = Pattern.compile("^[\\p{ASCII}]+$");
 
     /** 已按优先级和源词长度排好序的归一化映射表。 */
@@ -55,9 +54,6 @@ public class TermNormalizer {
 
     /**
      * 返回默认术语映射表。
-     *
-     * 说明。
-     * 说明。
      *
      * @return 默认映射集合
      */

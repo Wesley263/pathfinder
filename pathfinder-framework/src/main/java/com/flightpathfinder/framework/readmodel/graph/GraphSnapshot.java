@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.readmodel.graph;
+package com.flightpathfinder.framework.readmodel.graph;
 
 import java.time.Instant;
 import java.util.List;
@@ -7,10 +7,10 @@ import java.util.Map;
 /**
  * 图快照读模型顶层对象。
  *
- * 说明。
- * 说明。
+ * 一个快照代表某个图标识在某一时刻的完整节点与边集合。
+ * 快照对象会在主程序发布到 Redis 后，由查询与搜索流程消费。
  *
- * @param schemaVersion 参数说明。
+ * @param schemaVersion 快照 schema 版本，用于兼容校验
  * @param snapshotVersion 快照实例版本
  * @param generatedAt 快照生成时间
  * @param graphKey 图标识

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.config;
+package com.flightpathfinder.mcp.config;
 
 import com.flightpathfinder.mcp.server.executor.McpToolExecutor;
 import com.flightpathfinder.mcp.server.registry.InMemoryMcpServerToolRegistry;
@@ -9,10 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 说明。
+ * MCP Server 核心配置。
  *
- * 说明。
- * 说明。
+ * 负责注册服务端工具注册表并装配基础数据源配置。
  */
 @Configuration
 @EnableConfigurationProperties(McpServerDatasourceProperties.class)
@@ -29,3 +28,4 @@ public class McpServerConfiguration {
         return new InMemoryMcpServerToolRegistry(toolExecutors);
     }
 }
+

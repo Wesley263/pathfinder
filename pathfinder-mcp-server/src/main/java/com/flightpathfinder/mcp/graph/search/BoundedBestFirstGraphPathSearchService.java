@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.search;
+package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredCandidatePath;
 import com.flightpathfinder.mcp.graph.model.RestoredFlightGraph;
@@ -9,26 +9,25 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 有界 best-first 图路径搜索服务。
  *
- * 说明。
- * 说明。
- * 说明。
+ * 使用 optimistic frontier、支配裁剪和候选池控制搜索规模，
+ * 最终通过 Pareto 选择与加权排序输出 TopK 候选路径。
  */
 @Service
 public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchService {
 
-    /** 注释说明。 */
+    /** Pareto 选择器。 */
     private final GraphPathParetoFilter paretoFilter = new GraphPathParetoFilter();
     /** 最终加权排序器。 */
     private final GraphPathWeightedRanker weightedRanker = new GraphPathWeightedRanker();
 
     /**
-     * 说明。
+        * 执行有界 best-first 搜索。
      *
      * @param graph 由已发布快照恢复的图
      * @param request 路径搜索约束
-     * @return 返回结果。
+        * @return 按排序后的候选路径列表
      */
     @Override
     public List<RestoredCandidatePath> search(RestoredFlightGraph graph, GraphPathSearchRequest request) {
@@ -36,7 +35,7 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
             return List.of();
         }
 
-        // 说明。
+        // 先用下界快速剪枝不可达起点，避免进入主循环。
         GraphPathSearchLowerBounds lowerBounds = GraphPathSearchLowerBounds.prepare(
                 graph,
                 request.origin(),
@@ -63,20 +62,20 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
 
         int expansions = 0;
         while (!expansionFrontier.isEmpty() && expansions < profile.frontierPolicy().maxExpansions()) {
-            // 说明。
+            // 每轮优先扩展 optimisticScore 最高的节点。
             GraphPathSearchNode node = expansionFrontier.pollBest();
             if (node == null) {
                 break;
             }
             if (node.state().currentAirport().equals(request.destination()) && !node.edges().isEmpty()) {
-                // 说明。
+                // 命中终点后直接尝试准入候选池。
                 admitCandidate(node.edges(), node.state(), heuristic, candidatePool);
                 if (candidatePool.shouldStop(expansionFrontier.peekBestScore(), profile.frontierPolicy())) {
                     break;
                 }
                 continue;
             }
-            // 说明。
+            // 已被更优状态支配的节点无需扩展。
             if (dominanceFrontier.isDominated(node.state())) {
                 continue;
             }
@@ -101,7 +100,7 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
                     sequence);
             sequence += Math.max(1, graph.getOutgoingEdges(node.state().currentAirport()).size());
             for (GraphPathSearchNode trimmedNode : expansionFrontier.trimToSize(profile.frontierPolicy().maxFrontierSize())) {
-                // 说明。
+                // 被 frontier 淘汰的状态同步从支配索引移除。
                 dominanceFrontier.discard(trimmedNode.state());
             }
             if (candidatePool.shouldStop(expansionFrontier.peekBestScore(), profile.frontierPolicy())) {
@@ -114,7 +113,7 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
             return List.of();
         }
 
-        // 说明。
+        // 先做 Pareto 过滤，再做加权排序输出最终 topK。
         GraphPathParetoSelection selection = paretoFilter.selectForRanking(
                 admittedCandidates,
                 profile.frontierPolicy().minimumParetoSelectionCount());
@@ -122,7 +121,7 @@ public class BoundedBestFirstGraphPathSearchService implements GraphPathSearchSe
     }
 
     /**
-     * 说明。
+         * 扩展单个节点并向 frontier 写入后继状态。
      */
     private void expandNode(RestoredFlightGraph graph,
                             GraphPathSearchRequest request,

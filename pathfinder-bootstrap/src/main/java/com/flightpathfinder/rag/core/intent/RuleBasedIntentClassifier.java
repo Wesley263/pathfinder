@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import java.util.Comparator;
 import java.util.List;
@@ -8,13 +8,12 @@ import org.springframework.stereotype.Service;
 /**
  * 基于规则的意图分类器。
  *
- * 说明。
- * 说明。
+ * 通过关键词、别名和示例命中叠加启发式规则，为意图树叶子节点打分。
  */
 @Service
 public class RuleBasedIntentClassifier implements IntentClassifier {
 
-    /** 注释说明。 */
+    /** 通用闲聊回退意图标识。 */
     private static final String DEFAULT_SYSTEM_INTENT_ID = "general_assistant";
     /** 路径规划意图标识。 */
     private static final String PATH_OPTIMIZE_INTENT_ID = "path_optimize";
@@ -49,7 +48,7 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
      * 对单个问题文本进行规则分类。
      *
      * @param question 改写后的问题或子问题
-     * @return 返回结果。
+        * @return 意图候选分数列表
      */
     @Override
     public List<IntentNodeScore> classifyTargets(String question) {
@@ -150,7 +149,7 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
      * 判断是否存在明显的路径规划信号。
      *
      * @param normalizedQuestion 已归一化的问题文本
-     * @return 返回结果。
+        * @return 包含路径规划相关信号时返回 true
      */
     private boolean hasPathOptimizeSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
@@ -171,7 +170,7 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
      * 判断是否存在明显的航班搜索信号。
      *
      * @param normalizedQuestion 已归一化的问题文本
-     * @return 返回结果。
+        * @return 包含航班搜索相关信号时返回 true
      */
     private boolean hasFlightSearchSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
@@ -191,7 +190,7 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
      * 判断是否存在明显的价格比较信号。
      *
      * @param normalizedQuestion 已归一化的问题文本
-     * @return 返回结果。
+        * @return 包含价格比较相关信号时返回 true
      */
     private boolean hasPriceLookupSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
@@ -213,7 +212,7 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
      * 判断是否存在明显的签证查询信号。
      *
      * @param normalizedQuestion 已归一化的问题文本
-     * @return 返回结果。
+        * @return 包含签证查询相关信号时返回 true
      */
     private boolean hasVisaCheckSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
@@ -230,7 +229,7 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
      * 判断是否存在明显的城市成本信号。
      *
      * @param normalizedQuestion 已归一化的问题文本
-     * @return 返回结果。
+        * @return 包含城市成本相关信号时返回 true
      */
     private boolean hasCityCostSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
@@ -251,7 +250,7 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
      * 判断是否存在明显的风险评估信号。
      *
      * @param normalizedQuestion 已归一化的问题文本
-     * @return 返回结果。
+        * @return 包含风险评估相关信号时返回 true
      */
     private boolean hasRiskEvaluateSignals(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of(
@@ -272,7 +271,7 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
      * 判断问题是否更像闲聊或通用问候。
      *
      * @param normalizedQuestion 已归一化的问题文本
-     * @return 返回结果。
+        * @return 命中问候/闲聊短语时返回 true
      */
     private boolean looksLikeGreeting(String normalizedQuestion) {
         return containsAny(normalizedQuestion, List.of("你好", "您好", "hello", "hi", "你是谁", "讲个笑话", "写首诗"));
@@ -283,7 +282,7 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
      *
      * @param normalizedQuestion 已归一化的问题文本
      * @param keywords 关键词集合
-     * @return 返回结果。
+        * @return 命中任意关键词时返回 true
      */
     private boolean containsAny(String normalizedQuestion, List<String> keywords) {
         return keywords.stream()
@@ -292,9 +291,9 @@ public class RuleBasedIntentClassifier implements IntentClassifier {
     }
 
     /**
-     * 说明。
+        * 返回默认的系统回退意图。
      *
-     * @return 返回结果。
+        * @return 闲聊兜底意图分数
      */
     private IntentNodeScore defaultSystemIntent() {
         IntentNode fallbackNode = intentTree.findLeafNode(DEFAULT_SYSTEM_INTENT_ID)

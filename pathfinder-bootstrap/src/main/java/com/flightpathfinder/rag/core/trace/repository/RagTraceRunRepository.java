@@ -1,27 +1,26 @@
-﻿package com.flightpathfinder.rag.core.trace.repository;
+package com.flightpathfinder.rag.core.trace.repository;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * 说明。
+ * Rag 运行主记录仓储抽象。
  *
- * 说明。
- * 说明。
+ * 提供运行记录写入、按 traceId 查询和近期列表查询能力。
  */
 public interface RagTraceRunRepository {
 
     /**
-     * 说明。
+        * 新增或更新一条运行主记录。
      *
      * @param record 单次请求对应的持久化运行记录
      */
     void upsert(PersistedRagTraceRunRecord record);
 
     /**
-     * 说明。
+        * 根据 traceId 查询运行主记录。
      *
-     * @param traceId 参数说明。
+        * @param traceId 链路追踪标识
      * @return 命中时返回运行记录
      */
     Optional<PersistedRagTraceRunRecord> findByTraceId(String traceId);

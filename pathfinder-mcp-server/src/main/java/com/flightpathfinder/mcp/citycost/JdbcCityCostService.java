@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.citycost;
+package com.flightpathfinder.mcp.citycost;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +12,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 基于 JDBC 的城市成本查询服务实现。
  *
- * 说明。
- * 说明。
+ * 按 IATA 城市代码查询成本数据并保留缺失项事实，
  * 并返回便于管理侧消费的部分覆盖结果。
  */
 @Service
@@ -100,3 +99,4 @@ public class JdbcCityCostService implements CityCostService {
         return resultSet.wasNull() ? 0.0D : value;
     }
 }
+

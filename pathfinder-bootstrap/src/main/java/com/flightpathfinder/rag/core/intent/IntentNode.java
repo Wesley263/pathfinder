@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import java.util.List;
 import java.util.Locale;
@@ -7,8 +7,7 @@ import java.util.Objects;
 /**
  * 意图树节点定义。
  *
- * 说明。
- * 说明。
+ * 用于统一表达领域、分类与叶子主题节点，支持关键词匹配与执行元信息承载。
  *
  * @param id 节点唯一标识
  * @param name 节点名称
@@ -20,9 +19,9 @@ import java.util.Objects;
  * @param aliases 额外别名或同义表达
  * @param fullPath 节点在意图树中的完整路径
  * @param children 子节点列表
- * @param mcpToolId 参数说明。
- * @param collectionName 参数说明。
- * @param topK 参数说明。
+ * @param mcpToolId MCP 叶子节点绑定的工具标识
+ * @param collectionName 知识库叶子节点绑定的集合名
+ * @param topK 知识库检索默认返回条数
  */
 public record IntentNode(
         String id,
@@ -42,7 +41,7 @@ public record IntentNode(
     /**
      * 校验并归一化意图节点。
      *
-     * 说明。
+        * 对可选集合字段做不可变包装，并校验 Topic 节点必须声明类型。
      */
     public IntentNode {
         id = Objects.requireNonNull(id, "id cannot be null");
@@ -61,7 +60,7 @@ public record IntentNode(
     /**
      * 判断当前节点是否为叶子节点。
      *
-     * @return 返回结果。
+     * @return 当节点不存在子节点时返回 true
      */
     public boolean isLeaf() {
         return children.isEmpty();
@@ -70,8 +69,8 @@ public record IntentNode(
     /**
      * 判断给定标识是否能匹配当前节点。
      *
-     * @param candidateId 参数说明。
-     * @return 返回结果。
+        * @param candidateId 待匹配的节点标识或工具别名
+        * @return 匹配 id、mcpToolId 或 aliases 时返回 true
      */
     public boolean matchesId(String candidateId) {
         if (candidateId == null || candidateId.isBlank()) {
@@ -118,17 +117,17 @@ public record IntentNode(
     }
 
     /**
-     * 说明。
+        * 创建绑定 MCP 工具的叶子主题节点。
      *
      * @param id 节点标识
      * @param name 节点名称
      * @param description 节点说明
      * @param fullPath 完整路径
-     * @param mcpToolId 参数说明。
+        * @param mcpToolId 关联的 MCP 工具标识
      * @param keywords 关键词
      * @param aliases 别名
      * @param examples 示例
-     * @return 返回结果。
+        * @return MCP 主题节点
      */
     static IntentNode mcpTopic(String id,
                                String name,
@@ -143,7 +142,7 @@ public record IntentNode(
     }
 
     /**
-     * 说明。
+        * 创建绑定知识库检索配置的叶子主题节点。
      *
      * @param id 节点标识
      * @param name 节点名称
@@ -154,7 +153,7 @@ public record IntentNode(
      * @param keywords 关键词
      * @param aliases 别名
      * @param examples 示例
-     * @return 返回结果。
+    * @return 知识库主题节点
      */
     static IntentNode kbTopic(String id,
                               String name,
@@ -170,7 +169,7 @@ public record IntentNode(
     }
 
     /**
-     * 说明。
+        * 创建不依赖外部工具或知识库的系统类叶子主题节点。
      *
      * @param id 节点标识
      * @param name 节点名称
@@ -179,7 +178,7 @@ public record IntentNode(
      * @param keywords 关键词
      * @param aliases 别名
      * @param examples 示例
-     * @return 返回结果。
+    * @return 系统主题节点
      */
     static IntentNode systemTopic(String id,
                                   String name,

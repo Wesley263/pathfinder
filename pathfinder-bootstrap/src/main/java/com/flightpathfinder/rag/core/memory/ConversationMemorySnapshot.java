@@ -1,12 +1,11 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 import java.util.List;
 
 /**
  * 从记忆存储中读取到的原始近期轮次快照。
  *
- * 说明。
- * 说明。
+ * 作为记忆装配层输入，承载会话头和原始轮次列表。
  */
 public record ConversationMemorySnapshot(
         ConversationMemoryConversation conversation,
@@ -29,3 +28,4 @@ public record ConversationMemorySnapshot(
         return new ConversationMemorySnapshot(ConversationMemoryConversation.empty(conversationId), List.of());
     }
 }
+

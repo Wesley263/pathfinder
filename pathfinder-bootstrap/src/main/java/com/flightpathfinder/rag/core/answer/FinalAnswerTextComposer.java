@@ -1,10 +1,9 @@
-﻿package com.flightpathfinder.rag.core.answer;
+package com.flightpathfinder.rag.core.answer;
 
 /**
  * 最终回答文本生成边界。
  *
- * 说明。
- * 说明。
+ * 基于标准输入拼装面向用户的回答文本。
  */
 public interface FinalAnswerTextComposer {
 

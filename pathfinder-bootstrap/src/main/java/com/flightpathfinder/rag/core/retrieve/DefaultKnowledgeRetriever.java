@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.retrieve;
+package com.flightpathfinder.rag.core.retrieve;
 
 import com.flightpathfinder.rag.core.intent.IntentSplitResult;
 import com.flightpathfinder.rag.core.intent.ResolvedIntent;
@@ -14,15 +14,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 目录式知识检索器。
  *
- * 说明。
- * 说明。
+ * 基于内置知识目录做轻量词法打分，作为可用的默认 KB 检索实现。
  */
 @Service
 public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
 
-    /** 注释说明。 */
+    /** 内置知识目录（按集合分组）。 */
     private static final Map<String, List<KnowledgeDocument>> KNOWLEDGE_CATALOG = Map.of(
             "policy_edge_cases", List.of(
                     new KnowledgeDocument(
@@ -77,11 +76,11 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
                             List.of("廉航", "行李", "收费", "出行建议", "避坑"))));
 
     /**
-     * 说明。
+        * 执行目录式 KB 检索。
      *
      * @param rewriteResult 改写结果，提供检索文本
-     * @param intentSplitResult 参数说明。
-     * @return 返回结果。
+        * @param intentSplitResult 意图分流结果
+        * @return 知识库检索上下文
      */
     @Override
     public KbContext retrieve(RewriteResult rewriteResult, IntentSplitResult intentSplitResult) {
@@ -114,11 +113,11 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 针对单个 KB 意图执行检索。
      *
      * @param rewriteResult 改写结果
-     * @param kbIntent 参数说明。
-     * @return 返回结果。
+        * @param kbIntent KB 意图
+        * @return 命中的检索条目
      */
     private List<KbRetrievalItem> retrieveForIntent(RewriteResult rewriteResult, ResolvedIntent kbIntent) {
         String collectionName = kbIntent.kbCollectionName();
@@ -135,7 +134,7 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
         AtomicInteger rankCounter = new AtomicInteger(1);
         int limit = kbIntent.kbTopK() == null ? 3 : Math.max(1, kbIntent.kbTopK());
 
-        // 说明。
+        // 先按得分排序后截断 topK，最后映射为标准检索条目。
         return documents.stream()
                 .map(document -> new ScoredDocument(document, score(query, kbIntent, document)))
                 .sorted((left, right) -> Double.compare(right.score(), left.score()))
@@ -145,13 +144,13 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 把命中文档转换为标准检索条目。
      *
-     * @param kbIntent 参数说明。
+        * @param kbIntent 命中意图
      * @param document 命中文档
      * @param score 文档得分
      * @param rank 排名
-     * @return 返回结果。
+        * @return 检索条目
      */
     private KbRetrievalItem toItem(ResolvedIntent kbIntent, KnowledgeDocument document, double score, int rank) {
         return new KbRetrievalItem(
@@ -169,7 +168,7 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 去重同一意图下重复文档，保留高分项。
      *
      * @param items 原始条目列表
      * @return 去重后的条目列表
@@ -187,7 +186,7 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 说明。
+        * 按集合维度构建摘要。
      *
      * @param items 检索条目列表
      * @return 按集合统计的摘要文本
@@ -207,7 +206,7 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
      * 计算文档对当前问题的词法得分。
      *
      * @param query 当前检索问题
-     * @param kbIntent 参数说明。
+    * @param kbIntent KB 意图
      * @param document 待评分文档
      * @return 文档得分
      */
@@ -242,7 +241,7 @@ public class DefaultKnowledgeRetriever implements KnowledgeRetriever {
      * 决定本次检索应使用的问题文本。
      *
      * @param rewriteResult 改写结果
-     * @param kbIntent 参数说明。
+    * @param kbIntent KB 意图
      * @return 优先使用子问题文本，否则退回改写主问题
      */
     private String resolveQuery(RewriteResult rewriteResult, ResolvedIntent kbIntent) {

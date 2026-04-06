@@ -1,17 +1,17 @@
-﻿package com.flightpathfinder.rag.core.trace;
+package com.flightpathfinder.rag.core.trace;
 
 /**
- * 说明。
+ * Rag 追踪持久化服务抽象。
  *
- * 说明。
- * 说明。
+ * 统一定义追踪结果写入入口。
  */
 public interface RagTraceRecordService {
 
     /**
-     * 说明。
+     * 持久化一次追踪结果。
      *
-     * @param traceResult 参数说明。
+     * @param traceResult 请求追踪结果
      */
     void persist(RagTraceResult traceResult);
 }
+

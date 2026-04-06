@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.errorcode;
+package com.flightpathfinder.framework.errorcode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class BaseErrorCodeTest {
 
@@ -29,4 +29,6 @@ class BaseErrorCodeTest {
         assertFalse(BaseErrorCode.SERVICE_ERROR.message().isBlank());
     }
 }
+
+
 

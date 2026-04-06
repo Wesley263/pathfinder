@@ -1,13 +1,13 @@
-﻿package com.flightpathfinder.mcp.graph.search;
+package com.flightpathfinder.mcp.graph.search;
 
 /**
- * 说明。
+ * frontier 控制策略。
  *
- * 说明。
+ * 统一定义搜索扩展、候选池与绕路裁剪相关阈值。
  */
 final class GraphPathFrontierPolicy {
 
-    /** 注释说明。 */
+    /** frontier 最大容量。 */
     private final int maxFrontierSize;
     /** 最大扩展次数。 */
     private final int maxExpansions;
@@ -15,11 +15,11 @@ final class GraphPathFrontierPolicy {
     private final int candidatePoolSize;
     /** 触发提前停止所需的最小候选数。 */
     private final int earlyStopCandidateCount;
-    /** 注释说明。 */
+    /** Pareto 选择阶段的最小保留数量。 */
     private final int minimumParetoSelectionCount;
     /** 候选准入松弛量。 */
     private final double candidateAdmissionSlack;
-    /** 注释说明。 */
+    /** frontier 收敛判定松弛量。 */
     private final double frontierClosureSlack;
     /** 绕路基础阈值。 */
     private final double detourBaseThreshold;
@@ -27,7 +27,7 @@ final class GraphPathFrontierPolicy {
     private final double detourPerExtraSegmentThreshold;
 
     /**
-     * 说明。
+        * 构造 frontier 控制策略。
      */
     private GraphPathFrontierPolicy(int maxFrontierSize,
                                     int maxExpansions,
@@ -50,7 +50,7 @@ final class GraphPathFrontierPolicy {
     }
 
     /**
-     * 说明。
+        * 根据请求生成默认 frontier 策略。
      */
     static GraphPathFrontierPolicy defaultPolicy(GraphPathSearchRequest request) {
         int maxFrontierSize = Math.max(320, request.topK() * request.maxSegments() * 160);
@@ -58,7 +58,7 @@ final class GraphPathFrontierPolicy {
         int maxExpansions = Math.max(1600, maxFrontierSize * 8);
         int earlyStopCandidateCount = Math.max(request.topK() * 6, Math.min((candidatePoolSize * 3) / 4, 60));
         int minimumParetoSelectionCount = Math.max(request.topK() * 5, request.topK());
-        // 说明。
+        // 参数按 topK 与最大航段动态缩放，兼顾召回与计算成本。
         return new GraphPathFrontierPolicy(
                 maxFrontierSize,
                 maxExpansions,

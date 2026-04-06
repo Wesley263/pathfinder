@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph;
+package com.flightpathfinder.mcp.graph;
 
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshot;
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshotEdge;
@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
 /**
  * 把已发布快照读模型恢复为内存搜索图。
  *
- * 说明。
- * 说明。
+ * 负责将节点与边载荷转换为路径搜索可消费的内存结构。
  */
 @Component
 public class GraphSnapshotRestorer {
@@ -64,3 +63,4 @@ public class GraphSnapshotRestorer {
         return builder.build();
     }
 }
+

@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.admin.config;
+package com.flightpathfinder.admin.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  */
 @ConfigurationProperties(prefix = "pathfinder.admin.data.etl")
 public class AdminDataEtlProperties {
@@ -81,4 +81,6 @@ public class AdminDataEtlProperties {
         }
     }
 }
+
+
 

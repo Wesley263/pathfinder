@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.errorcode;
+package com.flightpathfinder.framework.errorcode;
 /**
  * 错误码体系基础类型。
  */

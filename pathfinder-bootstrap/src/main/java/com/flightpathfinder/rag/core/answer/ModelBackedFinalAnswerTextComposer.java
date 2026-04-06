@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.answer;
+package com.flightpathfinder.rag.core.answer;
 
 import com.flightpathfinder.infra.ai.chat.ChatRequest;
 import com.flightpathfinder.infra.ai.chat.ChatResponse;
@@ -10,10 +10,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 基于模型的最终回答文本生成器。
  *
- * 说明。
- * 说明。
+ * 在确定性草稿基础上调用模型润色，模型不可用时回退到确定性输出。
  */
 @Service
 @Primary
@@ -38,8 +37,6 @@ public class ModelBackedFinalAnswerTextComposer implements FinalAnswerTextCompos
 
     /**
      * 生成最终回答文本。
-     *
-     * 说明。
      *
      * @param promptInput 回答输入
      * @return 最终回答文本

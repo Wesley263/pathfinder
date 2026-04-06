@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.service.etl;
+package com.flightpathfinder.admin.service.etl;
 
 import com.flightpathfinder.admin.config.AdminDataEtlProperties;
 import com.flightpathfinder.admin.service.AdminDatasetReloadResult;
@@ -23,9 +23,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * OpenFlights 数据导入器。
  *
- * 说明。
+ * 负责解析机场、航司、航线三类离线数据并写入管理库，
  * 而非面向用户的运行时查询服务。
  */
 @Service
@@ -189,9 +189,9 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 说明。
+          * 返回当前导入器负责的数据集标识。
      *
-     * @return 返回结果。
+      * @return 固定数据集标识 openflights
      */
     @Override
     public String datasetId() {
@@ -199,9 +199,9 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 说明。
+          * 执行 OpenFlights 全量重载。
      *
-     * @return 返回结果。
+      * @return 本次导入处理统计与状态
      */
     @Override
     public AdminDatasetReloadResult reload() {
@@ -253,7 +253,7 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
                     + airportUpserts.failedCount() + airlineUpserts.failedCount() + routeUpserts.failedCount();
             long upserted = airportUpserts.upsertedCount() + airlineUpserts.upsertedCount() + routeUpserts.upsertedCount();
 
-            // 说明。
+                // 输出部分成功状态，显式体现“解析跳过”与“写入失败”两类非成功路径。
             String status = failed > 0 ? "PARTIAL_SUCCESS" : "SUCCESS";
             String reason = failed > 0
                     ? "openflights ETL completed with row-level skips or failures"
@@ -446,7 +446,7 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
             pairCompetition.merge(pairKey, 1, Integer::sum);
         }
 
-        // 说明。
+        // 用于解释当前步骤的设计动机与执行目的。
         List<RouteRecord> finalRoutes = new ArrayList<>(routes.size());
         for (BasicRouteRecord route : routes.values()) {
             String pairKey = route.source().iataCode() + "|" + route.destination().iataCode();
@@ -719,3 +719,5 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
             int competitionCount) {
     }
 }
+
+

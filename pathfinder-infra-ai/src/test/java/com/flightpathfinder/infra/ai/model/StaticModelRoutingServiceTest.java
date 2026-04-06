@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.infra.ai.model;
+package com.flightpathfinder.infra.ai.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * StaticModelRoutingService 单元测试。
  */
 class StaticModelRoutingServiceTest {
 

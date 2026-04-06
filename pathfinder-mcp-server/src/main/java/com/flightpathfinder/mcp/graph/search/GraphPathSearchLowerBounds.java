@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.search;
+package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredFlightGraph;
 import com.flightpathfinder.mcp.graph.model.RestoredGraphEdge;
@@ -15,8 +15,8 @@ import java.util.function.ToDoubleFunction;
 /**
  * 图路径搜索使用的预计算下界。
  *
- * 说明。
- * 说明。
+ * 包含航段、价格、时长和直线距离的乐观估计，
+ * 用于搜索前与搜索中的快速剪枝。
  */
 final class GraphPathSearchLowerBounds {
 
@@ -127,7 +127,7 @@ final class GraphPathSearchLowerBounds {
     }
 
     /**
-     * 说明。
+        * 反向 BFS 计算最小剩余航段数。
      */
     private static Map<String, Integer> computeMinSegments(Map<String, List<RestoredGraphEdge>> incomingEdges,
                                                            String destination) {
@@ -135,7 +135,7 @@ final class GraphPathSearchLowerBounds {
         ArrayDeque<String> queue = new ArrayDeque<>();
         minSegments.put(destination, 0);
         queue.add(destination);
-        // 说明。
+        // 反向按层扩展，首次到达即为最短航段数。
         while (!queue.isEmpty()) {
             String current = queue.removeFirst();
             int nextDistance = minSegments.get(current) + 1;
@@ -152,7 +152,7 @@ final class GraphPathSearchLowerBounds {
     }
 
     /**
-     * 说明。
+        * 反向 Dijkstra 计算最小剩余 double 代价。
      */
     private static Map<String, Double> computeMinDoubleCosts(Map<String, List<RestoredGraphEdge>> incomingEdges,
                                                              String destination,
@@ -179,7 +179,7 @@ final class GraphPathSearchLowerBounds {
     }
 
     /**
-     * 说明。
+        * 反向 Dijkstra 计算最小剩余 int 代价。
      */
     private static Map<String, Integer> computeMinIntCosts(Map<String, List<RestoredGraphEdge>> incomingEdges,
                                                            String destination,
@@ -244,11 +244,11 @@ final class GraphPathSearchLowerBounds {
         return earthRadiusKm * c;
     }
 
-    /** 注释说明。 */
+    /** double 代价队列节点。 */
     private record GraphNodeDistance(String airportCode, double cost) {
     }
 
-    /** 注释说明。 */
+    /** int 代价队列节点。 */
     private record GraphNodeDuration(String airportCode, int cost) {
     }
 }

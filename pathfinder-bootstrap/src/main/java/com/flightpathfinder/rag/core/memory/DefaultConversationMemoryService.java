@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 /**
  * 记忆加载与写入流程的默认编排实现。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  * 并将近期轮次存储与可选摘要加载统一组合，使主链仅消费单一记忆上下文对象。
  */
 @Service
@@ -84,3 +84,5 @@ public class DefaultConversationMemoryService implements ConversationMemoryServi
         }
     }
 }
+
+

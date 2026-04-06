@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.riskevaluate;
+package com.flightpathfinder.mcp.riskevaluate;
 
 import java.util.Locale;
 

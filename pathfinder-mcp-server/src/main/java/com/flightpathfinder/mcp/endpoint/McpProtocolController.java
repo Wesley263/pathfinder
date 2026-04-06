@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.endpoint;
+package com.flightpathfinder.mcp.endpoint;
 
 import com.flightpathfinder.framework.convention.Result;
 import com.flightpathfinder.framework.protocol.mcp.JsonRpcRequest;
@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 说明。
+ * MCP 协议入口控制器。
  *
- * 说明。
- * 说明。
+ * 对外提供 JSON-RPC 请求入口和基础健康检查接口。
  */
 @RestController
 @RequestMapping("/mcp")
@@ -32,10 +31,10 @@ public class McpProtocolController {
     }
 
     /**
-     * 说明。
+     * 处理 MCP JSON-RPC 请求。
      *
-     * @param request 参数说明。
-     * @return 返回结果。
+     * @param request JSON-RPC 请求体
+     * @return JSON-RPC 响应
      */
     @PostMapping
     public JsonRpcResponse<?> handle(@RequestBody JsonRpcRequest<Map<String, Object>> request) {
@@ -52,3 +51,4 @@ public class McpProtocolController {
         return Results.success(Map.of("status", "ok", "toolCount", mcpServerToolRegistry.listTools().size()));
     }
 }
+

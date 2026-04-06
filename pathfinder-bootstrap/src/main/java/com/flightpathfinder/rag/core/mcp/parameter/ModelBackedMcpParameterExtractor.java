@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.mcp.parameter;
+package com.flightpathfinder.rag.core.mcp.parameter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  */
 @Service
 @Primary
@@ -265,3 +265,5 @@ public class ModelBackedMcpParameterExtractor implements McpParameterExtractor {
         return cleaned;
     }
 }
+
+

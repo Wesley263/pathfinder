@@ -1,7 +1,7 @@
-﻿package com.flightpathfinder.rag.core.trace.repository;
+package com.flightpathfinder.rag.core.trace.repository;
 
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param traceId 参数说明。
  * @param toolIndex 工具序号
@@ -18,3 +18,5 @@ public record PersistedRagTraceToolRecord(
         String message,
         boolean snapshotMiss) {
 }
+
+

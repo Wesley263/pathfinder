@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.pricelookup;
+package com.flightpathfinder.mcp.pricelookup;
 
 /**
  * 单个城市对的最低价比价结果项。

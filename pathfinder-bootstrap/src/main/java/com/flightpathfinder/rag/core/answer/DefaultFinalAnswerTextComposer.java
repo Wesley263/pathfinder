@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.answer;
+package com.flightpathfinder.rag.core.answer;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
 import com.flightpathfinder.rag.core.retrieve.KbRetrievalItem;
@@ -9,10 +9,9 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 最终回答文本生成器默认实现。
  *
- * 说明。
- * 说明。
+ * 基于已装配的 promptInput 将 MCP 与 KB 证据组织为可读回答文本。
  */
 @Service
 public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
@@ -47,7 +46,7 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
             sections.add("Question: " + promptInput.rewrittenQuestion());
         }
 
-        // 说明。
+        // 回答结构优先展示 MCP 结果，再补充 KB 证据。
         String mcpSection = composeMcpSection(promptInput);
         if (!mcpSection.isBlank()) {
             sections.add(mcpSection);
@@ -68,10 +67,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 说明。
+        * 生成 MCP 结果分段。
      *
      * @param promptInput 回答生成输入
-     * @return 返回结果。
+        * @return MCP 段落文本
      */
     private String composeMcpSection(FinalAnswerPromptInput promptInput) {
         List<McpExecutionRecord> executions = promptInput.mcpContext().executions();
@@ -110,7 +109,7 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 说明。
+        * 生成 MCP 成功态单行文本。
      *
      * @param toolId 工具标识
      * @param toolResult 工具结果
@@ -129,9 +128,9 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 说明。
+        * 生成 MCP 数据缺失态单行文本。
      *
-     * @param execution 参数说明。
+        * @param execution MCP 执行记录
      * @return 用户可读说明
      */
     private String composeDataNotFoundLine(McpExecutionRecord execution) {
@@ -144,10 +143,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 生成路径规划成功态说明。
+     * 生成路径规划成功态摘要。
      *
      * @param toolResult 工具结果
-     * @return 单行说明
+     * @return 单行摘要
      */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulPathLine(McpToolCallResult toolResult) {
@@ -172,10 +171,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 生成航班搜索成功态说明。
+     * 生成航班搜索成功态摘要。
      *
      * @param toolResult 工具结果
-     * @return 单行说明
+     * @return 单行摘要
      */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulFlightSearchLine(McpToolCallResult toolResult) {
@@ -209,10 +208,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 生成价格比较成功态说明。
+     * 生成价格比较成功态摘要。
      *
      * @param toolResult 工具结果
-     * @return 单行说明
+     * @return 单行摘要
      */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulPriceLookupLine(McpToolCallResult toolResult) {
@@ -243,10 +242,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 生成签证检查成功态说明。
+     * 生成签证检查成功态摘要。
      *
      * @param toolResult 工具结果
-     * @return 单行说明
+     * @return 单行摘要
      */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulVisaCheckLine(McpToolCallResult toolResult) {
@@ -274,10 +273,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 生成城市成本成功态说明。
+     * 生成城市成本成功态摘要。
      *
      * @param toolResult 工具结果
-     * @return 单行说明
+     * @return 单行摘要
      */
     @SuppressWarnings("unchecked")
     private String composeSuccessfulCityCostLine(McpToolCallResult toolResult) {
@@ -308,10 +307,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 生成风险评估成功态说明。
+     * 生成风险评估成功态摘要。
      *
      * @param toolResult 工具结果
-     * @return 单行说明
+     * @return 单行摘要
      */
     private String composeSuccessfulRiskEvaluateLine(McpToolCallResult toolResult) {
         if (toolResult == null || toolResult.structuredContent() == null) {
@@ -336,10 +335,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 说明。
+        * 把航段列表渲染为路线文本。
      *
-     * @param legsObject 参数说明。
-     * @return 返回结果。
+        * @param legsObject 航段对象列表
+        * @return 路线文本
      */
     private String buildRoute(Object legsObject) {
         if (!(legsObject instanceof List<?> legs) || legs.isEmpty()) {
@@ -363,10 +362,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 说明。
+        * 生成 KB 证据分段。
      *
      * @param promptInput 回答生成输入
-     * @return 返回结果。
+        * @return KB 段落文本
      */
     private String composeKbSection(FinalAnswerPromptInput promptInput) {
         if (promptInput.kbContext().empty()) {

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import java.util.Comparator;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * 单个子问题的意图识别结果。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param question 当前子问题文本
  * @param nodeScores 当前子问题对应的候选意图打分列表
@@ -31,3 +31,5 @@ public record SubQuestionIntent(String question, List<IntentNodeScore> nodeScore
         return nodeScores.stream().max(Comparator.comparingDouble(IntentNodeScore::score));
     }
 }
+
+

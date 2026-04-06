@@ -1,12 +1,11 @@
-﻿package com.flightpathfinder.rag.core.rewrite;
+package com.flightpathfinder.rag.core.rewrite;
 
 import com.flightpathfinder.rag.core.pipeline.StageOneRagRequest;
 
 /**
  * 第一阶段中的问题改写边界。
  *
- * 说明。
- * 说明。
+ * 负责把原始问题转换为路由与展示可用的统一表示。
  */
 public interface QuestionRewriteService {
 

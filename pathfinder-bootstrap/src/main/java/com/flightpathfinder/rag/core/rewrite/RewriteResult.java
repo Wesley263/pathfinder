@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.rewrite;
+package com.flightpathfinder.rag.core.rewrite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,7 @@ import java.util.List;
 /**
  * 问题改写阶段的标准结果。
  *
- * 说明。
- * 说明。
+ * 同时包含展示视角与内部路由视角的改写结果。
  *
  * @param rewrittenQuestion 展示给后续审计与响应层的改写问题
  * @param subQuestions 展示视角下的子问题拆分结果
@@ -22,8 +21,6 @@ public record RewriteResult(
 
     /**
      * 归一化改写结果并补齐兜底子问题。
-     *
-     * 说明。
      */
     public RewriteResult {
         rewrittenQuestion = rewrittenQuestion == null ? "" : rewrittenQuestion.trim();

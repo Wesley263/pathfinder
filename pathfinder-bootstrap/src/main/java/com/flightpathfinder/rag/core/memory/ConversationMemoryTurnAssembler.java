@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 import com.flightpathfinder.rag.core.memory.repository.ConversationMemoryMessageRecord;
 import java.time.Instant;
@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * 将持久化消息行重组为“轮次级”记忆对象。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  * 而主链消费的是轮次对象。本组装器即承担从存储形态到编排形态的边界转换。
  */
 final class ConversationMemoryTurnAssembler {
@@ -87,3 +87,5 @@ final class ConversationMemoryTurnAssembler {
         }
     }
 }
+
+

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.rewrite;
+package com.flightpathfinder.rag.core.rewrite;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class DefaultQuestionRewriteServiceTest {
 
@@ -51,4 +51,6 @@ class DefaultQuestionRewriteServiceTest {
         assertTrue(result.routingSubQuestions().get(0).endsWith("Current question: 那价格呢"));
     }
 }
+
+
 

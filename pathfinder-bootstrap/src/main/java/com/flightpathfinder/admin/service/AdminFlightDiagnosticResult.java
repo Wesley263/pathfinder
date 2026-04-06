@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.service;
+package com.flightpathfinder.admin.service;
 
 import java.time.Instant;
 import java.util.List;

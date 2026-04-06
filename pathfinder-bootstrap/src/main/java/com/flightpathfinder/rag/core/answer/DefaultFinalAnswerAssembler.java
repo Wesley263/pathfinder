@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.answer;
+package com.flightpathfinder.rag.core.answer;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
 import com.flightpathfinder.rag.core.retrieve.KbContext;
@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 /**
  * 最终回答阶段的默认输入装配器。
  *
- * 说明。
- * 说明。
+ * 负责把 retrieval 结果转换为回答文本生成可直接消费的标准输入。
+ * 同时提取证据摘要并标记 partial、snapshotMiss、empty 等状态。
  */
 @Service
 public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
@@ -35,9 +35,9 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     private static final String RISK_EVALUATE_TOOL_ID = "risk.evaluate";
 
     /**
-     * 说明。
+        * 组装最终回答提示输入。
      *
-     * @param retrievalResult 参数说明。
+        * @param retrievalResult 检索阶段结果
      * @return 文本生成器可直接消费的标准输入
      */
     @Override
@@ -52,7 +52,7 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
         boolean mcpRequested = !stageOneResult.intentSplitResult().mcpIntents().isEmpty();
 
         List<AnswerEvidenceSummary> evidenceSummaries = new ArrayList<>();
-        // 说明。
+        // 证据数量控制在前几条，避免提示词长度失控。
         kbContext.items().stream()
                 .limit(4)
                 .map(this::toKbEvidence)
@@ -89,9 +89,9 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     }
 
     /**
-     * 说明。
+        * 转换 KB 命中条目为证据摘要。
      *
-     * @param item 参数说明。
+        * @param item KB 命中条目
      * @return 证据摘要
      */
     private AnswerEvidenceSummary toKbEvidence(KbRetrievalItem item) {
@@ -104,9 +104,9 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     }
 
     /**
-     * 说明。
+        * 转换 MCP 执行记录为证据摘要。
      *
-     * @param execution 参数说明。
+        * @param execution MCP 执行记录
      * @return 证据摘要
      */
     private AnswerEvidenceSummary toMcpEvidence(McpExecutionRecord execution) {
@@ -134,7 +134,7 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     }
 
     /**
-     * 说明。
+        * 汇总 MCP 成功执行结果。
      *
      * @param toolId 工具标识
      * @param toolResult 工具返回结果
@@ -153,9 +153,9 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     }
 
     /**
-     * 说明。
+        * 汇总 MCP 数据缺失状态。
      *
-     * @param execution 参数说明。
+        * @param execution MCP 执行记录
      * @return 状态说明文本
      */
     private String summarizeDataNotFound(McpExecutionRecord execution) {

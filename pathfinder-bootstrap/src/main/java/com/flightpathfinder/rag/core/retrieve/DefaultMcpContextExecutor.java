@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.retrieve;
+package com.flightpathfinder.rag.core.retrieve;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -18,52 +18,52 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * MCP 上下文执行器默认实现。
  *
- * 说明。
- * 说明。
+ * 根据意图分流结果选择工具、抽取参数并执行远端调用，
+ * 最终聚合为可供回答阶段使用的 McpContext。
  */
 @Service
 public class DefaultMcpContextExecutor implements McpContextExecutor {
 
-    /** 注释说明。 */
+    /** 路径规划意图标识。 */
     private static final String GRAPH_PATH_INTENT_ID = "path_optimize";
     /** 路径规划工具标识。 */
     private static final String GRAPH_PATH_TOOL_ID = "graph.path.search";
-    /** 注释说明。 */
+    /** 航班搜索意图标识。 */
     private static final String FLIGHT_SEARCH_INTENT_ID = "flight_search";
     /** 航班搜索工具标识。 */
     private static final String FLIGHT_SEARCH_TOOL_ID = "flight.search";
-    /** 注释说明。 */
+    /** 比价意图标识。 */
     private static final String PRICE_LOOKUP_INTENT_ID = "price_lookup";
     /** 比价工具标识。 */
     private static final String PRICE_LOOKUP_TOOL_ID = "price.lookup";
-    /** 注释说明。 */
+    /** 签证查询意图标识。 */
     private static final String VISA_CHECK_INTENT_ID = "visa_check";
     /** 签证查询工具标识。 */
     private static final String VISA_CHECK_TOOL_ID = "visa.check";
-    /** 注释说明。 */
+    /** 城市成本意图标识。 */
     private static final String CITY_COST_INTENT_ID = "city_cost";
     /** 城市成本工具标识。 */
     private static final String CITY_COST_TOOL_ID = "city.cost";
-    /** 注释说明。 */
+    /** 风险评估意图标识。 */
     private static final String RISK_EVALUATE_INTENT_ID = "risk_evaluate";
     /** 风险评估工具标识。 */
     private static final String RISK_EVALUATE_TOOL_ID = "risk.evaluate";
 
-    /** 注释说明。 */
+    /** 本地工具注册表。 */
     private final LocalMcpToolRegistry localMcpToolRegistry;
-    /** 注释说明。 */
+    /** 远端工具目录刷新服务。 */
     private final McpToolDiscoveryService mcpToolDiscoveryService;
-    /** 注释说明。 */
+    /** 远端工具执行器。 */
     private final RemoteMcpToolExecutor remoteMcpToolExecutor;
-    /** 注释说明。 */
+    /** MCP 参数抽取器。 */
     private final McpParameterExtractor mcpParameterExtractor;
 
     /**
-     * 说明。
+        * 构造 MCP 上下文执行器。
      *
-     * @param localMcpToolRegistry 参数说明。
+        * @param localMcpToolRegistry 本地工具注册表
      * @param mcpToolDiscoveryService 工具目录刷新服务
      * @param remoteMcpToolExecutor 远端工具执行器
      * @param mcpParameterExtractor 参数抽取器
@@ -79,11 +79,11 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
     }
 
     /**
-     * 说明。
+        * 执行 MCP 意图并聚合上下文结果。
      *
      * @param rewriteResult 改写结果，主要用于参数抽取
-     * @param intentSplitResult 参数说明。
-     * @return 返回结果。
+        * @param intentSplitResult 意图分流结果
+        * @return 聚合后的 MCP 上下文
      */
     @Override
     public McpContext execute(RewriteResult rewriteResult, IntentSplitResult intentSplitResult) {
@@ -106,10 +106,10 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
     }
 
     /**
-     * 说明。
+        * 执行单个意图对应的 MCP 工具调用。
      *
      * @param rewriteResult 改写结果
-     * @param resolvedIntent 参数说明。
+        * @param resolvedIntent 已解析意图
      * @return 单次工具执行记录
      */
     private McpExecutionRecord executeIntent(RewriteResult rewriteResult, ResolvedIntent resolvedIntent) {
@@ -125,7 +125,7 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
                     "MCP tool is not available in the local registry after discovery refresh");
         }
 
-        // 说明。
+        // 参数抽取阶段失败时不触发远端调用，直接返回失败语义记录。
         McpParameterExtractionResult extractionResult =
                 mcpParameterExtractor.extract(rewriteResult, resolvedIntent, toolDescriptor.get());
         if (!extractionResult.ready()) {
@@ -152,7 +152,7 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
     }
 
     /**
-     * 说明。
+        * 解析工具描述，必要时触发目录刷新后重试。
      *
      * @param toolId 工具标识
      * @return 工具描述；不存在时返回空
@@ -163,17 +163,17 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
             return localDescriptor;
         }
 
-        // 说明。
+        // 首次未命中时刷新目录，兼容运行时新增工具的场景。
         List<McpToolDescriptor> refreshedTools = mcpToolDiscoveryService.refreshToolCatalog();
         return localMcpToolRegistry.findByToolId(toolId)
                 .or(() -> refreshedTools.stream().filter(tool -> toolId.equals(tool.toolId())).findFirst());
     }
 
     /**
-     * 说明。
+         * 根据意图解析目标工具标识。
      *
-     * @param resolvedIntent 参数说明。
-     * @return 返回结果。
+         * @param resolvedIntent 已解析意图
+         * @return 工具标识；无法映射时返回空字符串
      */
     private String resolveToolId(ResolvedIntent resolvedIntent) {
         if (resolvedIntent == null) {
@@ -194,9 +194,9 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
     }
 
     /**
-     * 说明。
+        * 统一转换工具返回结果为执行记录。
      *
-     * @param resolvedIntent 参数说明。
+        * @param resolvedIntent 已解析意图
      * @param requestParameters 请求参数
      * @param toolResult 原始工具返回结果
      * @return 统一执行记录
@@ -242,7 +242,7 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
     /**
      * 构造失败执行记录。
      *
-     * @param resolvedIntent 参数说明。
+        * @param resolvedIntent 已解析意图
      * @param toolId 工具标识
      * @param requestParameters 请求参数
      * @param status 失败状态
@@ -272,10 +272,10 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
     }
 
     /**
-     * 说明。
+        * 汇总多次工具执行得到 MCP 上下文状态。
      *
      * @param executions 执行记录列表
-     * @return 返回结果。
+        * @return 聚合状态
      */
     private String resolveContextStatus(List<McpExecutionRecord> executions) {
         if (executions.isEmpty()) {
@@ -309,7 +309,7 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
      * 判断状态是否属于“成功或可直接用于回答”的一类。
      *
      * @param status 工具状态
-     * @return 返回结果。
+        * @return 是否属于成功语义
      */
     private boolean isSuccessfulStatus(String status) {
         return switch (status) {
@@ -322,7 +322,7 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
      * 判断状态是否属于非失败语义。
      *
      * @param status 工具状态
-     * @return 返回结果。
+        * @return 是否属于非失败语义
      */
     private boolean isNonFailureStatus(String status) {
         return switch (status) {
@@ -332,7 +332,7 @@ public class DefaultMcpContextExecutor implements McpContextExecutor {
     }
 
     /**
-     * 说明。
+        * 生成可读摘要，格式为 toolId:status 串联。
      *
      * @param executions 执行记录列表
      * @return 摘要文本

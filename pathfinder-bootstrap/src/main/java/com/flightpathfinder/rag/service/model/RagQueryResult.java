@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.service.model;
+package com.flightpathfinder.rag.service.model;
 
 import com.flightpathfinder.rag.core.answer.AnswerResult;
 import com.flightpathfinder.rag.core.pipeline.StageOneRagResult;
@@ -9,13 +9,12 @@ import java.util.List;
 /**
  * 同步查询总结果。
  *
- * 说明。
- * 说明。
+ * 聚合阶段一、检索、回答与追踪结果，作为同步链路统一返回模型。
  *
  * @param stageOneResult 第一阶段结果
- * @param retrievalResult 参数说明。
+ * @param retrievalResult 检索结果
  * @param answerResult 最终回答结果
- * @param traceResult 参数说明。
+ * @param traceResult 追踪结果
  */
 public record RagQueryResult(
         StageOneRagResult stageOneResult,
@@ -40,7 +39,7 @@ public record RagQueryResult(
     /**
      * 判断第一阶段是否产生了有效结果。
      *
-     * @return 返回结果。
+        * @return 产生改写或任一路意图时返回 true
      */
     public boolean stageOneCompleted() {
         return !stageOneResult.rewriteResult().rewrittenQuestion().isBlank()
@@ -50,3 +49,4 @@ public record RagQueryResult(
                 || !stageOneResult.intentSplitResult().systemIntents().isEmpty();
     }
 }
+

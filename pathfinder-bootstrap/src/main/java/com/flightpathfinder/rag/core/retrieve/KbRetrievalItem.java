@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.rag.core.retrieve;
+package com.flightpathfinder.rag.core.retrieve;
 
 /**
- * 说明。
+ * KB 单条命中文档。
  *
- * 说明。
+ * 表示某个 KB 意图在检索后得到的一条候选内容。
  *
  * @param intentId 触发该条目的意图标识
  * @param intentName 触发该条目的意图名称
@@ -31,7 +31,7 @@ public record KbRetrievalItem(
         int rank) {
 
     /**
-     * 说明。
+        * 归一化构造参数，避免空引用。
      */
     public KbRetrievalItem {
         intentId = intentId == null ? "" : intentId.trim();

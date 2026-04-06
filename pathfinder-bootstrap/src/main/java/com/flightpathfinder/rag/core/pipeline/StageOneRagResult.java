@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.pipeline;
+package com.flightpathfinder.rag.core.pipeline;
 
 import com.flightpathfinder.rag.core.intent.IntentResolution;
 import com.flightpathfinder.rag.core.intent.IntentSplitResult;
@@ -8,12 +8,11 @@ import com.flightpathfinder.rag.core.rewrite.RewriteResult;
 /**
  * 第一阶段主链的标准输出模型。
  *
- * 说明。
- * 说明。
+ * 聚合 rewrite、intent 和 memory 三类信息，作为 retrieval 阶段输入。
  *
  * @param rewriteResult 改写结果，包含展示用问题和内部路由用问题
  * @param intentResolution 意图解析全量结果，包含子问题级别的打分视图
- * @param intentSplitResult 参数说明。
+ * @param intentSplitResult 供后续 retrieval 使用的意图分流结果
  * @param memoryContext 本次请求实际参与第一阶段的会话记忆上下文
  */
 public record StageOneRagResult(
@@ -24,8 +23,6 @@ public record StageOneRagResult(
 
     /**
      * 归一化第一阶段结果。
-     *
-     * 说明。
      */
     public StageOneRagResult {
         rewriteResult = rewriteResult == null ? new RewriteResult("", null, null, null) : rewriteResult;

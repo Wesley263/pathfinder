@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.visacheck;
+package com.flightpathfinder.mcp.visacheck;
 
 /**
  * 单个国家的签证核验结果项。

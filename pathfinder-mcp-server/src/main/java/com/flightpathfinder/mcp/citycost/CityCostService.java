@@ -1,10 +1,9 @@
-﻿package com.flightpathfinder.mcp.citycost;
+package com.flightpathfinder.mcp.citycost;
 
 /**
  * 城市成本查询的服务端契约。
  *
- * 说明。
- * 说明。
+ * 定义按城市代码查询成本数据的标准入口。
  */
 public interface CityCostService {
 
@@ -16,3 +15,4 @@ public interface CityCostService {
      */
     CityCostResult lookup(CityCostQuery query);
 }
+

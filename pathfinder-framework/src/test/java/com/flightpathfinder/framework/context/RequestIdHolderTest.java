@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.context;
+package com.flightpathfinder.framework.context;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 class RequestIdHolderTest {
 
@@ -59,4 +59,6 @@ class RequestIdHolderTest {
         assertNull(workerValue.get());
     }
 }
+
+
 

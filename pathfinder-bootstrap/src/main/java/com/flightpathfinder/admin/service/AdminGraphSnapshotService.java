@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.admin.service;
+package com.flightpathfinder.admin.service;
 
 /**
  * 图快照管理的管理端服务。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  * 因此以独立管理能力暴露。
  */
 public interface AdminGraphSnapshotService {
@@ -34,3 +34,5 @@ public interface AdminGraphSnapshotService {
      */
     AdminGraphSnapshotStatus invalidate(String graphKey, String reason);
 }
+
+

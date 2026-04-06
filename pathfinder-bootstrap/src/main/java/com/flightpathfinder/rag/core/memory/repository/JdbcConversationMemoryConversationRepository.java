@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory.repository;
+package com.flightpathfinder.rag.core.memory.repository;
 
 import com.flightpathfinder.rag.core.memory.ConversationMemoryConversation;
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * 说明。
+ * 会话头信息仓储 JDBC 实现。
  *
- * 说明。
+ * 负责会话级统计与最近请求标识维护，
  * 使列表与摘要查询保持轻量。
  */
 @Repository
@@ -123,3 +123,4 @@ public class JdbcConversationMemoryConversationRepository implements Conversatio
         }
     }
 }
+

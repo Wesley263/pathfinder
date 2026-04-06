@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.service.impl;
+package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminMcpService;
 import com.flightpathfinder.admin.service.AdminMcpToolDetail;
@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 管理端 MCP 工具目录服务默认实现。
  *
- * 说明。
+ * 负责合并本地托管元数据与远端发现结果，
  * 因此位于管理端能力面而非复用用户侧执行模型。
  */
 @Service
@@ -50,10 +50,10 @@ public class DefaultAdminMcpService implements AdminMcpService {
     }
 
     /**
-        * 说明。
+                  * 查询 MCP 工具目录清单。
      *
-     * @param refresh 参数说明。
-     * @return 返回结果。
+          * @param refresh 是否触发远端目录刷新
+          * @return 工具清单结果
      */
     @Override
     public AdminMcpToolListResult listTools(boolean refresh) {
@@ -71,11 +71,11 @@ public class DefaultAdminMcpService implements AdminMcpService {
     }
 
     /**
-        * 说明。
+                  * 查询单个 MCP 工具的详情与依赖状态。
      *
-     * @param toolId 参数说明。
-     * @param refresh 参数说明。
-     * @return 返回结果。
+          * @param toolId 工具标识
+          * @param refresh 是否触发远端目录刷新
+          * @return 工具详情结果
      */
     @Override
     public AdminMcpToolDetailResult findTool(String toolId, boolean refresh) {
@@ -151,7 +151,7 @@ public class DefaultAdminMcpService implements AdminMcpService {
         if ("graph.path.search".equals(definition.toolId())) {
             String graphKey = graphSnapshotProperties.getDefaultGraphKey();
             Optional<GraphSnapshot> snapshot = graphSnapshotQueryService.loadCurrent(graphKey);
-                        // 说明。
+                                                // 管理端显式区分“工具不可用”和“快照缺失”，用于快速定位依赖瓶颈。
             if (snapshot.isPresent()) {
                 GraphSnapshot graphSnapshot = snapshot.get();
                 details.add("Current graph snapshot is ready for graphKey=" + graphKey + ", snapshotVersion=" + graphSnapshot.snapshotVersion());

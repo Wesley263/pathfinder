@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.server.executor;
+package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -18,11 +18,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * graph.path.search MCP 工具执行器。
  *
- * 说明。
- * 说明。
- * 说明。
+ * 从 Redis 加载最新图快照并在服务端执行路径搜索。
  */
 @Component
 public class GraphPathMcpToolExecutor implements McpToolExecutor {
@@ -43,9 +41,9 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 说明。
+        * 返回 graph.path.search 的工具描述。
      *
-     * @return 返回结果。
+        * @return MCP 工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -81,9 +79,8 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
     /**
      * 基于最新可用图快照执行路径搜索。
      *
-     * @param request 参数说明。
-     * @return 返回结果。
-     * 说明。
+        * @param request 工具调用请求
+        * @return 结构化路径搜索结果
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -95,8 +92,7 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
             }
 
             GraphSnapshot graphSnapshot = snapshot.get();
-            // 说明。
-            // 当快照缺失时，绝不能回源源表重建或补图。
+            // 执行路径严格依赖已发布快照，避免在工具调用链路中触发回源构图。
             RestoredFlightGraph restoredGraph = graphSnapshotRestorer.restore(graphSnapshot);
             if (!restoredGraph.hasNode(searchRequest.origin()) || !restoredGraph.hasNode(searchRequest.destination())) {
                 return invalidRequestResult("origin or destination is not present in the current graph snapshot");
@@ -148,8 +144,7 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
         if (origin == null || destination == null) {
             throw new IllegalArgumentException("origin and destination are required IATA codes");
         }
-        // 说明。
-        // 避免搜索层从原始文本中“猜测”输入语义。
+        // 入口层统一做参数约束，避免搜索层承担输入纠错职责。
         validate(origin, destination, maxBudget, stopoverDays, maxSegments, topK);
         return new GraphPathSearchRequest(graphKey, origin, destination, maxBudget, stopoverDays, maxSegments, topK);
     }
@@ -275,3 +270,4 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
         return Integer.parseInt(String.valueOf(rawValue));
     }
 }
+

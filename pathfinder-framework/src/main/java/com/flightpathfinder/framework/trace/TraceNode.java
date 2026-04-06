@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.framework.trace;
+package com.flightpathfinder.framework.trace;
 
 import java.time.Instant;
 import java.util.Map;

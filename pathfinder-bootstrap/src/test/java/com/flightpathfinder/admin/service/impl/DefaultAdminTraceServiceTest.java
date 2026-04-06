@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.admin.service.impl;
+package com.flightpathfinder.admin.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 /**
- * 测试用例。
+ * 用于覆盖目标行为的断言并防止回归。
  */
 
 @ExtendWith(MockitoExtension.class)
@@ -119,4 +119,6 @@ class DefaultAdminTraceServiceTest {
                 1);
     }
 }
+
+
 

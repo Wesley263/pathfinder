@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.rewrite;
+package com.flightpathfinder.rag.core.rewrite;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 /**
  * 基于模型的改写服务实现。
  *
- * 说明。
- * 说明。
+ * 先执行确定性改写，再尝试通过模型优化表达与拆分子问题。
+ * 当模型输出不可用时自动回退到确定性结果。
  */
 @Service
 @Primary
@@ -25,9 +25,9 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
 
     /** 确定性改写服务，作为模型不可用时的兜底实现。 */
     private final DefaultQuestionRewriteService fallbackRewriteService;
-    /** 注释说明。 */
+    /** 对话模型服务。 */
     private final ChatService chatService;
-    /** 注释说明。 */
+    /** JSON 解析器。 */
     private final ObjectMapper objectMapper;
 
     /**
@@ -35,7 +35,7 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
      *
      * @param fallbackRewriteService 确定性兜底改写服务
      * @param chatService 模型对话服务
-     * @param objectMapper 参数说明。
+    * @param objectMapper JSON 解析器
      */
     public ModelBackedQuestionRewriteService(DefaultQuestionRewriteService fallbackRewriteService,
                                             ChatService chatService,
@@ -146,11 +146,11 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
     }
 
     /**
-     * 说明。
+        * 解析模型改写输出。
      *
      * @param raw 模型原始文本输出
      * @return 解析后的改写结果；缺少子问题时会回填为单问题列表
-     * @throws Exception 异常说明。
+        * @throws Exception 当 JSON 解析失败时抛出
      */
     private ParsedRewrite parseRewrite(String raw) throws Exception {
         String cleaned = stripMarkdownCodeFence(raw);
@@ -173,10 +173,10 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
     }
 
     /**
-     * 说明。
+        * 去除模型可能返回的 Markdown 代码块包裹。
      *
      * @param raw 模型原始输出
-     * @return 返回结果。
+        * @return 清洗后的 JSON 文本
      */
     private String stripMarkdownCodeFence(String raw) {
         String cleaned = raw == null ? "" : raw.trim();
@@ -201,7 +201,7 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
     }
 
     /**
-     * 说明。
+        * 把字符串列表格式化为 JSON 风格数组文本。
      *
      * @param values 待格式化的字符串列表
      * @return 便于模型理解的数组文本

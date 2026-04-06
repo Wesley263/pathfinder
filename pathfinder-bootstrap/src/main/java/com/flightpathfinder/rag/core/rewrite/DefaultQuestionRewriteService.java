@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.rewrite;
+package com.flightpathfinder.rag.core.rewrite;
 
 import com.flightpathfinder.rag.core.memory.ConversationMemoryContext;
 import com.flightpathfinder.rag.core.pipeline.StageOneRagRequest;
@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 /**
  * 第一阶段默认的轻量级问题改写实现。
  *
- * 说明。
- * 说明。
+ * 通过术语归一和规则拆分生成改写问题与子问题。
  */
 @Service
 public class DefaultQuestionRewriteService implements QuestionRewriteService {
@@ -42,7 +41,7 @@ public class DefaultQuestionRewriteService implements QuestionRewriteService {
         List<String> subQuestions = splitSubQuestions(rewrittenQuestion);
         ConversationMemoryContext memoryContext = request == null ? ConversationMemoryContext.empty("") : request.memoryContext();
         if (!memoryContext.empty() && looksLikeFollowUp(rewrittenQuestion)) {
-            // 说明。
+            // 追问场景下拼入会话上下文，提升后续路由准确性。
             String routingQuestion = buildRoutingQuestion(rewrittenQuestion, memoryContext);
             List<String> routingSubQuestions = subQuestions.stream()
                     .map(subQuestion -> buildRoutingQuestion(subQuestion, memoryContext))
@@ -86,7 +85,7 @@ public class DefaultQuestionRewriteService implements QuestionRewriteService {
      * 判断问题是否表现出明显的追问特征。
      *
      * @param question 当前改写问题
-     * @return 返回结果。
+    * @return 是否为追问
      */
     private boolean looksLikeFollowUp(String question) {
         String safeQuestion = question == null ? "" : question.trim();

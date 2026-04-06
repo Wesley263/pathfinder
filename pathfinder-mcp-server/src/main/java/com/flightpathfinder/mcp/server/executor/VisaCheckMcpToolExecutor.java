@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.server.executor;
+package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -16,9 +16,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * visa.check MCP 工具执行器。
  *
- * 说明。
+ * 负责解析国家代码输入并返回签证政策核验结果，
  * 引导侧只需要契约与结果，不需要规则引擎实现。
  */
 @Component
@@ -34,9 +34,9 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 说明。
+        * 返回 visa.check 的工具描述。
      *
-     * @return 返回结果。
+        * @return MCP 工具描述
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -67,8 +67,8 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
     /**
      * 对请求目的地执行签证政策评估。
      *
-     * @param request 参数说明。
-     * @return 返回结果。
+        * @param request 工具调用请求
+        * @return 结构化签证核验结果
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -131,7 +131,7 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
             if (!COUNTRY_CODE_PATTERN.matcher(normalized).matches()) {
                 continue;
             }
-            // 说明。
+            // 在入口层去重，避免同一国家重复查询并干扰结果统计。
             if (!codes.contains(normalized)) {
                 codes.add(normalized);
             }
@@ -217,3 +217,4 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
         return Integer.parseInt(String.valueOf(rawValue));
     }
 }
+

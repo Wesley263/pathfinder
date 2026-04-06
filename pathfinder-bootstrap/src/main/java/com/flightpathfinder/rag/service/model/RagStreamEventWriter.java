@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.rag.service.model;
+package com.flightpathfinder.rag.service.model;
 
 /**
  * 流式事件输出器。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  */
 public interface RagStreamEventWriter {
 
@@ -20,3 +20,5 @@ public interface RagStreamEventWriter {
     default void complete() {
     }
 }
+
+

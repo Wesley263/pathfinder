@@ -1,9 +1,9 @@
-﻿package com.flightpathfinder.rag.controller.vo;
+package com.flightpathfinder.rag.controller.vo;
 
 import java.util.List;
 
 /**
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param stageOneCompleted 第一阶段是否完成
  * @param retrievalStatus 参数说明。
@@ -28,4 +28,6 @@ public record RagAuditVO(
         List<RagTraceStageVO> traceStages,
         List<RagTraceToolVO> mcpToolSummaries) {
 }
+
+
 

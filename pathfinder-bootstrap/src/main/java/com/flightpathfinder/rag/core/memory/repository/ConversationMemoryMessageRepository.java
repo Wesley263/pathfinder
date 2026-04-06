@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory.repository;
+package com.flightpathfinder.rag.core.memory.repository;
 
 import com.flightpathfinder.rag.core.memory.ConversationMemoryTurn;
 import java.util.List;
@@ -6,13 +6,13 @@ import java.util.List;
 /**
  * 原始会话消息行仓储接口。
  *
- * 说明。
+ * 定义会话消息行的写入与读取边界，
  * 便于用户与助手内容独立审计，并可在后续重组为不同上层投影视图。
  */
 public interface ConversationMemoryMessageRepository {
 
     /**
-     * 说明。
+     * 持久化一轮会话消息。
      *
      * @param conversationId 稳定会话标识
      * @param turn 待持久化的完成轮次
@@ -36,3 +36,4 @@ public interface ConversationMemoryMessageRepository {
      */
     List<ConversationMemoryMessageRecord> findAllByConversationId(String conversationId);
 }
+

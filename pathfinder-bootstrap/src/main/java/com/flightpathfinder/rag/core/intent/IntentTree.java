@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * 意图树只读访问边界。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  */
 public interface IntentTree {
 
@@ -32,3 +32,5 @@ public interface IntentTree {
      */
     Optional<IntentNode> findLeafNode(String nodeId);
 }
+
+

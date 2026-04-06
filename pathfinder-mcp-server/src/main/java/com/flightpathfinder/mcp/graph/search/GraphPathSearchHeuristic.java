@@ -1,14 +1,14 @@
-﻿package com.flightpathfinder.mcp.graph.search;
+package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredCandidatePath;
 import com.flightpathfinder.mcp.graph.model.RestoredFlightGraph;
 import com.flightpathfinder.mcp.graph.model.RestoredGraphNode;
 
 /**
- * 说明。
+ * 图路径搜索启发式评分助手。
  *
- * 说明。
- * 说明。
+ * 负责对部分状态与完成候选路径进行多维归一化评分，
+ * 并提供绕路裁剪等搜索期判定能力。
  */
 final class GraphPathSearchHeuristic {
 
@@ -18,7 +18,7 @@ final class GraphPathSearchHeuristic {
     private final GraphPathSearchRequest request;
     /** 预计算下界。 */
     private final GraphPathSearchLowerBounds lowerBounds;
-    /** 注释说明。 */
+    /** frontier 控制策略。 */
     private final GraphPathFrontierPolicy frontierPolicy;
     /** 评分配置。 */
     private final GraphPathScoringProfile scoringProfile;
@@ -191,14 +191,14 @@ final class GraphPathSearchHeuristic {
     }
 
     /**
-     * 说明。
+     * 将数值归一到有限范围，不可用时返回兜底值。
      */
     private double finiteDouble(double value, double fallback) {
         return Double.isFinite(value) ? value : fallback;
     }
 
     /**
-     * 说明。
+     * 将整数下界转换为可用值，不可用时返回兜底值。
      */
     private int finiteInt(int value, int fallback) {
         return value < Integer.MAX_VALUE ? value : fallback;

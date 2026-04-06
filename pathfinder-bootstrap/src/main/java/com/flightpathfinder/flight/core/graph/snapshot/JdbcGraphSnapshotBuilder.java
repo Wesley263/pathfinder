@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.flight.core.graph.snapshot;
+package com.flightpathfinder.flight.core.graph.snapshot;
 
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshot;
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshotEdge;
@@ -18,15 +18,15 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * 基于 JDBC 的图快照构建器。
  *
- * 说明。
- * 说明。
+ * 从主库读取机场与航线数据，物化为 GraphSnapshot 读模型，
+ * 供发布器写入 Redis。
  */
 @Component
 public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
 
-    /** 注释说明。 */
+    /** 快照版本号中的时间片格式（UTC）。 */
     private static final DateTimeFormatter VERSION_FORMATTER =
             DateTimeFormatter.ofPattern("yyyyMMddHHmmss").withZone(ZoneOffset.UTC);
 
@@ -56,13 +56,13 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
               AND r.dest_airport_iata <> ''
             """;
 
-    /** 注释说明。 */
+    /** JDBC 查询模板。 */
     private final JdbcTemplate jdbcTemplate;
 
     /**
-     * 说明。
+     * 构造 JDBC 图快照构建器。
      *
-     * @param jdbcTemplate 参数说明。
+     * @param jdbcTemplate JDBC 查询模板
      */
     public JdbcGraphSnapshotBuilder(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -80,7 +80,7 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
         List<GraphSnapshotNode> nodes = jdbcTemplate.query(AIRPORT_SQL, new AirportSnapshotRowMapper());
         List<GraphSnapshotEdge> edges = jdbcTemplate.query(ROUTE_SQL, new RouteSnapshotRowMapper());
 
-        // 说明。
+        // 版本号由 UTC 时间片和随机后缀组成，既可读又能避免同秒冲突。
         String snapshotVersion = VERSION_FORMATTER.format(generatedAt) + "-" + UUID.randomUUID().toString().substring(0, 8);
         String sourceFingerprint = "airports=" + nodes.size() + ";edges=" + edges.size();
 
@@ -103,12 +103,12 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
     private static final class AirportSnapshotRowMapper implements RowMapper<GraphSnapshotNode> {
 
         /**
-         * 说明。
+         * 将机场行映射为快照节点。
          *
          * @param rs 结果集
          * @param rowNum 行号
          * @return 快照节点
-         * @throws SQLException 异常说明。
+         * @throws SQLException 当读取列值失败时抛出
          */
         @Override
         public GraphSnapshotNode mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -116,7 +116,7 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
             putIfPresent(attributes, "icaoCode", rs.getString("icao_code"));
             putIfPresent(attributes, "type", rs.getString("type"));
             putIfPresent(attributes, "source", rs.getString("source"));
-            // 说明。
+            // 机场节点的默认分值与转机时长由快照提供基线，搜索侧可再覆盖。
             return new GraphSnapshotNode(
                     rs.getString("iata_code"),
                     rs.getString("iata_code"),
@@ -138,19 +138,19 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
     private static final class RouteSnapshotRowMapper implements RowMapper<GraphSnapshotEdge> {
 
         /**
-         * 说明。
+         * 将航线行映射为快照边。
          *
          * @param rs 结果集
          * @param rowNum 行号
          * @return 快照边
-         * @throws SQLException 异常说明。
+         * @throws SQLException 当读取列值失败时抛出
          */
         @Override
         public GraphSnapshotEdge mapRow(ResultSet rs, int rowNum) throws SQLException {
             Map<String, Object> attributes = new LinkedHashMap<>();
             putIfPresent(attributes, "codeshare", rs.getString("codeshare"));
             putIfPresent(attributes, "equipment", rs.getString("equipment"));
-            // 说明。
+            // 竞争航司数量最少为 1，避免后续评分分母出现异常值。
             return new GraphSnapshotEdge(
                     "route:" + rs.getLong("id"),
                     rs.getString("source_airport_iata"),
@@ -198,12 +198,12 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
     }
 
     /**
-     * 说明。
+     * 读取 double 列值，数据库空值回退为 0.0。
      *
      * @param resultSet 结果集
      * @param column 列名
-     * @return 返回结果。
-     * @throws SQLException 异常说明。
+     * @return double 列值（空值时为 0.0）
+     * @throws SQLException 当读取列值失败时抛出
      */
     private static double getDouble(ResultSet resultSet, String column) throws SQLException {
         double value = resultSet.getDouble(column);
@@ -211,12 +211,12 @@ public class JdbcGraphSnapshotBuilder implements GraphSnapshotBuilder {
     }
 
     /**
-     * 说明。
+     * 读取 int 列值，数据库空值回退为 0。
      *
      * @param resultSet 结果集
      * @param column 列名
-     * @return 返回结果。
-     * @throws SQLException 异常说明。
+     * @return int 列值（空值时为 0）
+     * @throws SQLException 当读取列值失败时抛出
      */
     private static int getInt(ResultSet resultSet, String column) throws SQLException {
         int value = resultSet.getInt(column);

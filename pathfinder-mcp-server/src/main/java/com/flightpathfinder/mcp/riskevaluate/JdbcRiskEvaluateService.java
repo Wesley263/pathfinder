@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.riskevaluate;
+package com.flightpathfinder.mcp.riskevaluate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,11 +13,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * 说明。
+ * 基于 JDBC 的中转风险评估服务实现。
  *
- * 说明。
  * 在本地读取参考数据并执行服务端评分，
- * 说明。
+ * 输出结构化风险等级、解释与建议。
  */
 @Service
 public class JdbcRiskEvaluateService implements RiskEvaluateService {
@@ -311,3 +310,4 @@ public class JdbcRiskEvaluateService implements RiskEvaluateService {
     private record AirlineProfile(String iataCode, String name, String airlineType) {
     }
 }
+

@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -8,10 +8,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * Pathfinder 默认意图树实现。
  *
- * 说明。
- * 说明。
+ * 定义 Stage-One 分类所需的 MCP、KB 与系统三类叶子节点。
  */
 @Component
 public class PathfinderIntentTree implements IntentTree {
@@ -23,13 +22,13 @@ public class PathfinderIntentTree implements IntentTree {
     private final IntentNode root;
     /** 所有可直接参与分类的叶子节点。 */
     private final List<IntentNode> leafNodes;
-    /** 注释说明。 */
+        /** 叶子节点索引，支持按 id、工具 id 与别名快速定位。 */
     private final Map<String, IntentNode> leafIndex;
 
     /**
      * 构造默认意图树。
      *
-     * 说明。
+        * 在初始化阶段一次性构建根节点、叶子列表与索引表。
      */
     public PathfinderIntentTree() {
         IntentNode mcpCategory = IntentNode.category(
@@ -180,7 +179,7 @@ public class PathfinderIntentTree implements IntentTree {
     /**
      * 根据标识查找叶子节点。
      *
-     * @param nodeId 参数说明。
+        * @param nodeId 节点标识、工具标识或别名
      * @return 匹配到的叶子节点
      */
     @Override
@@ -219,4 +218,5 @@ public class PathfinderIntentTree implements IntentTree {
         return value.trim().toLowerCase(Locale.ROOT);
     }
 }
+
 

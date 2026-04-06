@@ -1,14 +1,13 @@
-﻿package com.flightpathfinder.rag.core.trace;
+package com.flightpathfinder.rag.core.trace;
 
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * 说明。
+ * Rag 追踪表结构初始化器。
  *
- * 说明。
- * 说明。
+ * 在应用启动阶段确保 run、node、tool 三张追踪表及索引存在。
  */
 @Component
 public class JdbcRagTraceSchemaInitializer {
@@ -80,11 +79,12 @@ public class JdbcRagTraceSchemaInitializer {
     );
 
     /**
-     * 说明。
+     * 执行追踪表结构初始化。
      *
-     * @param jdbcTemplate 参数说明。
+     * @param jdbcTemplate JDBC 执行模板
      */
     public JdbcRagTraceSchemaInitializer(JdbcTemplate jdbcTemplate) {
         DDL.forEach(jdbcTemplate::execute);
     }
 }
+

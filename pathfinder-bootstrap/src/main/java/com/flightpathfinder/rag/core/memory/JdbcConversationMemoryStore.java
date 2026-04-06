@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.memory;
+package com.flightpathfinder.rag.core.memory;
 
 import com.flightpathfinder.rag.core.memory.repository.ConversationMemoryConversationRepository;
 import com.flightpathfinder.rag.core.memory.repository.ConversationMemoryMessageRecord;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 说明。
+ * 基于 JDBC 的会话记忆存储实现。
  *
- * 说明。
+ * 负责会话元信息与轮次消息的读取、组装与持久化，
  * 会话、消息、摘要三表分离后，可在引入摘要压缩后依然保持原始轮次可读与可审计。
  */
 @Repository
@@ -46,7 +46,7 @@ public class JdbcConversationMemoryStore implements ConversationMemoryStore {
         }
 
         // 消息按行存储，再重组为轮次，
-        // 说明。
+        // 以适配存储模型与应用层轮次模型之间的差异。
         List<ConversationMemoryMessageRecord> messages =
                 messageRepository.findRecentByConversationId(conversationId, Math.max(1, recentTurnLimit) * 2);
         List<ConversationMemoryTurn> turns = ConversationMemoryTurnAssembler.toTurns(messages);
@@ -74,7 +74,7 @@ public class JdbcConversationMemoryStore implements ConversationMemoryStore {
         if (turn.requestId() != null && !turn.requestId().isBlank()) {
             return turn;
         }
-        // 说明。
+        // 写入层补齐 requestId，保证后续追踪和审计链路可关联。
         // 因此当调用方缺失时由存储层补齐。
         return new ConversationMemoryTurn(
                 UUID.randomUUID().toString(),
@@ -85,3 +85,4 @@ public class JdbcConversationMemoryStore implements ConversationMemoryStore {
                 turn.createdAt());
     }
 }
+

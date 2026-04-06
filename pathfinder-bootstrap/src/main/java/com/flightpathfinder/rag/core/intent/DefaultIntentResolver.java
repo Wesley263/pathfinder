@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolDescriptor;
 import com.flightpathfinder.rag.core.mcp.LocalMcpToolRegistry;
@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 /**
  * 意图解析器的默认实现。
  *
- * 说明。
- * 说明。
+ * 将改写后的问题拆分为子问题分类结果，并汇总成 KB/MCP/SYSTEM 三路分流。
  */
 @Service
 public class DefaultIntentResolver implements IntentResolver {
@@ -23,14 +22,14 @@ public class DefaultIntentResolver implements IntentResolver {
 
     /** 单问题意图分类器。 */
     private final IntentClassifier intentClassifier;
-    /** 注释说明。 */
+    /** MCP 工具注册表，用于补全 MCP 意图的工具显示信息。 */
     private final LocalMcpToolRegistry localMcpToolRegistry;
 
     /**
      * 构造默认意图解析器。
      *
      * @param intentClassifier 单问题分类器
-     * @param localMcpToolRegistry 参数说明。
+     * @param localMcpToolRegistry MCP 本地工具注册表
      */
     public DefaultIntentResolver(IntentClassifier intentClassifier, LocalMcpToolRegistry localMcpToolRegistry) {
         this.intentClassifier = intentClassifier;
@@ -50,7 +49,7 @@ public class DefaultIntentResolver implements IntentResolver {
                 ? List.of(safeRewriteResult.routingQuestion())
                 : safeRewriteResult.routingSubQuestions();
 
-        // 说明。
+        // 子问题逐条分类，保留每条问题的原始候选，便于后续审计与解释。
         List<SubQuestionIntent> subQuestionIntents = subQuestions.stream()
                 .map(subQuestion -> new SubQuestionIntent(subQuestion, intentClassifier.classifyTargets(subQuestion)))
                 .toList();
@@ -71,7 +70,7 @@ public class DefaultIntentResolver implements IntentResolver {
         for (SubQuestionIntent subQuestionIntent : subQuestionIntents) {
             for (IntentNodeScore nodeScore : subQuestionIntent.nodeScores()) {
                 ResolvedIntent resolvedIntent = toResolvedIntent(subQuestionIntent.question(), nodeScore);
-                // 说明。
+                // 同类意图只保留最高分，避免一个意图因多个子问题重复占位。
                 switch (nodeScore.node().kind()) {
                     case KB -> mergeByHigherScore(kbIntents, resolvedIntent);
                     case MCP -> mergeByHigherScore(mcpIntents, resolvedIntent);
@@ -111,7 +110,7 @@ public class DefaultIntentResolver implements IntentResolver {
     }
 
     /**
-     * 说明。
+        * 将节点打分结果转换为对外统一的已解析意图对象。
      *
      * @param question 命中该意图的子问题
      * @param nodeScore 节点与分数组合

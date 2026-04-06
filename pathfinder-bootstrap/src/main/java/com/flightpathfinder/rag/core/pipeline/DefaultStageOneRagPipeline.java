@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.pipeline;
+package com.flightpathfinder.rag.core.pipeline;
 
 import com.flightpathfinder.rag.core.intent.IntentResolution;
 import com.flightpathfinder.rag.core.intent.IntentResolver;
@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * 第一阶段主链的默认实现。
  *
- * 说明。
- * 说明。
+ * 串联问题改写与意图解析，输出后续检索可直接消费的分流结果。
  */
 @Service
 public class DefaultStageOneRagPipeline implements StageOneRagPipeline {
@@ -35,11 +34,11 @@ public class DefaultStageOneRagPipeline implements StageOneRagPipeline {
      * 先做问题改写，再做意图解析。
      *
      * @param request 原始问题及本次请求上下文
-     * @return 返回结果。
+     * @return 阶段一执行结果
      */
     @Override
     public StageOneRagResult run(StageOneRagRequest request) {
-        // 说明。
+        // 先改写问题，保证意图解析面对的是规整后的表达。
         RewriteResult rewriteResult = questionRewriteService.rewrite(request);
 
         // 意图解析独立成第二步，这样第一阶段既能保留打分明细，又能产出面向后续阶段的统一分流结果。
@@ -48,3 +47,4 @@ public class DefaultStageOneRagPipeline implements StageOneRagPipeline {
                 request == null ? null : request.memoryContext());
     }
 }
+

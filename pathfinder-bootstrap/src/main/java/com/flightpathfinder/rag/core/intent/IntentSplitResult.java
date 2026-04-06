@@ -1,15 +1,14 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import java.util.List;
 
 /**
- * 说明。
+ * 意图三路分流结果。
  *
- * 说明。
- * 说明。
+ * 按 KB、MCP、SYSTEM 三类返回候选意图，供后续阶段分别消费。
  *
  * @param kbIntents 命中的知识检索意图列表
- * @param mcpIntents 参数说明。
+ * @param mcpIntents 命中的 MCP 工具意图列表
  * @param systemIntents 命中的系统级意图列表
  */
 public record IntentSplitResult(
@@ -35,3 +34,4 @@ public record IntentSplitResult(
         return new IntentSplitResult(List.of(), List.of(), List.of());
     }
 }
+

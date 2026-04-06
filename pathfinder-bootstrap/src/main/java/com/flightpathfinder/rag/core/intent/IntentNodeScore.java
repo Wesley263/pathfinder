@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.rag.core.intent;
+package com.flightpathfinder.rag.core.intent;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * 单个意图节点的打分结果。
  *
- * 说明。
+ * 用于定义当前类型或方法在模块内的职责边界。
  *
  * @param node 被命中的意图节点
  * @param score 当前节点得分，范围会被约束到 0 到 1 之间
@@ -33,3 +33,5 @@ public record IntentNodeScore(IntentNode node, double score) {
         return BigDecimal.valueOf(bounded).setScale(4, RoundingMode.HALF_UP).doubleValue();
     }
 }
+
+

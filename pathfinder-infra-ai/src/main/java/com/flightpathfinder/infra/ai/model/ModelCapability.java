@@ -1,6 +1,6 @@
-﻿package com.flightpathfinder.infra.ai.model;
+package com.flightpathfinder.infra.ai.model;
 /**
- * 说明。
+ * 模型能力枚举。
  */
 public enum ModelCapability {
     CHAT,

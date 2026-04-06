@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.mcp.graph.search;
+package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredCandidatePath;
 import com.flightpathfinder.mcp.graph.model.RestoredFlightGraph;
@@ -14,8 +14,8 @@ import java.util.Set;
 /**
  * 图路径搜索质量检查的内部诊断运行器。
  *
- * 说明。
- * 说明。
+ * 对 bounded best-first 与穷举基准进行结果对比，
+ * 评估 top1 命中和 topK 覆盖表现。
  */
 public final class GraphPathSearchDiagnostics {
 
@@ -23,9 +23,9 @@ public final class GraphPathSearchDiagnostics {
     }
 
     /**
-        * 说明。
+      * 运行内置诊断样例。
      *
-        * @param args 未使用的命令行参数
+      * @param args 未使用的命令行参数
      */
     public static void main(String[] args) {
         List<DiagnosticCase> diagnosticCases = List.of(

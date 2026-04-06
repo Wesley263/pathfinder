@@ -1,4 +1,4 @@
-﻿package com.flightpathfinder.flight.config;
+package com.flightpathfinder.flight.config;
 
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshotRedisKeys;
 import java.time.Duration;
