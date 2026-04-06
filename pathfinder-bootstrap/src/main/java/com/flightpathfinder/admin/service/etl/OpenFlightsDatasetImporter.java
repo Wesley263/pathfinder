@@ -1,4 +1,4 @@
-package com.flightpathfinder.admin.service.etl;
+﻿package com.flightpathfinder.admin.service.etl;
 
 import com.flightpathfinder.admin.config.AdminDataEtlProperties;
 import com.flightpathfinder.admin.service.AdminDatasetReloadResult;
@@ -23,9 +23,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * 基于 OpenFlights 的机场、航司与航线数据 ETL 导入器。
+ * 说明。
  *
- * <p>该导入器属于管理端能力面，是由运维触发的数据摄取流水线，
+ * 说明。
  * 而非面向用户的运行时查询服务。
  */
 @Service
@@ -189,9 +189,9 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 返回 OpenFlights ETL 的稳定管理数据集标识。
+        * 说明。
      *
-     * @return {@code openflights}
+     * @return 返回结果。
      */
     @Override
     public String datasetId() {
@@ -199,9 +199,9 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 执行 OpenFlights ETL，覆盖机场、航司与航线。
+        * 说明。
      *
-     * @return dataset-level reload result with processed/upserted/failed counts and source details
+     * @return 返回结果。
      */
     @Override
     public AdminDatasetReloadResult reload() {
@@ -253,7 +253,7 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
                     + airportUpserts.failedCount() + airlineUpserts.failedCount() + routeUpserts.failedCount();
             long upserted = airportUpserts.upsertedCount() + airlineUpserts.upsertedCount() + routeUpserts.upsertedCount();
 
-            // 管理端重载按数据集分片返回细节，便于定位 OpenFlights 哪一部分出现退化。
+            // 说明。
             String status = failed > 0 ? "PARTIAL_SUCCESS" : "SUCCESS";
             String reason = failed > 0
                     ? "openflights ETL completed with row-level skips or failures"
@@ -446,7 +446,7 @@ public class OpenFlightsDatasetImporter implements AdminDatasetImporter {
             pairCompetition.merge(pairKey, 1, Integer::sum);
         }
 
-        // 航线导入会派生距离、时长、基础价格等字段，确保下游图与 MCP 流程无需依赖 1.0 装载实现。
+        // 说明。
         List<RouteRecord> finalRoutes = new ArrayList<>(routes.size());
         for (BasicRouteRecord route : routes.values()) {
             String pairKey = route.source().iataCode() + "|" + route.destination().iataCode();

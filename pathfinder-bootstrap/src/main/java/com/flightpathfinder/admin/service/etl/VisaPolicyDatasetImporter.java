@@ -1,4 +1,4 @@
-package com.flightpathfinder.admin.service.etl;
+﻿package com.flightpathfinder.admin.service.etl;
 
 import com.flightpathfinder.admin.config.AdminDataEtlProperties;
 import com.flightpathfinder.admin.service.AdminDatasetReloadResult;
@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * 签证政策数据的 ETL 导入器。
+ * 说明。
  *
- * <p>该导入器归属管理端能力，用于将外部签证政策写入运维数据源，
- * 并按数据集粒度向运维侧返回 ETL 结果。
+ * 说明。
+ * 说明。
  */
 @Service
 public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
@@ -58,9 +58,9 @@ public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 返回签证政策 ETL 的稳定管理数据集标识。
+        * 说明。
      *
-     * @return {@code visa}
+     * @return 返回结果。
      */
     @Override
     public String datasetId() {
@@ -68,9 +68,9 @@ public class VisaPolicyDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 从配置资源位置执行签证政策 ETL。
+        * 说明。
      *
-     * @return dataset-level reload result with processed/upserted/failed counts
+     * @return 返回结果。
      */
     @Override
     public AdminDatasetReloadResult reload() {

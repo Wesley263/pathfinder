@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.memory.repository;
+﻿package com.flightpathfinder.rag.core.memory.repository;
 
 import com.flightpathfinder.rag.core.memory.ConversationMemoryConversation;
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * 会话级记忆头信息的 JDBC 仓储实现。
+ * 说明。
  *
- * <p>该仓储将会话计数与时间戳与消息明细分离，
+ * 说明。
  * 使列表与摘要查询保持轻量。
  */
 @Repository

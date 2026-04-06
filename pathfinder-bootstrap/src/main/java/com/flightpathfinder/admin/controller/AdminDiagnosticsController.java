@@ -29,10 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 管理端诊断查询 API。
+ * 管理端诊断查询接口。
  *
- * <p>这些端点用于运维与研发的直接诊断，暴露原始诊断行为与结构化工具结果，
- * 因此不纳入用户侧搜索 API。
+ * 这些端点用于运维与研发的直接诊断，暴露原始诊断行为与结构化工具结果，
+ * 因此不纳入用户侧搜索接口。
  */
 @RestController
 @RequestMapping("/api/admin/diagnostics")
@@ -45,10 +45,10 @@ public class AdminDiagnosticsController {
     }
 
     /**
-        * 执行直飞诊断查询。
+     * 执行直飞诊断查询。
      *
-     * @param request admin flight diagnostic request
-     * @return diagnostic result adapted for admin inspection
+     * @param request 直飞诊断请求参数
+     * @return 适配管理端展示的诊断结果
      */
     @PostMapping("/flights")
     public Result<AdminFlightDiagnosticVO> flights(@RequestBody AdminFlightDiagnosticRequest request) {
@@ -62,10 +62,10 @@ public class AdminDiagnosticsController {
     }
 
     /**
-        * 执行路径诊断查询。
+     * 执行路径诊断查询。
      *
-     * @param request admin path diagnostic request
-     * @return diagnostic result adapted for admin inspection
+     * @param request 路径诊断请求参数
+     * @return 适配管理端展示的诊断结果
      */
     @PostMapping("/paths")
     public Result<AdminPathDiagnosticVO> paths(@RequestBody AdminPathDiagnosticRequest request) {
@@ -81,10 +81,10 @@ public class AdminDiagnosticsController {
     }
 
     /**
-        * 查询单个机场用于运维核验。
+     * 查询单个机场用于运维核验。
      *
-     * @param iata airport IATA code to inspect
-     * @return admin-facing airport lookup result
+     * @param iata 待查询机场三字码
+     * @return 面向管理端的机场查询结果
      */
     @GetMapping("/airports/{iata}")
     public Result<AdminAirportLookupVO> airport(@PathVariable String iata) {

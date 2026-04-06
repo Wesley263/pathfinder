@@ -1,7 +1,7 @@
 ﻿package com.flightpathfinder.infra.ai.model;
 
 /**
- * 面向 AI 能力支持的上游供应商类型。
+ * 说明。
  */
 public enum ModelProvider {
     OPENAI_COMPATIBLE,

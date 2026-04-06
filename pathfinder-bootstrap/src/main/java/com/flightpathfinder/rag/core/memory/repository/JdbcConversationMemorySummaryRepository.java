@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.memory.repository;
+﻿package com.flightpathfinder.rag.core.memory.repository;
 
 import com.flightpathfinder.rag.core.memory.ConversationMemorySummary;
 import java.sql.ResultSet;
@@ -11,9 +11,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * 会话摘要持久化的 JDBC 仓储实现。
+ * 说明。
  *
- * <p>摘要记录与原始历史独立存储，
+ * 说明。
  * 以便刷新压缩结果时无需改写底层消息档案。
  */
 @Repository

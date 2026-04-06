@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.server.executor;
+﻿package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * {@code risk.evaluate} 的服务端执行器。
+ * 说明。
  *
- * <p>该工具保留在 MCP 服务端内执行，因为它要结合参考数据查询与本地规则评分。
- * 引导侧仅通过 MCP 消费结构化风险结果。
+ * 说明。
+ * 说明。
  */
 @Component
 public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
@@ -33,9 +33,9 @@ public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 描述中转风险评估的 MCP 契约。
+     * 说明。
      *
-     * @return {@code risk.evaluate} 的工具描述
+     * @return 返回结果。
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -80,9 +80,9 @@ public class RiskEvaluateMcpToolExecutor implements McpToolExecutor {
     /**
      * 执行中转风险规则流水线。
      *
-     * @param request MCP 请求，包含枢纽机场、航司与中转缓冲时长输入
-     * @return 结构化风险结果，业务状态可能为 {@code LOW}、{@code MEDIUM}、
-     *     {@code HIGH} 或 {@code DATA_NOT_FOUND}
+     * @param request 参数说明。
+     * @return 返回结果。
+     * 说明。
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {

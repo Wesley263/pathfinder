@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 面向 MCP 目录巡检的管理端 API。
+ * 面向工具目录巡检的管理端接口。
  *
- * <p>该控制器用于查看工具描述、可用性与依赖提示，
- * 而不是执行用户侧 RAG 流程，因此归属管理端能力面。
+ * 该控制器用于查看工具描述、可用性与依赖提示，
+ * 而不是执行用户侧问答流程，因此归属管理端能力面。
  */
 @RestController
 @RequestMapping("/api/admin/mcp/tools")
@@ -36,10 +36,10 @@ public class AdminMcpController {
     }
 
     /**
-        * 基于当前发现状态列出受管 MCP 工具。
+     * 基于当前发现状态列出受管工具。
      *
-     * @param request list request controlling whether discovery should refresh first
-     * @return admin-facing MCP tool list
+     * @param request 列表请求，控制是否先刷新发现目录
+     * @return 面向管理端的工具列表
      */
     @GetMapping
     public Result<AdminMcpToolListVO> list(@ModelAttribute AdminMcpToolListRequest request) {
@@ -48,11 +48,11 @@ public class AdminMcpController {
     }
 
     /**
-        * 加载单个受管 MCP 工具详情视图。
+     * 加载单个受管工具详情视图。
      *
-     * @param toolId managed tool id
-     * @param refresh whether discovery should refresh the catalog before lookup
-     * @return admin-facing tool detail
+     * @param toolId 受管工具标识
+     * @param refresh 是否在查询前刷新目录
+     * @return 面向管理端的工具详情
      */
     @GetMapping("/{toolId}")
     public Result<AdminMcpToolDetailVO> detail(@PathVariable String toolId,

@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.server.executor;
+﻿package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -18,11 +18,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 /**
- * {@code graph.path.search} 的服务端执行器。
+ * 说明。
  *
- * <p>该执行器是 MCP 协议调用与图快照搜索流水线之间的桥接层。
- * 之所以保留在 {@code pathfinder-mcp-server}，是因为路径搜索必须在服务进程内基于 Redis 读模型执行，
- * 不能复用 bootstrap 侧图构建流程。
+ * 说明。
+ * 说明。
+ * 说明。
  */
 @Component
 public class GraphPathMcpToolExecutor implements McpToolExecutor {
@@ -43,9 +43,9 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 描述 {@code graph.path.search} 对外公开的工具契约。
+     * 说明。
      *
-     * @return 工具描述，包含快照感知请求与路径搜索结果 schema
+     * @return 返回结果。
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -81,9 +81,9 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
     /**
      * 基于最新可用图快照执行路径搜索。
      *
-     * @param request MCP 工具请求，包含 graphKey 与路径搜索约束
-     * @return 结构化结果，保留 {@code SNAPSHOT_MISS}、{@code INVALID_REQUEST}、
-     *     {@code NO_PATH_FOUND}、{@code SUCCESS} 等业务状态
+     * @param request 参数说明。
+     * @return 返回结果。
+     * 说明。
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -95,7 +95,7 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
             }
 
             GraphSnapshot graphSnapshot = snapshot.get();
-            // 服务端 MCP 只消费已发布读模型。
+            // 说明。
             // 当快照缺失时，绝不能回源源表重建或补图。
             RestoredFlightGraph restoredGraph = graphSnapshotRestorer.restore(graphSnapshot);
             if (!restoredGraph.hasNode(searchRequest.origin()) || !restoredGraph.hasNode(searchRequest.destination())) {
@@ -148,7 +148,7 @@ public class GraphPathMcpToolExecutor implements McpToolExecutor {
         if (origin == null || destination == null) {
             throw new IllegalArgumentException("origin and destination are required IATA codes");
         }
-        // 调用方传入的是结构化 MCP 参数，因此在执行器层完成校验，
+        // 说明。
         // 避免搜索层从原始文本中“猜测”输入语义。
         validate(origin, destination, maxBudget, stopoverDays, maxSegments, topK);
         return new GraphPathSearchRequest(graphKey, origin, destination, maxBudget, stopoverDays, maxSegments, topK);

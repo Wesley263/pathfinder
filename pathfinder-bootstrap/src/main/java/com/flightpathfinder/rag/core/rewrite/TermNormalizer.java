@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.rewrite;
+﻿package com.flightpathfinder.rag.core.rewrite;
 
 import java.util.Comparator;
 import java.util.List;
@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 /**
  * 术语归一器。
  *
- * <p>它负责把自然语言里的机场、城市、航司和常见旅行表达收口成更稳定的内部写法，
- * 这样 rewrite 与 intent 层就不必在多个地方重复维护同一套别名映射规则。</p>
+ * 说明。
+ * 说明。
  */
 public class TermNormalizer {
 
-    /** 判断源词条是否为纯 ASCII，用于决定是否走大小写不敏感替换。 */
+    /** 注释说明。 */
     private static final Pattern ASCII_ONLY_PATTERN = Pattern.compile("^[\\p{ASCII}]+$");
 
     /** 已按优先级和源词长度排好序的归一化映射表。 */
@@ -56,8 +56,8 @@ public class TermNormalizer {
     /**
      * 返回默认术语映射表。
      *
-     * <p>这些映射覆盖当前 2.0 第一阶段最常见的机场、城市、航司和旅行相关表达，
-     * 目的是让主链在无模型参与时也能先得到稳定的路由文本。</p>
+     * 说明。
+     * 说明。
      *
      * @return 默认映射集合
      */

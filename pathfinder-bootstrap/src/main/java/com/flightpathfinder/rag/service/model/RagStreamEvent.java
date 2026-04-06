@@ -1,20 +1,20 @@
-package com.flightpathfinder.rag.service.model;
+﻿package com.flightpathfinder.rag.service.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 流式 RAG 事件模型。
+ * 说明。
  *
- * <p>它是 SSE 协议层输出的统一事件载体，显式保留 requestId、conversationId、traceId 和阶段状态，
- * 方便前端或调试工具按阶段消费。</p>
+ * 说明。
+ * 说明。
  *
  * @param sequence 事件序号
  * @param event 事件名称
  * @param stage 当前阶段名称
  * @param requestId 请求标识
  * @param conversationId 会话标识
- * @param traceId trace 标识
+ * @param traceId 参数说明。
  * @param timestamp 事件时间戳
  * @param status 当前事件状态
  * @param partial 是否是部分结果语义

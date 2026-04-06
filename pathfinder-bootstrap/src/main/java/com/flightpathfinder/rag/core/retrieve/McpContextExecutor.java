@@ -4,19 +4,19 @@ import com.flightpathfinder.rag.core.intent.IntentSplitResult;
 import com.flightpathfinder.rag.core.rewrite.RewriteResult;
 
 /**
- * 检索阶段中的 MCP 执行边界。
+ * 说明。
  *
- * <p>它负责把 MCP intents 转成真实的工具调用，并返回结构化 McpContext，
- * 但不会越界去接管 final answer 生成。</p>
+ * 说明。
+ * 说明。
  */
 public interface McpContextExecutor {
 
     /**
-     * 执行当前问题命中的 MCP intents。
+     * 说明。
      *
      * @param rewriteResult 改写结果，主要用于参数抽取
-     * @param intentSplitResult 分流结果，主要提供 MCP intents
-     * @return 结构化 MCP 上下文，包含 partial、miss 和 error 语义
+     * @param intentSplitResult 参数说明。
+     * @return 返回结果。
      */
     McpContext execute(RewriteResult rewriteResult, IntentSplitResult intentSplitResult);
 }

@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.memory;
+﻿package com.flightpathfinder.rag.core.memory;
 
 import java.time.Instant;
 
@@ -25,7 +25,7 @@ public record ConversationMemorySummary(
     /**
      * 判断摘要文本是否存在。
      *
-     * @return 摘要非空时返回 {@code true}
+     * @return 返回结果。
      */
     public boolean exists() {
         return !summaryText.isBlank();

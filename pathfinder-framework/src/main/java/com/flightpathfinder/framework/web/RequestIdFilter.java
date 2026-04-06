@@ -10,7 +10,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 /**
- * 面向 Web 层的通用组件。
+ * 说明。
  */
 
 @Component

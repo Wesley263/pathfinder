@@ -1,4 +1,4 @@
-package com.flightpathfinder.admin.service.impl;
+﻿package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminTraceDetailResult;
 import com.flightpathfinder.admin.service.AdminTraceNodeSummary;
@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 /**
  * 持久化追踪查询的管理端适配默认实现。
  *
- * <p>该服务将核心追踪读模型转换为管理端形态，
- * 使管理 API 能表达 partial/error/snapshot-miss 语义而不泄露运行时追踪模型。
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultAdminTraceService implements AdminTraceService {
@@ -34,8 +34,8 @@ public class DefaultAdminTraceService implements AdminTraceService {
     /**
         * 加载单条追踪的管理端详情视图。
      *
-     * @param traceId unique trace identifier
-     * @return admin detail result when the trace exists
+     * @param traceId 参数说明。
+     * @return 返回结果。
      */
     @Override
     public Optional<AdminTraceDetailResult> findDetail(String traceId) {
@@ -46,10 +46,10 @@ public class DefaultAdminTraceService implements AdminTraceService {
     /**
         * 列出最近追踪供管理端巡检。
      *
-     * @param requestId optional request id filter
-     * @param conversationId optional conversation id filter
-     * @param limit maximum number of runs to return
-     * @return admin-facing trace summaries
+     * @param requestId 参数说明。
+     * @param conversationId 参数说明。
+     * @param limit 参数说明。
+     * @return 返回结果。
      */
     @Override
     public List<AdminTraceRunSummary> listRuns(String requestId, String conversationId, int limit) {
@@ -96,7 +96,7 @@ public class DefaultAdminTraceService implements AdminTraceService {
     private AdminTraceRunSummary toRunSummary(RagTraceRunSummary runSummary,
                                               List<AdminTraceNodeSummary> stages,
                                               List<AdminTraceToolSummary> toolSummaries) {
-        // 管理视图显式暴露 partial 与 error，便于区分业务不完整与基础设施故障。
+        // 说明。
         boolean partial = stages.stream().anyMatch(AdminTraceNodeSummary::partial);
         boolean errorOccurred = isErrorStatus(runSummary.overallStatus())
                 || stages.stream().anyMatch(stage -> isErrorStatus(stage.status()) || !stage.error().isBlank())

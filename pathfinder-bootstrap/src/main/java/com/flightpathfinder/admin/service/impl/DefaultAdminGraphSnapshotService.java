@@ -1,4 +1,4 @@
-package com.flightpathfinder.admin.service.impl;
+﻿package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminGraphSnapshotService;
 import com.flightpathfinder.admin.service.AdminGraphSnapshotStatus;
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 /**
  * 图快照巡检与生命周期控制的管理端默认服务。
  *
- * <p>该服务归属图管理能力面，聚焦快照读模型的运维状态。
- * 它复用图生命周期与查询边界，避免在控制器中重复 Redis 细节逻辑。
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotService {
@@ -37,8 +37,8 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
     /**
         * 加载指定图键当前已发布的快照状态。
      *
-     * @param graphKey logical graph identifier; blank means the default graph
-     * @return snapshot status or structured {@code SNAPSHOT_MISS} view
+     * @param graphKey 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminGraphSnapshotStatus currentSnapshot(String graphKey) {
@@ -70,9 +70,9 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
     /**
         * 重建并重新发布图快照。
      *
-     * @param graphKey logical graph identifier; blank means the default graph
-     * @param reason operator-supplied rebuild reason
-     * @return rebuilt snapshot status
+     * @param graphKey 参数说明。
+     * @param reason 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminGraphSnapshotStatus rebuild(String graphKey, String reason) {
@@ -93,9 +93,9 @@ public class DefaultAdminGraphSnapshotService implements AdminGraphSnapshotServi
     /**
         * 失效当前已发布快照，不执行重建。
      *
-     * @param graphKey logical graph identifier; blank means the default graph
-     * @param reason operator-supplied invalidation reason
-     * @return invalidation status summary
+     * @param graphKey 参数说明。
+     * @param reason 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminGraphSnapshotStatus invalidate(String graphKey, String reason) {

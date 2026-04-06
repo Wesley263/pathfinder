@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.server.executor;
+﻿package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -19,9 +19,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * {@code price.lookup} 的服务端执行器。
+ * 说明。
  *
- * <p>虽然服务端实现内部复用了直飞检索能力，价格比价仍作为独立 MCP 契约对外暴露。
+ * 说明。
  * 独立执行器可清晰承载其专属输入语法与部分覆盖语义。
  */
 @Component
@@ -37,9 +37,9 @@ public class PriceLookupMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 描述跨城市对最低价比较的 MCP 契约。
+     * 说明。
      *
-     * @return {@code price.lookup} 的工具描述
+     * @return 返回结果。
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -73,9 +73,9 @@ public class PriceLookupMcpToolExecutor implements McpToolExecutor {
     /**
      * 执行多城市对价格查询。
      *
-     * @param request MCP 请求，参数应为结构化字段而非自由文本
-     * @return 结构化结果，保留 {@code SUCCESS}、{@code PARTIAL_SUCCESS}、
-     *     {@code NO_PRICE_FOUND} 及请求/执行错误状态
+     * @param request 参数说明。
+     * @return 返回结果。
+     * 说明。
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {

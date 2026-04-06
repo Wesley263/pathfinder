@@ -6,19 +6,19 @@ import org.springframework.stereotype.Service;
 /**
  * 最终回答阶段的默认编排器。
  *
- * <p>它把回答输入装配和回答文本生成串起来，但不会反向侵入 retrieval 或 stage one，
- * 从而保持主链后半段职责清晰。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultFinalAnswerService implements FinalAnswerService {
 
-    /** 负责把 retrieval 结果整理成回答输入。 */
+    /** 注释说明。 */
     private final FinalAnswerAssembler finalAnswerAssembler;
     /** 负责生成最终回答文本。 */
     private final FinalAnswerTextComposer finalAnswerTextComposer;
 
     /**
-     * 构造 final answer 默认编排器。
+     * 说明。
      *
      * @param finalAnswerAssembler 回答输入装配器
      * @param finalAnswerTextComposer 回答文本生成器
@@ -30,9 +30,9 @@ public class DefaultFinalAnswerService implements FinalAnswerService {
     }
 
     /**
-     * 基于 retrieval 输出生成最终回答。
+     * 说明。
      *
-     * @param retrievalResult retrieval 阶段输出
+     * @param retrievalResult 参数说明。
      * @return 结构化回答结果
      */
     @Override
@@ -55,7 +55,7 @@ public class DefaultFinalAnswerService implements FinalAnswerService {
     }
 
     /**
-     * 计算 final answer 阶段总状态。
+     * 说明。
      *
      * @param promptInput 回答输入模型
      * @return 回答状态

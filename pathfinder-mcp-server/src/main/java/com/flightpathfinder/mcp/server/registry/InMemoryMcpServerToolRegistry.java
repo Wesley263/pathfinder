@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.server.registry;
+﻿package com.flightpathfinder.mcp.server.registry;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolDescriptor;
 import com.flightpathfinder.mcp.server.executor.McpToolExecutor;
@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * 基于 Spring 托管执行器列表的进程内注册器。
+ * 说明。
  *
- * <p>该实现让服务端工具暴露在运行期保持确定且低成本：
+ * 说明。
  * 描述信息一次性由执行器物化，而执行器本身仍是工具契约与执行规则的唯一所有者。
  */
 public class InMemoryMcpServerToolRegistry implements McpServerToolRegistry {
@@ -36,9 +36,9 @@ public class InMemoryMcpServerToolRegistry implements McpServerToolRegistry {
     }
 
     /**
-     * 查询请求 toolId 的归属执行器。
+     * 说明。
      *
-     * @param toolId 待解析的 MCP 工具 id
+     * @param toolId 参数说明。
      * @return 已注册则返回执行器，否则返回空
      */
     @Override

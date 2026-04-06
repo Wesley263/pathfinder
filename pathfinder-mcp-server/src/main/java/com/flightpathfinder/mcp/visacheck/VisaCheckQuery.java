@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.visacheck;
+﻿package com.flightpathfinder.mcp.visacheck;
 
 import java.util.List;
 import java.util.Locale;
@@ -6,9 +6,9 @@ import java.util.Locale;
 /**
  * 签证核验查询请求。
  *
- * @param countryCodes 目的地国家代码列表（ISO 两位）
+ * @param countryCodes 参数说明。
  * @param stayDays 计划停留天数
- * @param passportCountry 护照国家代码（ISO 两位）
+ * @param passportCountry 参数说明。
  */
 public record VisaCheckQuery(
         List<String> countryCodes,

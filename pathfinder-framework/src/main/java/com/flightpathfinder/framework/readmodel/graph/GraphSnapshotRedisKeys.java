@@ -1,17 +1,17 @@
-package com.flightpathfinder.framework.readmodel.graph;
+﻿package com.flightpathfinder.framework.readmodel.graph;
 
 import java.time.Duration;
 
 /**
- * 图快照 Redis 键约定。
+ * 说明。
  *
- * <p>统一管理 latest 指针、版本快照和键模式，避免各模块拼键不一致。</p>
+ * 说明。
  */
 public final class GraphSnapshotRedisKeys {
 
     /** 默认图标识。 */
     public static final String DEFAULT_GRAPH_KEY = "flight-main";
-    /** 默认 TTL。 */
+    /** 注释说明。 */
     public static final Duration DEFAULT_TTL = Duration.ofDays(30);
 
     /** 工具类禁止实例化。 */
@@ -19,10 +19,10 @@ public final class GraphSnapshotRedisKeys {
     }
 
     /**
-     * 生成 latest 版本指针键。
+     * 说明。
      *
      * @param graphKey 图标识
-     * @return latest 键
+     * @return 返回结果。
      */
     public static String latestVersionKey(String graphKey) {
         return "graph:snapshot:" + normalizeGraphKey(graphKey) + ":latest";

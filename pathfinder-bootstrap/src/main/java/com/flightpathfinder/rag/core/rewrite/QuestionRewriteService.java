@@ -1,12 +1,12 @@
-package com.flightpathfinder.rag.core.rewrite;
+﻿package com.flightpathfinder.rag.core.rewrite;
 
 import com.flightpathfinder.rag.core.pipeline.StageOneRagRequest;
 
 /**
  * 第一阶段中的问题改写边界。
  *
- * <p>这一层只做输入整理：规范术语、拆子问题、必要时结合 memory 补全追问上下文，
- * 但不直接对问题做路由裁决，路由决策仍留给 intent 层。</p>
+ * 说明。
+ * 说明。
  */
 public interface QuestionRewriteService {
 

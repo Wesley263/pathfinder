@@ -1,10 +1,10 @@
-package com.flightpathfinder.mcp.pricelookup;
+﻿package com.flightpathfinder.mcp.pricelookup;
 
 /**
  * 多城市对最低价比较的服务端契约。
  *
- * <p>尽管内部复用 {@code flight.search} 能力，该服务仍留在服务端，
- * 因为对外 MCP 工具拥有独立输入契约与结果语义。
+ * 说明。
+ * 说明。
  */
 public interface PriceLookupService {
 

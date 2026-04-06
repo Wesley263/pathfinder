@@ -1,9 +1,9 @@
-package com.flightpathfinder.rag.service.model;
+﻿package com.flightpathfinder.rag.service.model;
 
 /**
  * 流式事件输出器。
  *
- * <p>它把流式服务与具体输出介质解耦，当前 controller 使用 SSE 实现，后续也可以替换为别的事件通道。</p>
+ * 说明。
  */
 public interface RagStreamEventWriter {
 

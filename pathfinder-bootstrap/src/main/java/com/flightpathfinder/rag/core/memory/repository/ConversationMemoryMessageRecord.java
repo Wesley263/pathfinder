@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.memory.repository;
+﻿package com.flightpathfinder.rag.core.memory.repository;
 
 import java.time.Instant;
 
@@ -9,7 +9,7 @@ import java.time.Instant;
  * @param conversationId 会话标识
  * @param requestId 请求标识
  * @param messageIndex 同一请求内消息序号
- * @param role 角色（如 USER/ASSISTANT）
+ * @param role 参数说明。
  * @param content 消息正文
  * @param rewrittenQuestion 改写问题文本
  * @param answerStatus 回答状态

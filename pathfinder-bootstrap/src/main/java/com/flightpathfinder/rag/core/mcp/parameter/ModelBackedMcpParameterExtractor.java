@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * 基于模型的 MCP 参数提取器，复用规则提取器中的 schema 校验器。
+ * 说明。
  */
 @Service
 @Primary

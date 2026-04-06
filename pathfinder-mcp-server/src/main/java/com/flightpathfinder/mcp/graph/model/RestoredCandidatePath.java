@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.graph.model;
+﻿package com.flightpathfinder.mcp.graph.model;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public record RestoredCandidatePath(
     /**
      * 判断是否为直飞。
      *
-     * @return 直飞返回 true
+     * @return 返回结果。
      */
     public boolean isDirect() {
         return legs.size() == 1;
@@ -48,7 +48,7 @@ public record RestoredCandidatePath(
     /**
      * 判断全程是否都含托运行李。
      *
-     * @return 全含返回 true
+     * @return 返回结果。
      */
     public boolean baggageIncluded() {
         return legs.stream().allMatch(RestoredPathLeg::baggageIncluded);

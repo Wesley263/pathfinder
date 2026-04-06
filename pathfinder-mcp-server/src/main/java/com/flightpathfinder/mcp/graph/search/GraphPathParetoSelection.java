@@ -1,23 +1,23 @@
-package com.flightpathfinder.mcp.graph.search;
+﻿package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredCandidatePath;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Pareto 过滤后供最终排序使用的候选集合。
+ * 说明。
  */
 final class GraphPathParetoSelection {
 
     /** 选中的候选路径列表。 */
     private final List<RestoredCandidatePath> selectedCandidates;
-    /** 路径到 Pareto 层号的映射。 */
+    /** 注释说明。 */
     private final Map<RestoredCandidatePath, Integer> paretoLayerByPath;
-    /** 最大 Pareto 层号。 */
+    /** 注释说明。 */
     private final int maxLayer;
 
     /**
-     * 构造 Pareto 选择结果。
+     * 说明。
      *
      * @param selectedCandidates 候选路径列表
      * @param paretoLayerByPath 层号映射
@@ -41,7 +41,7 @@ final class GraphPathParetoSelection {
     }
 
     /**
-     * 查询某条路径所属 Pareto 层。
+     * 说明。
      *
      * @param path 候选路径
      * @return 层号

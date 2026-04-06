@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.config;
+﻿package com.flightpathfinder.mcp.config;
 
 import com.flightpathfinder.mcp.server.executor.McpToolExecutor;
 import com.flightpathfinder.mcp.server.registry.InMemoryMcpServerToolRegistry;
@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 装配服务端 MCP 运行时组件。
+ * 说明。
  *
- * <p>注册器在 {@code pathfinder-mcp-server} 内完成组装，
- * 以确保工具暴露能力始终由协议服务进程持有，避免把 bootstrap 侧客户端发现职责反向泄漏回服务端。
+ * 说明。
+ * 说明。
  */
 @Configuration
 @EnableConfigurationProperties(McpServerDatasourceProperties.class)

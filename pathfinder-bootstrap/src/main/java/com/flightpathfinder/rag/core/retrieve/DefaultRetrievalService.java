@@ -6,22 +6,22 @@ import org.springframework.stereotype.Service;
 /**
  * 检索阶段的默认编排器。
  *
- * <p>它位于 KB 与 MCP 两条分支之上，负责显式执行两路能力并统一汇总结果，
- * 这样 final answer 才能继续区分证据来源和部分成功语义。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultRetrievalService implements RetrievalService {
 
     /** 知识库分支检索器。 */
     private final KnowledgeRetriever knowledgeRetriever;
-    /** 工具分支执行器（MCP）。 */
+    /** 注释说明。 */
     private final McpContextExecutor mcpContextExecutor;
 
     /**
-     * 构造 retrieval 默认编排器。
+     * 说明。
      *
-     * @param knowledgeRetriever KB 检索器
-     * @param mcpContextExecutor MCP 执行器
+     * @param knowledgeRetriever 参数说明。
+     * @param mcpContextExecutor 参数说明。
      */
     public DefaultRetrievalService(KnowledgeRetriever knowledgeRetriever, McpContextExecutor mcpContextExecutor) {
         this.knowledgeRetriever = knowledgeRetriever;
@@ -29,10 +29,10 @@ public class DefaultRetrievalService implements RetrievalService {
     }
 
     /**
-     * 分别执行 KB 检索和 MCP 调用，再统一汇总成 retrieval 结果。
+     * 说明。
      *
      * @param stageOneRagResult 第一阶段输出
-     * @return 同时保留 KB 与 MCP 子结果的 retrieval 总结果
+     * @return 返回结果。
      */
     @Override
     public RetrievalResult retrieve(StageOneRagResult stageOneRagResult) {
@@ -40,7 +40,7 @@ public class DefaultRetrievalService implements RetrievalService {
                 ? new StageOneRagResult(null, null, null, null)
                 : stageOneRagResult;
 
-        // 这里刻意保持 KB 与 MCP 分开，避免 final answer 只能接收一个已经混好的黑盒检索结果。
+        // 说明。
         KbContext kbContext = knowledgeRetriever.retrieve(
                 safeStageOneResult.rewriteResult(),
                 safeStageOneResult.intentSplitResult());
@@ -48,7 +48,7 @@ public class DefaultRetrievalService implements RetrievalService {
                 safeStageOneResult.rewriteResult(),
                 safeStageOneResult.intentSplitResult());
 
-        // 检索阶段是第一个同时看到 KB 成功、MCP miss 与混合部分成功语义的地方，因此总状态在这里收口。
+        // 说明。
         return new RetrievalResult(
                 resolveStatus(kbContext, mcpContext),
                 buildSummary(kbContext, mcpContext),
@@ -58,11 +58,11 @@ public class DefaultRetrievalService implements RetrievalService {
     }
 
     /**
-     * 计算 retrieval 阶段总状态。
+     * 说明。
      *
-     * @param kbContext KB 分支结果
-     * @param mcpContext MCP 分支结果
-     * @return retrieval 总状态
+     * @param kbContext 参数说明。
+     * @param mcpContext 参数说明。
+     * @return 返回结果。
      */
     private String resolveStatus(KbContext kbContext, McpContext mcpContext) {
         boolean kbError = kbContext.hasError();
@@ -96,10 +96,10 @@ public class DefaultRetrievalService implements RetrievalService {
     }
 
     /**
-     * 生成 retrieval 阶段摘要。
+     * 说明。
      *
-     * @param kbContext KB 分支结果
-     * @param mcpContext MCP 分支结果
+     * @param kbContext 参数说明。
+     * @param mcpContext 参数说明。
      * @return 简洁摘要文本
      */
     private String buildSummary(KbContext kbContext, McpContext mcpContext) {

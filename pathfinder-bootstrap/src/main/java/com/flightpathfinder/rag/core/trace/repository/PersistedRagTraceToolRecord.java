@@ -1,9 +1,9 @@
-package com.flightpathfinder.rag.core.trace.repository;
+﻿package com.flightpathfinder.rag.core.trace.repository;
 
 /**
- * 持久化 MCP 工具记录。
+ * 说明。
  *
- * @param traceId trace 标识
+ * @param traceId 参数说明。
  * @param toolIndex 工具序号
  * @param toolId 工具标识
  * @param status 工具状态

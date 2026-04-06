@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolDescriptor;
 import com.flightpathfinder.rag.core.mcp.LocalMcpToolRegistry;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 /**
  * 意图解析器的默认实现。
  *
- * <p>它负责把分类器输出的候选意图整合成最终 KB/MCP/SYSTEM 分流结果。这个职责留在 resolver 层，
- * 是因为只有这里能同时看到所有子问题的结果，又不会把分流逻辑泄漏到 rewrite 或 retrieval。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultIntentResolver implements IntentResolver {
@@ -23,14 +23,14 @@ public class DefaultIntentResolver implements IntentResolver {
 
     /** 单问题意图分类器。 */
     private final IntentClassifier intentClassifier;
-    /** 本地 MCP 工具注册表，用于补齐已解析意图对应的工具元信息。 */
+    /** 注释说明。 */
     private final LocalMcpToolRegistry localMcpToolRegistry;
 
     /**
      * 构造默认意图解析器。
      *
      * @param intentClassifier 单问题分类器
-     * @param localMcpToolRegistry 本地 MCP 工具注册表
+     * @param localMcpToolRegistry 参数说明。
      */
     public DefaultIntentResolver(IntentClassifier intentClassifier, LocalMcpToolRegistry localMcpToolRegistry) {
         this.intentClassifier = intentClassifier;
@@ -50,7 +50,7 @@ public class DefaultIntentResolver implements IntentResolver {
                 ? List.of(safeRewriteResult.routingQuestion())
                 : safeRewriteResult.routingSubQuestions();
 
-        // 先保留子问题级分类结果，后续调试和 trace 才能解释“为什么最终走到了这个分支”。
+        // 说明。
         List<SubQuestionIntent> subQuestionIntents = subQuestions.stream()
                 .map(subQuestion -> new SubQuestionIntent(subQuestion, intentClassifier.classifyTargets(subQuestion)))
                 .toList();
@@ -61,7 +61,7 @@ public class DefaultIntentResolver implements IntentResolver {
      * 把所有子问题结果合并成三路分流结果。
      *
      * @param subQuestionIntents 子问题级意图结果列表
-     * @return 汇总后的 KB/MCP/SYSTEM 分流结果
+     * @return 返回结果。
      */
     private IntentSplitResult split(List<SubQuestionIntent> subQuestionIntents) {
         Map<String, ResolvedIntent> kbIntents = new LinkedHashMap<>();
@@ -71,7 +71,7 @@ public class DefaultIntentResolver implements IntentResolver {
         for (SubQuestionIntent subQuestionIntent : subQuestionIntents) {
             for (IntentNodeScore nodeScore : subQuestionIntent.nodeScores()) {
                 ResolvedIntent resolvedIntent = toResolvedIntent(subQuestionIntent.question(), nodeScore);
-                // 这里必须显式分三路，避免 retrieval 再次把 KB/MCP 混回一个黑盒路由器。
+                // 说明。
                 switch (nodeScore.node().kind()) {
                     case KB -> mergeByHigherScore(kbIntents, resolvedIntent);
                     case MCP -> mergeByHigherScore(mcpIntents, resolvedIntent);
@@ -111,7 +111,7 @@ public class DefaultIntentResolver implements IntentResolver {
     }
 
     /**
-     * 把节点打分转换成 retrieval 可直接消费的已解析意图。
+     * 说明。
      *
      * @param question 命中该意图的子问题
      * @param nodeScore 节点与分数组合

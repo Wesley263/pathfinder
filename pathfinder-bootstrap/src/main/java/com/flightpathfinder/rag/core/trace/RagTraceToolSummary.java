@@ -1,7 +1,7 @@
-package com.flightpathfinder.rag.core.trace;
+﻿package com.flightpathfinder.rag.core.trace;
 
 /**
- * 工具执行摘要（MCP）。
+ * 说明。
  *
  * @param toolId 工具标识
  * @param status 执行状态

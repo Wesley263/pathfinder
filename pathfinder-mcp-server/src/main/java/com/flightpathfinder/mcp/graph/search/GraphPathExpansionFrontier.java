@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.graph.search;
+﻿package com.flightpathfinder.mcp.graph.search;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -7,30 +7,30 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 
 /**
- * 部分搜索节点的有序 frontier。
+ * 说明。
  *
- * <p>该结构与候选池分离：frontier 负责扩展顺序，候选池负责收敛与停止判定。</p>
+ * 说明。
  */
 final class GraphPathExpansionFrontier {
 
-    /** frontier 排序规则。 */
+    /** 注释说明。 */
     private static final Comparator<GraphPathSearchNode> ORDER = Comparator
             .comparingDouble(GraphPathSearchNode::optimisticScore)
             .reversed()
             .thenComparingLong(GraphPathSearchNode::sequence);
 
-    /** frontier 节点集合。 */
+    /** 注释说明。 */
     private final NavigableSet<GraphPathSearchNode> nodes = new TreeSet<>(ORDER);
 
     /**
-     * 向 frontier 添加部分搜索节点。
+     * 说明。
      */
     void offer(GraphPathSearchNode node) {
         nodes.add(node);
     }
 
     /**
-     * 弹出并返回当前最优 frontier 节点。
+     * 说明。
      */
     GraphPathSearchNode pollBest() {
         if (nodes.isEmpty()) {
@@ -40,7 +40,7 @@ final class GraphPathExpansionFrontier {
     }
 
     /**
-     * 返回当前最优 frontier 节点的乐观分。
+     * 说明。
      */
     double peekBestScore() {
         if (nodes.isEmpty()) {
@@ -50,7 +50,7 @@ final class GraphPathExpansionFrontier {
     }
 
     /**
-     * 将 frontier 裁剪到指定上限并返回被裁剪节点。
+     * 说明。
      */
     List<GraphPathSearchNode> trimToSize(int maxFrontierSize) {
         List<GraphPathSearchNode> trimmed = new ArrayList<>();
@@ -64,7 +64,7 @@ final class GraphPathExpansionFrontier {
     }
 
     /**
-     * 判断 frontier 是否为空。
+     * 说明。
      */
     boolean isEmpty() {
         return nodes.isEmpty();

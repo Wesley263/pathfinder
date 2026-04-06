@@ -9,28 +9,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 面向 RAG 结构概览的只读控制器。
+ * 说明。
  *
- * <p>它只用于运维和结构查看，报告的是当前已实现的 wiring 事实，不参与用户请求主链编排。</p>
+ * 说明。
  */
 @RestController
 @RequestMapping("/api/rag")
 public class RagOverviewController {
 
-    /** 面向 RAG 的概览服务。 */
+    /** 注释说明。 */
     private final RagOverviewService ragOverviewService;
 
     /**
      * 构造概览控制器。
      *
-     * @param ragOverviewService RAG 概览服务
+     * @param ragOverviewService 参数说明。
      */
     public RagOverviewController(RagOverviewService ragOverviewService) {
         this.ragOverviewService = ragOverviewService;
     }
 
     /**
-     * 返回当前 RAG 结构概览。
+     * 说明。
      *
      * @return 面向结构查看的概览响应
      */

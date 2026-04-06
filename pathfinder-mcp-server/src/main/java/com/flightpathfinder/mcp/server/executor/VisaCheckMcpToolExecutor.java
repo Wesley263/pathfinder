@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.server.executor;
+﻿package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -16,9 +16,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * {@code visa.check} 的服务端执行器。
+ * 说明。
  *
- * <p>该工具完整驻留在 MCP 服务端，因为签证判定依赖本地政策数据与服务端规则解释。
+ * 说明。
  * 引导侧只需要契约与结果，不需要规则引擎实现。
  */
 @Component
@@ -34,9 +34,9 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 描述签证政策核验的 MCP 契约。
+     * 说明。
      *
-     * @return {@code visa.check} 的工具描述
+     * @return 返回结果。
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -67,8 +67,8 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
     /**
      * 对请求目的地执行签证政策评估。
      *
-     * @param request MCP 请求，包含目的地国家代码与出行上下文
-     * @return 结构化工具结果，保留 {@code DATA_NOT_FOUND}、{@code PARTIAL_SUCCESS} 等业务状态
+     * @param request 参数说明。
+     * @return 返回结果。
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -131,7 +131,7 @@ public class VisaCheckMcpToolExecutor implements McpToolExecutor {
             if (!COUNTRY_CODE_PATTERN.matcher(normalized).matches()) {
                 continue;
             }
-            // 工具契约允许紧凑列表语法，但服务层只接收已归一化且去重后的 ISO 国家代码。
+            // 说明。
             if (!codes.contains(normalized)) {
                 codes.add(normalized);
             }

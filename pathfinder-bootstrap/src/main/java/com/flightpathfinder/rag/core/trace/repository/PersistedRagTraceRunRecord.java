@@ -1,11 +1,11 @@
-package com.flightpathfinder.rag.core.trace.repository;
+﻿package com.flightpathfinder.rag.core.trace.repository;
 
 import java.time.Instant;
 
 /**
- * 持久化 trace 运行头记录。
+ * 说明。
  *
- * @param traceId trace 标识
+ * @param traceId 参数说明。
  * @param requestId 请求标识
  * @param conversationId 会话标识
  * @param scene 场景

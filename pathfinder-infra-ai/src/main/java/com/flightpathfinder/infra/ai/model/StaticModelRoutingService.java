@@ -1,4 +1,4 @@
-package com.flightpathfinder.infra.ai.model;
+﻿package com.flightpathfinder.infra.ai.model;
 
 import com.flightpathfinder.infra.ai.config.AiModelProperties;
 import com.flightpathfinder.infra.ai.config.AiModelProperties.ProviderProperties;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 /**
  * 仅基于配置的静态能力路由选择器。
  *
- * <p>Pathfinder 2.0 当前保持显式 provider 选择：chat 与 embedding 分别绑定
- * 一个已配置的 provider/model 组合，不执行动态多模型路由。
+ * 说明。
+ * 说明。
  */
 @Component
 public class StaticModelRoutingService implements ModelRoutingService {

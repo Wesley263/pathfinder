@@ -8,10 +8,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 /**
- * 当前 Pathfinder 2.0 启用的静态意图树。
+ * 说明。
  *
- * <p>它定义第一阶段已接入的 MCP、KB 和 SYSTEM 三类叶子节点。之所以仍然保留在 bootstrap/rag 内，
- * 是因为这棵树描述的是当前主链的业务分流事实，而不是通用框架能力。</p>
+ * 说明。
+ * 说明。
  */
 @Component
 public class PathfinderIntentTree implements IntentTree {
@@ -23,13 +23,13 @@ public class PathfinderIntentTree implements IntentTree {
     private final IntentNode root;
     /** 所有可直接参与分类的叶子节点。 */
     private final List<IntentNode> leafNodes;
-    /** 叶子节点索引，支持按 id、别名和 toolId 快速查找。 */
+    /** 注释说明。 */
     private final Map<String, IntentNode> leafIndex;
 
     /**
      * 构造默认意图树。
      *
-     * <p>当前使用静态树而不是可配置树，是因为第一阶段先要把主链边界稳定下来，再考虑配置化演进。</p>
+     * 说明。
      */
     public PathfinderIntentTree() {
         IntentNode mcpCategory = IntentNode.category(
@@ -180,7 +180,7 @@ public class PathfinderIntentTree implements IntentTree {
     /**
      * 根据标识查找叶子节点。
      *
-     * @param nodeId 节点 id、别名或 toolId
+     * @param nodeId 参数说明。
      * @return 匹配到的叶子节点
      */
     @Override

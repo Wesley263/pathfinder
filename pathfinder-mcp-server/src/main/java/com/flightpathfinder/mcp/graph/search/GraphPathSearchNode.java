@@ -1,10 +1,10 @@
-package com.flightpathfinder.mcp.graph.search;
+﻿package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredGraphEdge;
 import java.util.List;
 
 /**
- * frontier 中的搜索节点。
+ * 说明。
  *
  * @param state 当前部分状态
  * @param edges 从根到当前节点的边序列

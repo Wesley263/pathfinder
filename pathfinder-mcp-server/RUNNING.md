@@ -1,55 +1,54 @@
-# Pathfinder MCP Server Running Notes
+# Pathfinder MCP Server 运行说明
 
-## What This Module Needs
+## 模块定位
 
-`pathfinder-mcp-server` is a real runtime module now.
-It is no longer a protocol-only placeholder.
+`pathfinder-mcp-server` 当前是一个真正的运行期模块，不再是纯协议占位。
 
-Current runtime dependencies:
+当前运行依赖：
+- JDBC 数据源：供 `flight.search`、`price.lookup`、`visa.check`、`city.cost`、`risk.evaluate` 使用
+- Redis：供 `graph.path.search` 使用
 
-- JDBC datasource for `flight.search`, `price.lookup`, `visa.check`, `city.cost`, and `risk.evaluate`
-- Redis for `graph.path.search`
+## 数据源最低配置
 
-## Minimum Datasource Contract
-
-Startup requires these datasource values:
+启动时需要以下数据源配置：
 
 - `spring.datasource.url`
 - `spring.datasource.username`
 - `spring.datasource.password`
 
-Equivalent environment variables:
+对应环境变量：
 
 - `PATHFINDER_MCP_DB_URL`
 - `PATHFINDER_MCP_DB_USERNAME`
 - `PATHFINDER_MCP_DB_PASSWORD`
 
-If any required datasource value is missing, startup fails fast through `McpServerDatasourceProperties`.
+如果缺少任一必填项，启动将通过 `McpServerDatasourceProperties` 快速失败。
 
-## Redis And Graph Snapshot Contract
+## Redis 与图快照配置
 
-`graph.path.search` uses Spring Boot's normal Redis configuration (`spring.data.redis.*`).
+`graph.path.search` 使用 Spring Boot 标准 Redis 配置（`spring.data.redis.*`）。
 
-At runtime it expects:
+运行时期望：
+- Redis 实例可达
+- 已发布的 graph snapshot
+- latest-version key 位于 `graph:snapshot:<graphKey>:latest`
+- snapshot payload key 位于 `graph:snapshot:<graphKey>:version:<snapshotVersion>`
 
-- a reachable Redis instance
-- a published graph snapshot
-- the latest-version key at `graph:snapshot:<graphKey>:latest`
-- the snapshot payload key at `graph:snapshot:<graphKey>:version:<snapshotVersion>`
+如果 snapshot 不存在，该工具不会本地重建也不会回源数据库构图，
+而是返回 transport 成功 + 结构化工具状态 `SNAPSHOT_MISS`。
 
-If the snapshot is missing, the tool does not rebuild locally and does not query the database for graph construction.
-It returns transport success with structured tool status `SNAPSHOT_MISS`.
+## 工具归属一览
 
-## Tool Ownership Summary
+| 工具 | 数据来源 | 说明 |
+|------|---------|------|
+| `graph.path.search` | Redis graph snapshot | 只读读模型工具 |
+| `flight.search` | JDBC | 独立 server 端实现 |
+| `price.lookup` | JDBC | 独立 server 端实现 |
+| `visa.check` | JDBC | 独立 server 端实现 |
+| `city.cost` | JDBC | 独立 server 端实现 |
+| `risk.evaluate` | JDBC + 规则 | 独立 server 端实现 |
 
-- `graph.path.search`: Redis-backed read-model tool
-- `flight.search`: JDBC-backed independent server-side implementation
-- `price.lookup`: JDBC-backed independent server-side implementation
-- `visa.check`: JDBC-backed independent server-side implementation
-- `city.cost`: JDBC-backed independent server-side implementation
-- `risk.evaluate`: JDBC-backed and rule-based independent server-side implementation
-
-## Example Local Run
+## 本地启动示例
 
 ```powershell
 $env:PATHFINDER_MCP_DB_URL='jdbc:postgresql://localhost:5432/flight_pathfinder'
@@ -60,4 +59,4 @@ $env:SPRING_DATA_REDIS_PORT='6379'
 mvn -pl pathfinder-mcp-server spring-boot:run
 ```
 
-The server can start with JDBC only, but `graph.path.search` will only be usable when Redis is reachable and a graph snapshot has been published.
+Server 可以只依赖 JDBC 启动，但 `graph.path.search` 仅在 Redis 可达且已发布 graph snapshot 时可用。

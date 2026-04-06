@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.trace;
+﻿package com.flightpathfinder.rag.core.trace;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * @param run 运行级摘要
  * @param stages 阶段级节点列表
  * @param nodes 全量节点列表（含内部节点）
- * @param mcpToolSummaries MCP 工具执行摘要列表
+ * @param mcpToolSummaries 参数说明。
  */
 public record RagTraceDetailResult(
         RagTraceRunSummary run,

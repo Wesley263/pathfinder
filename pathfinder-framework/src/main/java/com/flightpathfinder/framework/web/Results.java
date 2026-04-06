@@ -1,4 +1,4 @@
-package com.flightpathfinder.framework.web;
+﻿package com.flightpathfinder.framework.web;
 
 import com.flightpathfinder.framework.convention.Result;
 import com.flightpathfinder.framework.context.RequestIdHolder;
@@ -10,14 +10,14 @@ import com.flightpathfinder.framework.trace.TraceContext;
 /**
  * 统一结果构造工具。
  *
- * <p>集中封装成功/失败返回与 requestId 绑定逻辑，供控制器与异常处理器复用。
+ * 说明。
  */
 public final class Results {
 
     private Results() {
     }
 
-    /** @return 无数据成功结果 */
+    /** 注释说明。 */
     public static Result<Void> success() {
         return new Result<>(Result.SUCCESS_CODE, null, null, currentRequestId());
     }
@@ -43,7 +43,7 @@ public final class Results {
         return new Result<>(Result.SUCCESS_CODE, message, data, currentRequestId());
     }
 
-    /** @return 默认失败结果 */
+    /** 注释说明。 */
     public static Result<Void> failure() {
         return failure(BaseErrorCode.SERVICE_ERROR);
     }
@@ -93,7 +93,7 @@ public final class Results {
     /**
      * 计算当前请求标识。
      *
-     * @return requestId；若上下文均为空则自动创建
+     * @return 返回结果。
      */
     private static String currentRequestId() {
         return RequestIdHolder.current()

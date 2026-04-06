@@ -5,9 +5,17 @@ import com.flightpathfinder.flight.service.FlightStructureService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * 航班功能结构查询服务默认实现。
+ */
 @Service
 public class FlightStructureServiceImpl implements FlightStructureService {
 
+    /**
+     * 返回当前航班能力结构说明。
+     *
+     * @return 航班功能结构视图
+     */
     @Override
     public FeatureStructureVO currentStructure() {
         return new FeatureStructureVO(

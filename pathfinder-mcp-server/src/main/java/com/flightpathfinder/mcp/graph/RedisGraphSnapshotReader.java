@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.graph;
+﻿package com.flightpathfinder.mcp.graph;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,24 +10,24 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * MCP server 侧基于 Redis 的图快照读取器。
+ * 说明。
  *
- * <p>读取器保持严格只读。MCP server 不应在 snapshot miss 时重建图或回查
- * bootstrap 数据表，只消费已发布读模型。</p>
+ * 说明。
+ * 说明。
  */
 @Component
 public class RedisGraphSnapshotReader implements GraphSnapshotReader {
 
-    /** Redis 访问模板。 */
+    /** 注释说明。 */
     private final StringRedisTemplate stringRedisTemplate;
-    /** JSON 反序列化映射器。 */
+    /** 注释说明。 */
     private final ObjectMapper objectMapper;
 
     /**
-     * 构造 Redis 图快照读取器。
+     * 说明。
      *
-     * @param stringRedisTemplate Redis 模板
-     * @param objectMapper JSON 映射器
+     * @param stringRedisTemplate 参数说明。
+     * @param objectMapper 参数说明。
      */
     public RedisGraphSnapshotReader(StringRedisTemplate stringRedisTemplate, ObjectMapper objectMapper) {
         this.stringRedisTemplate = stringRedisTemplate;
@@ -35,7 +35,7 @@ public class RedisGraphSnapshotReader implements GraphSnapshotReader {
     }
 
     /**
-     * 从 Redis 读取指定 graphKey 的最新已发布快照。
+     * 说明。
      *
      * @param graphKey 图逻辑标识
      * @return 最新快照（存在时返回）
@@ -62,7 +62,7 @@ public class RedisGraphSnapshotReader implements GraphSnapshotReader {
     /**
      * 反序列化图快照载荷。
      *
-     * @param payload JSON 载荷
+     * @param payload 参数说明。
      * @return 图快照对象
      */
     private GraphSnapshot deserialize(String payload) {

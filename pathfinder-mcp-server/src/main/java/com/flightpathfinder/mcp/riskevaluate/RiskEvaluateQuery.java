@@ -1,11 +1,11 @@
-package com.flightpathfinder.mcp.riskevaluate;
+﻿package com.flightpathfinder.mcp.riskevaluate;
 
 import java.util.Locale;
 
 /**
  * 中转风险评估请求。
  *
- * @param hubAirport 中转枢纽机场 IATA 三字码
+ * @param hubAirport 参数说明。
  * @param firstAirline 第一段航司代码
  * @param secondAirline 第二段航司代码
  * @param bufferHours 中转缓冲时长（小时）

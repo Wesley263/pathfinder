@@ -1,11 +1,11 @@
-package com.flightpathfinder.rag.core.answer;
+﻿package com.flightpathfinder.rag.core.answer;
 
 import java.util.List;
 
 /**
  * 最终回答结果。
  *
- * <p>它是 user-facing API 和 SSE 结束事件共用的统一回答契约，显式保留 partial、snapshot miss 和 empty 语义。</p>
+ * 说明。
  *
  * @param status 回答总体状态
  * @param answerText 最终回答文本

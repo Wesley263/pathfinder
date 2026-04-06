@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.citycost;
+﻿package com.flightpathfinder.mcp.citycost;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +12,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * {@link CityCostService} 的 JDBC 实现。
+ * 说明。
  *
- * <p>该服务通过直接读取 MCP 服务端数据源中的城市成本数据，
- * 让 {@code city.cost} 保持对 bootstrap 业务模块的独立性，
+ * 说明。
+ * 说明。
  * 并返回便于管理侧消费的部分覆盖结果。
  */
 @Service

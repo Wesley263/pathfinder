@@ -1,8 +1,11 @@
-package com.flightpathfinder.mcp.config;
+﻿package com.flightpathfinder.mcp.config;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
+/**
+ * 配置组件。
+ */
 
 @Validated
 @ConfigurationProperties(prefix = "spring.datasource")
@@ -14,3 +17,4 @@ public record McpServerDatasourceProperties(
         @NotBlank(message = "pathfinder-mcp-server requires spring.datasource.password or PATHFINDER_MCP_DB_PASSWORD")
         String password) {
 }
+

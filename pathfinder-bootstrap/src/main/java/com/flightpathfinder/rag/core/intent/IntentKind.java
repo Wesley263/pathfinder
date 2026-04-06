@@ -1,12 +1,12 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 /**
  * 意图所属的大类。
  *
- * <p>MCP 表示需要走工具调用，KB 表示需要走知识检索，SYSTEM 表示闲聊或超出当前业务域的问题。</p>
+ * 说明。
  */
 public enum IntentKind {
-    /** 需要进入 MCP 工具执行分支。 */
+    /** 注释说明。 */
     MCP,
     /** 需要进入知识检索分支。 */
     KB,

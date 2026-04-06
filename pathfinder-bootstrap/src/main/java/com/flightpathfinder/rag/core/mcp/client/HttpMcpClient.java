@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.mcp.client;
+﻿package com.flightpathfinder.rag.core.mcp.client;
 
 import com.flightpathfinder.framework.protocol.mcp.JsonRpcRequest;
 import com.flightpathfinder.framework.protocol.mcp.JsonRpcResponse;
@@ -13,6 +13,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+/**
+ * 核心组件。
+ */
 
 @Component
 public class HttpMcpClient implements McpClient {
@@ -68,3 +71,4 @@ public class HttpMcpClient implements McpClient {
         return new McpToolCallResult(toolId, false, null, Map.of(), errorMessage);
     }
 }
+

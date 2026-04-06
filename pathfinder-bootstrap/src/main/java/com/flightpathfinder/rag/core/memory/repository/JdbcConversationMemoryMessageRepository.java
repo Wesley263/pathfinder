@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.memory.repository;
+﻿package com.flightpathfinder.rag.core.memory.repository;
 
 import com.flightpathfinder.rag.core.memory.ConversationMemoryTurn;
 import java.sql.ResultSet;
@@ -11,9 +11,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * 原始会话消息行的 JDBC 仓储实现。
+ * 说明。
  *
- * <p>一轮逻辑对话会写成两条记录，
+ * 说明。
  * 以保持用户文本、改写问题与助手回答可独立审计。
  */
 @Repository
@@ -56,7 +56,7 @@ public class JdbcConversationMemoryMessageRepository implements ConversationMemo
     }
 
         /**
-         * 将一轮完成对话持久化为 USER 与 ASSISTANT 两条记录。
+         * 说明。
          *
          * @param conversationId 稳定会话标识
          * @param turn 待持久化的完成轮次

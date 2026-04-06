@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.controller.vo;
+﻿package com.flightpathfinder.rag.controller.vo;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import java.util.List;
  * @param partial 是否是部分回答
  * @param snapshotMissAffected 是否受到图快照缺失影响
  * @param audit 审计信息
- * @param kbIntentIds 命中的 KB intent 标识列表
- * @param mcpIntentIds 命中的 MCP intent 标识列表
- * @param systemIntentIds 命中的 SYSTEM intent 标识列表
+ * @param kbIntentIds 参数说明。
+ * @param mcpIntentIds 参数说明。
+ * @param systemIntentIds 参数说明。
  * @param evidenceSummaries 证据摘要列表
  */
 public record RagChatResponseVO(

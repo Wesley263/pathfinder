@@ -1,12 +1,12 @@
-package com.flightpathfinder.rag.core.trace;
+﻿package com.flightpathfinder.rag.core.trace;
 
 import com.flightpathfinder.framework.trace.TraceRoot;
 import java.util.List;
 
 /**
- * 单次请求的 trace 最终结果。
+ * 说明。
  *
- * @param traceId trace 标识
+ * @param traceId 参数说明。
  * @param requestId 请求标识
  * @param conversationId 会话标识
  * @param scene 场景名称
@@ -14,7 +14,7 @@ import java.util.List;
  * @param snapshotMissOccurred 是否发生快照缺失
  * @param root 根节点
  * @param stages 阶段结果列表
- * @param mcpToolSummaries MCP 工具摘要列表
+ * @param mcpToolSummaries 参数说明。
  */
 public record RagTraceResult(
         String traceId,

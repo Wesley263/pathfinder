@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.server.executor;
+﻿package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -16,10 +16,10 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 /**
- * {@code city.cost} 的服务端执行器。
+ * 说明。
  *
- * <p>该工具将城市成本查询作为独立 MCP 能力对外暴露，底层由 MCP 服务端自有数据集支撑。
- * 不回调 bootstrap，是因为该数据域归属本工具本地维护。
+ * 说明。
+ * 说明。
  */
 @Component
 public class CityCostMcpToolExecutor implements McpToolExecutor {
@@ -34,9 +34,9 @@ public class CityCostMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 描述城市成本查询的 MCP 契约。
+     * 说明。
      *
-     * @return {@code city.cost} 的工具描述
+     * @return 返回结果。
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -68,9 +68,9 @@ public class CityCostMcpToolExecutor implements McpToolExecutor {
     /**
      * 对一个或多个归一化城市代码执行成本查询。
      *
-     * @param request MCP 请求，包含结构化城市/机场代码
-     * @return 结构化结果，状态可为 {@code SUCCESS}、{@code PARTIAL_SUCCESS}、
-     *     {@code DATA_NOT_FOUND} 或请求/执行错误
+     * @param request 参数说明。
+     * @return 返回结果。
+     * 说明。
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {

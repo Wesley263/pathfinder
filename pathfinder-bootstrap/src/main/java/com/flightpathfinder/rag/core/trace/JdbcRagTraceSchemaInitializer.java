@@ -1,14 +1,14 @@
-package com.flightpathfinder.rag.core.trace;
+﻿package com.flightpathfinder.rag.core.trace;
 
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * 创建持久化 trace 所需的 JDBC 表结构。
+ * 说明。
  *
- * <p>trace 持久化拆分为 run、node、tool 三类表，
- * 使列表查询保持轻量，同时详情查询仍可分别展示阶段节点与 MCP 工具结果。
+ * 说明。
+ * 说明。
  */
 @Component
 public class JdbcRagTraceSchemaInitializer {
@@ -80,9 +80,9 @@ public class JdbcRagTraceSchemaInitializer {
     );
 
     /**
-     * 确保当前数据源具备 trace 相关表与索引。
+     * 说明。
      *
-     * @param jdbcTemplate 用于执行 trace DDL 集合的 JDBC 入口
+     * @param jdbcTemplate 参数说明。
      */
     public JdbcRagTraceSchemaInitializer(JdbcTemplate jdbcTemplate) {
         DDL.forEach(jdbcTemplate::execute);

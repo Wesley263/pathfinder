@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.flightsearch;
+﻿package com.flightpathfinder.mcp.flightsearch;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,11 +13,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * {@link FlightSearchService} 的 JDBC 实现。
+ * 说明。
  *
- * <p>该服务是 {@code flight.search} 的服务端能力承载者，
- * 直接从 MCP 服务端数据源读取机场、航司与航线表，
- * 以保持工具对 bootstrap 业务模块的独立性。
+ * 说明。
+ * 说明。
+ * 说明。
  */
 @Service
 public class JdbcFlightSearchService implements FlightSearchService {
@@ -62,7 +62,7 @@ public class JdbcFlightSearchService implements FlightSearchService {
      * 查询请求机场对的直飞航线，并扩展到日期窗口。
      *
      * @param query 已校验的直飞查询请求
-     * @return 按规则排序且受 {@code topK} 限制的直飞选项
+     * @return 返回结果。
      */
     @Override
     public List<FlightSearchOption> search(FlightSearchQuery query) {

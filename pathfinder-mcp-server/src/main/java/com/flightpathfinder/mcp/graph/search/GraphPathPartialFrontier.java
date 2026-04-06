@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.graph.search;
+﻿package com.flightpathfinder.mcp.graph.search;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +8,8 @@ import java.util.Map;
 /**
  * 部分搜索状态的支配前沿。
  *
- * <p>该结构按机场追踪当前最优部分状态，用于提前丢弃严格劣势状态，
- * 防止其挤占 expansion frontier。</p>
+ * 说明。
+ * 说明。
  */
 final class GraphPathPartialFrontier {
 
@@ -40,7 +40,7 @@ final class GraphPathPartialFrontier {
     }
 
     /**
-     * 丢弃已从 expansion frontier 裁掉的部分状态。
+     * 说明。
      */
     void discard(GraphPathPartialState candidate) {
         List<GraphPathPartialState> bucket = statesByAirport.get(candidate.currentAirport());
@@ -54,7 +54,7 @@ final class GraphPathPartialFrontier {
     }
 
     /**
-     * 判断 left 是否支配 right。
+     * 说明。
      */
     private boolean dominates(GraphPathPartialState left, GraphPathPartialState right) {
         if (!left.currentAirport().equals(right.currentAirport())) {

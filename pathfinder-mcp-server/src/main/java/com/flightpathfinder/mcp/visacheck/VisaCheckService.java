@@ -1,11 +1,11 @@
-package com.flightpathfinder.mcp.visacheck;
+﻿package com.flightpathfinder.mcp.visacheck;
 
 /**
  * 签证政策评估的服务端契约。
  *
- * <p>MCP 服务端在本地执行该规则评估，
- * 使 {@code visa.check} 可直接查询签证政策并应用业务规则，
- * 无需依赖 bootstrap 侧服务。
+ * 说明。
+ * 说明。
+ * 说明。
  */
 public interface VisaCheckService {
 

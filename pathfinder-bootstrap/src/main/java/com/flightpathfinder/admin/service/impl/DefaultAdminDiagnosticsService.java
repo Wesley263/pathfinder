@@ -1,4 +1,4 @@
-package com.flightpathfinder.admin.service.impl;
+﻿package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminAirportLookupResult;
 import com.flightpathfinder.admin.service.AdminAirportSummary;
@@ -33,8 +33,8 @@ import org.springframework.stereotype.Service;
 /**
  * 管理端辅助诊断服务默认实现。
  *
- * <p>该服务将直接核验流程保留在管理端能力面，
- * 支持 MCP 或 JDBC 级别的原生检查，避免与用户侧搜索 API 混用。
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
@@ -87,10 +87,10 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
     }
 
     /**
-        * 基于当前 MCP 目录执行直飞诊断。
+        * 说明。
      *
-     * @param query structured diagnostic query
-     * @return admin-facing diagnostic result
+     * @param query 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminFlightDiagnosticResult searchFlights(AdminFlightDiagnosticQuery query) {
@@ -149,10 +149,10 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
     }
 
     /**
-        * 基于当前 MCP 目录执行图路径诊断。
+        * 说明。
      *
-     * @param query structured diagnostic query
-     * @return admin-facing path diagnostic result
+     * @param query 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminPathDiagnosticResult searchPaths(AdminPathDiagnosticQuery query) {
@@ -227,8 +227,8 @@ public class DefaultAdminDiagnosticsService implements AdminDiagnosticsService {
     /**
         * 直接从已导入运维数据集中查询单个机场。
      *
-     * @param iataCode airport IATA code to inspect
-     * @return admin-facing airport lookup result
+     * @param iataCode 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminAirportLookupResult lookupAirport(String iataCode) {

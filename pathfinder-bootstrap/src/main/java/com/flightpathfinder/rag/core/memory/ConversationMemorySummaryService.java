@@ -1,9 +1,9 @@
-package com.flightpathfinder.rag.core.memory;
+﻿package com.flightpathfinder.rag.core.memory;
 
 /**
  * 会话记忆摘要管理抽象。
  *
- * <p>摘要与原始消息存储分离建模，因为压缩规则是策略驱动且可选能力。
+ * 说明。
  * 主链因此可以按需使用近期轮次、摘要或二者组合，而不把写存储与摘要策略耦合在一起。
  */
 public interface ConversationMemorySummaryService {

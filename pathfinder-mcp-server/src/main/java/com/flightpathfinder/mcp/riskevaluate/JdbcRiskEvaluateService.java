@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.riskevaluate;
+﻿package com.flightpathfinder.mcp.riskevaluate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,11 +13,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * {@link RiskEvaluateService} 的 JDBC 实现。
+ * 说明。
  *
- * <p>该服务承载 {@code risk.evaluate} 当前中转风险规则模型，
+ * 说明。
  * 在本地读取参考数据并执行服务端评分，
- * 从而在不共享 bootstrap 业务实现的前提下持续演进。
+ * 说明。
  */
 @Service
 public class JdbcRiskEvaluateService implements RiskEvaluateService {

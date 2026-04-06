@@ -1,14 +1,14 @@
-package com.flightpathfinder.rag.core.trace;
+﻿package com.flightpathfinder.rag.core.trace;
 
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 持久化 trace 节点详情。
+ * 说明。
  *
  * @param nodeName 节点名称
- * @param nodeType 节点类型（如 STAGE/INTERNAL）
+ * @param nodeType 参数说明。
  * @param status 节点状态
  * @param summary 节点摘要
  * @param startedAt 开始时间

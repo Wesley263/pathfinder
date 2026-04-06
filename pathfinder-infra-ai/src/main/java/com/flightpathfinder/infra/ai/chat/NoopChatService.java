@@ -5,7 +5,7 @@ import com.flightpathfinder.infra.ai.model.ModelRoutingService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 /**
- * 面向 AI 聊天能力的空实现。
+ * 说明。
  */
 
 @Component

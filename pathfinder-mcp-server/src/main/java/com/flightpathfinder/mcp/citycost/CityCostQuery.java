@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.citycost;
+﻿package com.flightpathfinder.mcp.citycost;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Locale;
 /**
  * 城市成本查询请求。
  *
- * @param iataCodes 城市或机场 IATA 三字码列表
+ * @param iataCodes 参数说明。
  */
 public record CityCostQuery(List<String> iataCodes) {
 

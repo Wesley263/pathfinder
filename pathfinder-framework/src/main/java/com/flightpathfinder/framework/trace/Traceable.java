@@ -1,4 +1,4 @@
-package com.flightpathfinder.framework.trace;
+﻿package com.flightpathfinder.framework.trace;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * 声明可追踪节点的标记注解。
  *
- * <p>可标注在类型或方法上，供追踪拦截逻辑识别并写入节点信息。
+ * 说明。
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

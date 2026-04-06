@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.graph;
+﻿package com.flightpathfinder.mcp.graph;
 
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshot;
 import com.flightpathfinder.framework.readmodel.graph.GraphSnapshotEdge;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 /**
  * 把已发布快照读模型恢复为内存搜索图。
  *
- * <p>恢复逻辑与快照读取分离，确保 MCP server 的传输/存储处理
- * 与搜索引擎内存图结构解耦。</p>
+ * 说明。
+ * 说明。
  */
 @Component
 public class GraphSnapshotRestorer {

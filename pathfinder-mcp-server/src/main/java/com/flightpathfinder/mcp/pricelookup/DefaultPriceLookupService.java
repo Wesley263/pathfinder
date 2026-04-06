@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.pricelookup;
+﻿package com.flightpathfinder.mcp.pricelookup;
 
 import com.flightpathfinder.mcp.flightsearch.FlightSearchOption;
 import com.flightpathfinder.mcp.flightsearch.FlightSearchQuery;
@@ -9,10 +9,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * {@link PriceLookupService} 的默认服务端实现。
+ * 说明。
  *
- * <p>该服务有意复用 {@link FlightSearchService}，避免重复维护航线 SQL。
- * 同时，价格比价仍保持独立 MCP 契约，因为它需要按城市对汇报覆盖情况，
+ * 说明。
+ * 说明。
  * 且结果结构不同于普通直飞查询。
  */
 @Service

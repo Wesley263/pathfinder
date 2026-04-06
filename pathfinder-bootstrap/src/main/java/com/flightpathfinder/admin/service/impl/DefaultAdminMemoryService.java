@@ -1,4 +1,4 @@
-package com.flightpathfinder.admin.service.impl;
+﻿package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminConversationDetail;
 import com.flightpathfinder.admin.service.AdminConversationDetailResult;
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service;
 /**
  * 管理端记忆查询服务默认实现。
  *
- * <p>该服务将持久化会话记忆适配为管理端结果模型，
- * 使管理 API 能够巡检记忆状态而不直接暴露运行时记忆上下文对象。
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultAdminMemoryService implements AdminMemoryService {
@@ -43,9 +43,9 @@ public class DefaultAdminMemoryService implements AdminMemoryService {
     /**
         * 列出持久化会话供管理端巡检。
      *
-     * @param conversationId optional exact conversation filter
-     * @param limit maximum number of conversations to return
-     * @return admin-facing conversation list result
+     * @param conversationId 参数说明。
+     * @param limit 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminConversationListResult listConversations(String conversationId, int limit) {
@@ -86,9 +86,9 @@ public class DefaultAdminMemoryService implements AdminMemoryService {
     /**
         * 加载单个持久化会话详情视图。
      *
-     * @param conversationId exact conversation id
-     * @param recentMessageLimit maximum number of recent messages to include
-     * @return admin-facing conversation detail result
+     * @param conversationId 参数说明。
+     * @param recentMessageLimit 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminConversationDetailResult findConversationDetail(String conversationId, int recentMessageLimit) {

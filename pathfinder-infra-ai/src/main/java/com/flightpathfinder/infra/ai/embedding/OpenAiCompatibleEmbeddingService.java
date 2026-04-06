@@ -1,4 +1,4 @@
-package com.flightpathfinder.infra.ai.embedding;
+﻿package com.flightpathfinder.infra.ai.embedding;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,9 +22,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * 兼容 OpenAI 协议的向量生成客户端实现。
+ * 说明。
  *
- * <p>用于对接百炼、SiliconFlow 等兼容接口的 embedding 服务。
+ * 说明。
  */
 @Service
 @Primary

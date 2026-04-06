@@ -1,11 +1,11 @@
-package com.flightpathfinder.mcp.graph.search;
+﻿package com.flightpathfinder.mcp.graph.search;
 
 /**
  * 搜索执行配置聚合对象。
  */
 final class GraphPathSearchProfile {
 
-    /** frontier 与收敛策略配置。 */
+    /** 注释说明。 */
     private final GraphPathFrontierPolicy frontierPolicy;
     /** 路径评分配置。 */
     private final GraphPathScoringProfile scoringProfile;
@@ -31,12 +31,12 @@ final class GraphPathSearchProfile {
                 GraphPathScoringProfile.defaultProfile());
     }
 
-    /** @return frontier 策略 */
+    /** 注释说明。 */
     GraphPathFrontierPolicy frontierPolicy() {
         return frontierPolicy;
     }
 
-    /** @return 评分配置 */
+    /** 注释说明。 */
     GraphPathScoringProfile scoringProfile() {
         return scoringProfile;
     }

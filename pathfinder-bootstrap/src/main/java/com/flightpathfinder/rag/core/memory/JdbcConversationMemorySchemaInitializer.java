@@ -1,13 +1,13 @@
-package com.flightpathfinder.rag.core.memory;
+﻿package com.flightpathfinder.rag.core.memory;
 
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * 创建会话记忆所需的 JDBC 表结构。
+ * 说明。
  *
- * <p>会话头、消息明细与摘要表分离建模，
+ * 说明。
  * 以保证原始轮次可完整审计，同时允许摘要层作为独立压缩能力演进。
  */
 @Component
@@ -64,7 +64,7 @@ public class JdbcConversationMemorySchemaInitializer {
     /**
      * 确保当前数据源具备记忆相关表与索引。
      *
-     * @param jdbcTemplate 用于执行记忆 DDL 集合的 JDBC 入口
+     * @param jdbcTemplate 参数说明。
      */
     public JdbcConversationMemorySchemaInitializer(JdbcTemplate jdbcTemplate) {
         DDL.forEach(jdbcTemplate::execute);

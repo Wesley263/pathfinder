@@ -3,7 +3,7 @@
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 管理端 ETL 配置属性模型。
+ * 说明。
  */
 @ConfigurationProperties(prefix = "pathfinder.admin.data.etl")
 public class AdminDataEtlProperties {

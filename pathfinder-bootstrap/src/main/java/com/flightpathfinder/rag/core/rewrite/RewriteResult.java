@@ -6,8 +6,8 @@ import java.util.List;
 /**
  * 问题改写阶段的标准结果。
  *
- * <p>这里同时保留两套视图：一套面向用户与审计展示，一套面向内部路由。这样既能保证返回给调用方的
- * 保证重写问题（rewritten question）稳定可读，也能在需要时把 memory 上下文拼接进内部 routing 文本。</p>
+ * 说明。
+ * 说明。
  *
  * @param rewrittenQuestion 展示给后续审计与响应层的改写问题
  * @param subQuestions 展示视角下的子问题拆分结果
@@ -23,7 +23,7 @@ public record RewriteResult(
     /**
      * 归一化改写结果并补齐兜底子问题。
      *
-     * <p>这里保证四个字段都具备稳定语义，避免下游在“无子问题”“无内部路由文本”这类场景下再做重复兜底。</p>
+     * 说明。
      */
     public RewriteResult {
         rewrittenQuestion = rewrittenQuestion == null ? "" : rewrittenQuestion.trim();

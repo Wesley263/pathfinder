@@ -1,7 +1,7 @@
 ﻿package com.flightpathfinder.rag.controller.vo;
 
 /**
- * 面向 MCP 工具的追踪摘要对象。
+ * 说明。
  *
  * @param toolId 工具标识
  * @param status 工具状态

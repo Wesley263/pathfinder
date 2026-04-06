@@ -1,17 +1,17 @@
-package com.flightpathfinder.infra.ai.model;
+﻿package com.flightpathfinder.infra.ai.model;
 
 import java.util.Optional;
 
 /**
- * 解析单个 AI 能力当前选中的模型路由。
+ * 说明。
  */
 public interface ModelRoutingService {
 
     /**
      * 为请求能力选择当前生效的模型配置。
      *
-     * @param capability requested AI capability
-     * @return resolved model route when configuration is available
+     * @param capability 参数说明。
+     * @return 返回结果。
      */
     Optional<ModelRoute> selectPrimary(ModelCapability capability);
 }

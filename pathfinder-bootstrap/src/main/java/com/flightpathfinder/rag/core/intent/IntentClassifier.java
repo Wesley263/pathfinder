@@ -1,12 +1,12 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 import java.util.List;
 
 /**
  * 单个问题文本的意图分类边界。
  *
- * <p>它只负责给候选意图打分，不负责多个子问题之间的汇总和最终分流。
- * 这样分类器可以专注“识别”，而 resolver 专注“决策”。</p>
+ * 说明。
+ * 说明。
  */
 public interface IntentClassifier {
 

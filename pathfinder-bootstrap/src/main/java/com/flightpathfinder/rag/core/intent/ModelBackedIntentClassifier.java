@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 /**
  * 基于模型的意图分类器。
  *
- * <p>它在规则分类器基础上增加模型判别能力，但仍保留规则结果作为兜底与融合基线，
- * 这样即使模型结果为空或格式异常，也不会破坏第一阶段稳定性。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 @Primary
@@ -26,11 +26,11 @@ public class ModelBackedIntentClassifier implements IntentClassifier {
 
     /** 规则分类器兜底实现。 */
     private final RuleBasedIntentClassifier fallbackIntentClassifier;
-    /** 当前启用的意图树，用于把模型返回的 id 映射回节点对象。 */
+    /** 注释说明。 */
     private final IntentTree intentTree;
     /** 模型调用入口。 */
     private final ChatService chatService;
-    /** JSON 解析器。 */
+    /** 注释说明。 */
     private final ObjectMapper objectMapper;
 
     /**
@@ -39,7 +39,7 @@ public class ModelBackedIntentClassifier implements IntentClassifier {
      * @param fallbackIntentClassifier 规则兜底分类器
      * @param intentTree 当前意图树
      * @param chatService 模型对话服务
-     * @param objectMapper JSON 解析器
+     * @param objectMapper 参数说明。
      */
     public ModelBackedIntentClassifier(RuleBasedIntentClassifier fallbackIntentClassifier,
                                        IntentTree intentTree,
@@ -150,7 +150,7 @@ public class ModelBackedIntentClassifier implements IntentClassifier {
     /**
      * 融合模型分数与规则分数。
      *
-     * <p>当前策略让模型权重更高，但保留一部分规则基线，避免模型偶发漂移导致结果完全失真。</p>
+     * 说明。
      *
      * @param modelScores 模型分数
      * @param fallback 规则分数
@@ -173,10 +173,10 @@ public class ModelBackedIntentClassifier implements IntentClassifier {
     }
 
     /**
-     * 去掉模型返回内容可能携带的 Markdown 代码块包裹。
+     * 说明。
      *
      * @param raw 模型原始输出
-     * @return 可供 JSON 解析的纯文本
+     * @return 返回结果。
      */
     private String stripMarkdownCodeFence(String raw) {
         String cleaned = raw == null ? "" : raw.trim();

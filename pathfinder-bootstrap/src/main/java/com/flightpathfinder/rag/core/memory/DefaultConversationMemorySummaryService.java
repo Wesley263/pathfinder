@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.memory;
+﻿package com.flightpathfinder.rag.core.memory;
 
 import com.flightpathfinder.infra.ai.chat.ChatRequest;
 import com.flightpathfinder.infra.ai.chat.ChatResponse;
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 /**
  * 基于阈值触发的默认摘要实现。
  *
- * <p>该服务将摘要刷新从主写路径逻辑中解耦，
+ * 说明。
  * 同时确保长会话可以压缩为稳定上下文片段。
- * 仅当近期轮次窗口不足以单独承载上下文时才开始摘要。</p>
+ * 说明。
  */
 @Service
 public class DefaultConversationMemorySummaryService implements ConversationMemorySummaryService {

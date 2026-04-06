@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.controller;
+﻿package com.flightpathfinder.rag.controller;
 
 import com.flightpathfinder.framework.convention.Result;
 import com.flightpathfinder.framework.errorcode.BaseErrorCode;
@@ -20,32 +20,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 已落库 RAG trace 的只读查询控制器。
+ * 说明。
  *
- * <p>它只暴露 trace 查询视图，不参与 trace 记录流程。记录链路仍在应用编排层，
- * 这样查询接口不会意外反向耦合进实时主链。</p>
+ * 说明。
+ * 说明。
  */
 @RestController
 @RequestMapping("/api/rag/traces")
 public class RagTraceController {
 
-    /** trace 查询服务。 */
+    /** 注释说明。 */
     private final RagTraceQueryService ragTraceQueryService;
 
     /**
-     * 构造 trace 查询控制器。
+     * 说明。
      *
-     * @param ragTraceQueryService trace 查询服务
+     * @param ragTraceQueryService 参数说明。
      */
     public RagTraceController(RagTraceQueryService ragTraceQueryService) {
         this.ragTraceQueryService = ragTraceQueryService;
     }
 
     /**
-     * 按 traceId 查询单条 trace 详情。
+     * 说明。
      *
-     * @param traceId 已持久化的 trace 标识
-     * @return 适用于审计和排障的 trace 详情响应
+     * @param traceId 参数说明。
+     * @return 返回结果。
      */
     @GetMapping("/{traceId}")
     public Result<RagTraceDetailVO> detail(@PathVariable String traceId) {
@@ -55,12 +55,12 @@ public class RagTraceController {
     }
 
     /**
-     * 按 requestId 或 conversationId 条件列出最近 trace。
+     * 说明。
      *
      * @param requestId 可选请求标识过滤条件
      * @param conversationId 可选会话标识过滤条件
      * @param limit 返回条数上限
-     * @return 符合过滤条件的 trace 运行摘要列表
+     * @return 返回结果。
      */
     @GetMapping
     public Result<List<RagTraceRunVO>> list(@RequestParam(required = false) String requestId,
@@ -73,9 +73,9 @@ public class RagTraceController {
     }
 
     /**
-     * 把 trace 详情结果转换为展示对象。
+     * 说明。
      *
-     * @param detailResult trace 详情结果
+     * @param detailResult 参数说明。
      * @return 展示对象
      */
     private RagTraceDetailVO toDetail(RagTraceDetailResult detailResult) {
@@ -93,9 +93,9 @@ public class RagTraceController {
     }
 
     /**
-     * 把 trace 运行摘要转换为展示对象。
+     * 说明。
      *
-     * @param runSummary trace 运行摘要
+     * @param runSummary 参数说明。
      * @return 展示对象
      */
     private RagTraceRunVO toRun(RagTraceRunSummary runSummary) {
@@ -113,9 +113,9 @@ public class RagTraceController {
     }
 
     /**
-     * 把 trace 节点详情转换为展示对象。
+     * 说明。
      *
-     * @param nodeDetail trace 节点详情
+     * @param nodeDetail 参数说明。
      * @return 展示对象
      */
     private RagTraceNodeVO toNode(RagTraceNodeDetail nodeDetail) {

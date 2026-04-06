@@ -2,7 +2,7 @@
 
 import org.springframework.stereotype.Component;
 /**
- * 基于启发式规则的 Token 估算实现。
+ * 说明。
  */
 
 @Component

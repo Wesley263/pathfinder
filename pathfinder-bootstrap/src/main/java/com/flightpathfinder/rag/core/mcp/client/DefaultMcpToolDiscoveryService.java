@@ -1,9 +1,12 @@
-package com.flightpathfinder.rag.core.mcp.client;
+﻿package com.flightpathfinder.rag.core.mcp.client;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolDescriptor;
 import com.flightpathfinder.rag.core.mcp.LocalMcpToolRegistry;
 import java.util.List;
 import org.springframework.stereotype.Service;
+/**
+ * 核心组件。
+ */
 
 @Service
 public class DefaultMcpToolDiscoveryService implements McpToolDiscoveryService {
@@ -23,4 +26,5 @@ public class DefaultMcpToolDiscoveryService implements McpToolDiscoveryService {
         return tools;
     }
 }
+
 

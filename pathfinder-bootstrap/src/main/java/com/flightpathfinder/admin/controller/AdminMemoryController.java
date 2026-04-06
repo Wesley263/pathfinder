@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 会话记忆巡检的管理端 API。
+ * 会话记忆巡检的管理端接口。
  *
- * <p>该控制器提供面向管理场景的持久化记忆读模型，
+ * 该控制器提供面向管理场景的持久化记忆读模型，
  * 使运维能够查看会话而不与运行时记忆模型耦合。
  */
 @RestController
@@ -39,10 +39,10 @@ public class AdminMemoryController {
     }
 
     /**
-        * 列出持久化会话供管理端巡检。
+     * 列出持久化会话供管理端巡检。
      *
-     * @param request optional list filter and limit
-     * @return admin-facing conversation list view
+     * @param request 可选列表过滤条件与数量上限
+     * @return 面向管理端的会话列表视图
      */
     @GetMapping
     public Result<AdminConversationListVO> list(@ModelAttribute AdminConversationListRequest request) {
@@ -51,10 +51,10 @@ public class AdminMemoryController {
     }
 
     /**
-        * 加载单个持久化会话详情视图。
+     * 加载单个持久化会话详情视图。
      *
-     * @param conversationId exact conversation id to inspect
-     * @return admin-facing conversation detail
+     * @param conversationId 待查看的精确会话标识
+     * @return 面向管理端的会话详情
      */
     @GetMapping("/{conversationId}")
     public Result<AdminConversationDetailVO> detail(@PathVariable String conversationId) {

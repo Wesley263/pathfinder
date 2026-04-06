@@ -1,9 +1,9 @@
-package com.flightpathfinder.mcp.citycost;
+﻿package com.flightpathfinder.mcp.citycost;
 
 /**
  * 单个城市成本条目。
  *
- * @param iataCode 城市或机场 IATA 三字码
+ * @param iataCode 参数说明。
  * @param city 城市名称
  * @param country 国家名称
  * @param countryCode 国家代码

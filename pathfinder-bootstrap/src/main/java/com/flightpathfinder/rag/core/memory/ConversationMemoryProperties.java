@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.memory;
+﻿package com.flightpathfinder.rag.core.memory;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 /**
  * 会话记忆模块配置项。
  *
- * <p>该配置用于控制近期轮次窗口、摘要开关以及摘要触发阈值。
- * 放在 memory 层可让主链编排只依赖能力接口，而不直接绑定策略细节。
+ * 说明。
+ * 说明。
  */
 @Component
 @ConfigurationProperties(prefix = "pathfinder.rag.memory")

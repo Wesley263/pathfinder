@@ -1,14 +1,14 @@
-package com.flightpathfinder.mcp.flightsearch;
+﻿package com.flightpathfinder.mcp.flightsearch;
 
 /**
  * 直飞检索候选项。
  *
- * @param airlineCode 承运航司 IATA 代码
+ * @param airlineCode 参数说明。
  * @param airlineName 承运航司名称
- * @param airlineType 航司类型（如 FSC/LCC/MID）
- * @param origin 出发机场 IATA 三字码
- * @param destination 到达机场 IATA 三字码
- * @param date 出行日期（yyyy-MM-dd）
+ * @param airlineType 参数说明。
+ * @param origin 参数说明。
+ * @param destination 参数说明。
+ * @param date 参数说明。
  * @param priceCny 动态估算票价（人民币）
  * @param basePriceCny 基准票价（人民币）
  * @param durationMinutes 航程时长（分钟）

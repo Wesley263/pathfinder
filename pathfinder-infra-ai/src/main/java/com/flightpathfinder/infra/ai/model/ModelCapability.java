@@ -1,6 +1,6 @@
 ﻿package com.flightpathfinder.infra.ai.model;
 /**
- * 面向 AI 的能力类型枚举。
+ * 说明。
  */
 public enum ModelCapability {
     CHAT,

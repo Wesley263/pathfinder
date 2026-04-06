@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * 意图树只读访问边界。
  *
- * <p>分类器和 resolver 都依赖这套树结构，但只通过接口读取，避免意图定义和分类逻辑彼此耦死。</p>
+ * 说明。
  */
 public interface IntentTree {
 
@@ -27,7 +27,7 @@ public interface IntentTree {
     /**
      * 根据节点标识查找叶子节点。
      *
-     * @param nodeId 节点 id、别名或可映射标识
+     * @param nodeId 参数说明。
      * @return 查找到的叶子节点
      */
     Optional<IntentNode> findLeafNode(String nodeId);

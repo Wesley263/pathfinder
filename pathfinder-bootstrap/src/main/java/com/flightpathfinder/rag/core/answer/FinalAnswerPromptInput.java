@@ -9,12 +9,12 @@ import java.util.List;
 /**
  * 最终回答阶段的标准输入模型。
  *
- * <p>它把 rewrite、intent、retrieval 和 memory 视图整理成单一对象，让回答生成层不需要关心上游阶段的细碎结构。</p>
+ * 说明。
  *
  * @param rewrittenQuestion 当前问题的展示型改写文本
  * @param intentSplitResult 当前问题的分流结果
- * @param kbContext KB 分支结果
- * @param mcpContext MCP 分支结果
+ * @param kbContext 参数说明。
+ * @param mcpContext 参数说明。
  * @param memoryContext 当前会话记忆上下文
  * @param evidenceSummaries 已汇总的证据摘要
  * @param partial 是否应按部分回答处理
@@ -33,7 +33,7 @@ public record FinalAnswerPromptInput(
         boolean empty) {
 
     /**
-     * 归一化 final answer 输入。
+     * 说明。
      */
     public FinalAnswerPromptInput {
         rewrittenQuestion = rewrittenQuestion == null ? "" : rewrittenQuestion.trim();

@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 持久化追踪巡检的管理端 API。
+ * 持久化追踪巡检的管理端接口。
  *
- * <p>该控制器提供面向管理场景的追踪视图，并与用户侧响应模型、请求执行端点保持隔离。
+ * 该控制器提供面向管理场景的追踪视图，并与用户侧响应模型、请求执行端点保持隔离。
  */
 @RestController
 @RequestMapping("/api/admin/traces")
@@ -37,10 +37,10 @@ public class AdminTraceController {
     }
 
     /**
-        * 加载单条追踪详情供管理端巡检。
+     * 加载单条追踪详情供管理端巡检。
      *
-     * @param traceId unique trace id
-     * @return admin-facing trace detail
+     * @param traceId 唯一追踪标识
+     * @return 面向管理端的追踪详情
      */
     @GetMapping("/{traceId}")
     public Result<AdminTraceDetailVO> detail(@PathVariable String traceId) {
@@ -50,10 +50,10 @@ public class AdminTraceController {
     }
 
     /**
-        * 按请求或会话标识过滤并列出最近追踪。
+     * 按请求或会话标识过滤并列出最近追踪。
      *
-     * @param request list request carrying optional filters and a limit
-     * @return admin-facing trace run list
+     * @param request 列表请求，包含可选过滤条件与数量上限
+     * @return 面向管理端的追踪运行列表
      */
     @GetMapping
     public Result<List<AdminTraceRunVO>> list(@ModelAttribute AdminTraceListRequest request) {

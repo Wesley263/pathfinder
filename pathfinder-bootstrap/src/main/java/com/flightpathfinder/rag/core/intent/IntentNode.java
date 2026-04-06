@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 import java.util.List;
 import java.util.Locale;
@@ -7,8 +7,8 @@ import java.util.Objects;
 /**
  * 意图树节点定义。
  *
- * <p>同一个类型同时描述树结构与叶子节点元数据，目的是让分类器、resolver 和 overview 场景都围绕一套
- * 稳定的意图契约工作，而不是为“树结构”和“分类目标”维护两套模型。</p>
+ * 说明。
+ * 说明。
  *
  * @param id 节点唯一标识
  * @param name 节点名称
@@ -20,9 +20,9 @@ import java.util.Objects;
  * @param aliases 额外别名或同义表达
  * @param fullPath 节点在意图树中的完整路径
  * @param children 子节点列表
- * @param mcpToolId MCP 主题节点绑定的 toolId
- * @param collectionName KB 主题节点绑定的知识集合名
- * @param topK KB 主题节点默认检索条数
+ * @param mcpToolId 参数说明。
+ * @param collectionName 参数说明。
+ * @param topK 参数说明。
  */
 public record IntentNode(
         String id,
@@ -42,7 +42,7 @@ public record IntentNode(
     /**
      * 校验并归一化意图节点。
      *
-     * <p>这里确保主题节点一定声明 kind，同时把集合字段都转换为不可变集合，避免意图树在运行期被外部误改。</p>
+     * 说明。
      */
     public IntentNode {
         id = Objects.requireNonNull(id, "id cannot be null");
@@ -61,7 +61,7 @@ public record IntentNode(
     /**
      * 判断当前节点是否为叶子节点。
      *
-     * @return 当没有子节点时返回 true
+     * @return 返回结果。
      */
     public boolean isLeaf() {
         return children.isEmpty();
@@ -70,8 +70,8 @@ public record IntentNode(
     /**
      * 判断给定标识是否能匹配当前节点。
      *
-     * @param candidateId 待匹配的节点标识、别名或 toolId
-     * @return 匹配成功返回 true
+     * @param candidateId 参数说明。
+     * @return 返回结果。
      */
     public boolean matchesId(String candidateId) {
         if (candidateId == null || candidateId.isBlank()) {
@@ -118,17 +118,17 @@ public record IntentNode(
     }
 
     /**
-     * 创建 MCP 主题节点。
+     * 说明。
      *
      * @param id 节点标识
      * @param name 节点名称
      * @param description 节点说明
      * @param fullPath 完整路径
-     * @param mcpToolId 绑定的 MCP toolId
+     * @param mcpToolId 参数说明。
      * @param keywords 关键词
      * @param aliases 别名
      * @param examples 示例
-     * @return MCP 主题节点
+     * @return 返回结果。
      */
     static IntentNode mcpTopic(String id,
                                String name,
@@ -143,7 +143,7 @@ public record IntentNode(
     }
 
     /**
-     * 创建 KB 主题节点。
+     * 说明。
      *
      * @param id 节点标识
      * @param name 节点名称
@@ -154,7 +154,7 @@ public record IntentNode(
      * @param keywords 关键词
      * @param aliases 别名
      * @param examples 示例
-     * @return KB 主题节点
+     * @return 返回结果。
      */
     static IntentNode kbTopic(String id,
                               String name,
@@ -170,7 +170,7 @@ public record IntentNode(
     }
 
     /**
-     * 创建 SYSTEM 主题节点。
+     * 说明。
      *
      * @param id 节点标识
      * @param name 节点名称
@@ -179,7 +179,7 @@ public record IntentNode(
      * @param keywords 关键词
      * @param aliases 别名
      * @param examples 示例
-     * @return SYSTEM 主题节点
+     * @return 返回结果。
      */
     static IntentNode systemTopic(String id,
                                   String name,

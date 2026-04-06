@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 /**
  * 图快照生命周期服务默认实现。
  *
- * <p>该服务位于 bootstrap 侧，统一承载 invalidate/rebuild 操作，
- * 让 admin 与 ETL 流程无需重复实现构建和发布逻辑。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultGraphSnapshotLifecycleService implements GraphSnapshotLifecycleService {
@@ -22,7 +22,7 @@ public class DefaultGraphSnapshotLifecycleService implements GraphSnapshotLifecy
     private final GraphSnapshotBuilder graphSnapshotBuilder;
     /** 图快照发布器。 */
     private final GraphSnapshotPublisher graphSnapshotPublisher;
-    /** 用于访问 Redis 的模板。 */
+    /** 注释说明。 */
     private final StringRedisTemplate stringRedisTemplate;
     /** 图快照配置。 */
     private final GraphSnapshotProperties graphSnapshotProperties;
@@ -32,7 +32,7 @@ public class DefaultGraphSnapshotLifecycleService implements GraphSnapshotLifecy
      *
      * @param graphSnapshotBuilder 图快照构建器
      * @param graphSnapshotPublisher 图快照发布器
-     * @param stringRedisTemplate Redis 模板
+     * @param stringRedisTemplate 参数说明。
      * @param graphSnapshotProperties 图快照配置
      */
     public DefaultGraphSnapshotLifecycleService(GraphSnapshotBuilder graphSnapshotBuilder,
@@ -46,7 +46,7 @@ public class DefaultGraphSnapshotLifecycleService implements GraphSnapshotLifecy
     }
 
     /**
-        * 失效指定 graphKey 的全部已发布快照键。
+        * 说明。
      *
         * @param graphKey 图逻辑标识
      */
@@ -59,10 +59,10 @@ public class DefaultGraphSnapshotLifecycleService implements GraphSnapshotLifecy
     }
 
     /**
-        * 基于主程序侧数据重建快照并重新发布到 Redis。
+        * 说明。
      *
         * @param graphKey 图逻辑标识
-        * @param reason 本次重建的运维原因，会写入 metadata
+        * @param reason 参数说明。
         * @return 已完成发布的重建快照
      */
     @Override
@@ -70,7 +70,7 @@ public class DefaultGraphSnapshotLifecycleService implements GraphSnapshotLifecy
         String normalizedGraphKey = normalizeGraphKey(graphKey);
         GraphSnapshot snapshot = graphSnapshotBuilder.build(normalizedGraphKey);
         Map<String, Object> metadata = new LinkedHashMap<>(snapshot.metadata());
-        // 重建原因属于生命周期运维上下文，应在此处追加，而不是塞进 builder 的纯构建职责。
+        // 说明。
         metadata.put("rebuildReason", reason == null || reason.isBlank() ? "unspecified" : reason);
         GraphSnapshot enrichedSnapshot = new GraphSnapshot(
                 snapshot.schemaVersion(),
@@ -86,7 +86,7 @@ public class DefaultGraphSnapshotLifecycleService implements GraphSnapshotLifecy
     }
 
     /**
-     * 归一化 graphKey。
+     * 说明。
      *
      * @param graphKey 原始图标识
      * @return 归一化后的图标识

@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.answer;
+﻿package com.flightpathfinder.rag.core.answer;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
 import com.flightpathfinder.rag.core.retrieve.KbRetrievalItem;
@@ -9,10 +9,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * 2.0 第一版 final answer 的确定性文本生成器。
+ * 说明。
  *
- * <p>该实现刻意保持可解释与可审计：基于标准化输入稳定拼装回答文本，
- * 同时为后续模型版生成器保留替换空间。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
@@ -47,7 +47,7 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
             sections.add("Question: " + promptInput.rewrittenQuestion());
         }
 
-        // 先渲染 MCP 结果，因为工具输出通常直接回答“可执行问题”；KB 片段再补充规则与背景语义。
+        // 说明。
         String mcpSection = composeMcpSection(promptInput);
         if (!mcpSection.isBlank()) {
             sections.add(mcpSection);
@@ -68,10 +68,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 生成 MCP 分支文本段落。
+     * 说明。
      *
      * @param promptInput 回答生成输入
-     * @return MCP 文本段落
+     * @return 返回结果。
      */
     private String composeMcpSection(FinalAnswerPromptInput promptInput) {
         List<McpExecutionRecord> executions = promptInput.mcpContext().executions();
@@ -110,7 +110,7 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 按工具类型生成成功态 MCP 单行说明。
+     * 说明。
      *
      * @param toolId 工具标识
      * @param toolResult 工具结果
@@ -129,9 +129,9 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 生成 DATA_NOT_FOUND 状态说明。
+     * 说明。
      *
-     * @param execution MCP 执行记录
+     * @param execution 参数说明。
      * @return 用户可读说明
      */
     private String composeDataNotFoundLine(McpExecutionRecord execution) {
@@ -336,10 +336,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 从 legs 字段构造路由串。
+     * 说明。
      *
-     * @param legsObject 结构化 legs 字段
-     * @return 形如 A -> B -> C 的路由文本
+     * @param legsObject 参数说明。
+     * @return 返回结果。
      */
     private String buildRoute(Object legsObject) {
         if (!(legsObject instanceof List<?> legs) || legs.isEmpty()) {
@@ -363,10 +363,10 @@ public class DefaultFinalAnswerTextComposer implements FinalAnswerTextComposer {
     }
 
     /**
-     * 生成 KB 分支文本段落。
+     * 说明。
      *
      * @param promptInput 回答生成输入
-     * @return KB 文本段落
+     * @return 返回结果。
      */
     private String composeKbSection(FinalAnswerPromptInput promptInput) {
         if (promptInput.kbContext().empty()) {

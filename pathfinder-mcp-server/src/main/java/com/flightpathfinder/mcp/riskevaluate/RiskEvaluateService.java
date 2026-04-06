@@ -1,11 +1,11 @@
-package com.flightpathfinder.mcp.riskevaluate;
+﻿package com.flightpathfinder.mcp.riskevaluate;
 
 /**
  * 中转风险评估的服务端契约。
  *
- * <p>风险工具保留在 MCP 服务端，
+ * 说明。
  * 因为它需要同时执行数据源查询与本地规则评分；
- * 引导侧应用仅依赖 MCP 契约，不依赖实现细节。
+ * 说明。
  */
 public interface RiskEvaluateService {
 

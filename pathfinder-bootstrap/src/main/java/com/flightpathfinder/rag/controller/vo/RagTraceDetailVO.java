@@ -5,10 +5,10 @@ import java.util.List;
 /**
  * 追踪详情展示对象。
  *
- * @param run trace 运行摘要
+ * @param run 参数说明。
  * @param stages 阶段级节点列表
  * @param nodes 全量节点列表
- * @param mcpToolSummaries MCP 工具摘要列表
+ * @param mcpToolSummaries 参数说明。
  */
 public record RagTraceDetailVO(
         RagTraceRunVO run,

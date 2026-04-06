@@ -1,4 +1,4 @@
-package com.flightpathfinder.admin.service.etl;
+﻿package com.flightpathfinder.admin.service.etl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,10 +15,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * 城市成本参考数据的 ETL 导入器。
+ * 说明。
  *
- * <p>该导入器归属管理端能力，用于将外部成本参考数据写入运维数据源，
- * 并按数据集粒度向运维侧返回 ETL 结果。
+ * 说明。
+ * 说明。
  */
 @Service
 public class CityCostDatasetImporter implements AdminDatasetImporter {
@@ -67,9 +67,9 @@ public class CityCostDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 返回城市成本 ETL 的稳定管理数据集标识。
+        * 说明。
      *
-     * @return {@code city_cost}
+     * @return 返回结果。
      */
     @Override
     public String datasetId() {
@@ -77,9 +77,9 @@ public class CityCostDatasetImporter implements AdminDatasetImporter {
     }
 
     /**
-        * 从配置资源位置执行城市成本 ETL。
+        * 说明。
      *
-     * @return dataset-level reload result with processed/upserted/failed counts
+     * @return 返回结果。
      */
     @Override
     public AdminDatasetReloadResult reload() {

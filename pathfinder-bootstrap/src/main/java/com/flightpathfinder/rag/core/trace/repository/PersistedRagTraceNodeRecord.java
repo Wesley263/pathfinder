@@ -1,11 +1,11 @@
-package com.flightpathfinder.rag.core.trace.repository;
+﻿package com.flightpathfinder.rag.core.trace.repository;
 
 import java.time.Instant;
 
 /**
- * 持久化 trace 节点记录。
+ * 说明。
  *
- * @param traceId trace 标识
+ * @param traceId 参数说明。
  * @param nodeIndex 节点序号
  * @param nodeName 节点名
  * @param nodeType 节点类型
@@ -13,7 +13,7 @@ import java.time.Instant;
  * @param summary 节点摘要
  * @param startedAt 开始时间
  * @param finishedAt 结束时间
- * @param attributesJson 节点属性 JSON
+ * @param attributesJson 参数说明。
  */
 public record PersistedRagTraceNodeRecord(
         String traceId,

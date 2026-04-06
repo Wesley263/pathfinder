@@ -20,11 +20,11 @@ import java.time.Instant;
 import org.springframework.stereotype.Service;
 
 /**
- * 同步 RAG 请求的默认应用编排器。
+ * 说明。
  *
- * <p>它负责一次同步请求的全生命周期：memory load、stage one、retrieval、
- * 最终回答、记忆写入与追踪收口。这样 controller 可以保持薄层，
- * 各阶段服务也不会被迫承担跨阶段编排职责。</p>
+ * 说明。
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultRagQueryService implements RagQueryService {
@@ -44,10 +44,10 @@ public class DefaultRagQueryService implements RagQueryService {
      * 构造同步请求编排器。
      *
      * @param stageOneRagPipeline 第一阶段编排器
-     * @param retrievalService retrieval 阶段服务
-     * @param finalAnswerService final answer 阶段服务
+     * @param retrievalService 参数说明。
+     * @param finalAnswerService 参数说明。
      * @param conversationMemoryService 会话记忆服务
-     * @param ragTraceService trace 生命周期服务
+     * @param ragTraceService 参数说明。
      */
     public DefaultRagQueryService(StageOneRagPipeline stageOneRagPipeline,
                                   RetrievalService retrievalService,
@@ -62,24 +62,24 @@ public class DefaultRagQueryService implements RagQueryService {
     }
 
     /**
-     * 执行同步 RAG 主链并返回完整查询结果。
+     * 说明。
      *
-     * @param command 由 user-facing API 转换而来的查询命令
-     * @return 当前请求对应的 stage one、retrieval、answer 与 trace 结果
+     * @param command 参数说明。
+     * @return 返回结果。
      */
     @Override
     public RagQueryResult query(RagQueryCommand command) {
         RagQueryCommand safeCommand = command == null
                 ? new RagQueryCommand("", "", "")
                 : command;
-        // 追踪在任何阶段前启动，确保成功路径和早失败路径都能共享同一个请求级 traceId。
+        // 说明。
         RagTraceSession traceSession = ragTraceService.startQueryTrace(
                 safeCommand.requestId(),
                 safeCommand.conversationId());
         String currentStage = "query";
         Instant currentStageStartedAt = Instant.now();
         try {
-            // 记忆在第一阶段前加载，保证追问改写与路由能使用最新上下文，同时不把 memory 逻辑下沉到阶段服务。
+            // 说明。
             ConversationMemoryContext memoryContext = conversationMemoryService.loadContext(safeCommand.conversationId());
 
             currentStage = "stage-one";
@@ -122,7 +122,7 @@ public class DefaultRagQueryService implements RagQueryService {
             ragTraceService.finish(traceSession, "FAILED", false);
             throw exception;
         } finally {
-            // 最终在 finally 中清理追踪上下文，避免异常路径把上下文泄漏到下一次请求。
+            // 说明。
             ragTraceService.clear();
         }
     }

@@ -9,15 +9,15 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * 图快照读模型的 Redis 发布实现。
+ * 说明。
  *
- * <p>发布与构建分离，是因为图快照是跨进程共享读模型，
- * 特别由 MCP server 消费，而非仅 bootstrap 进程内使用。</p>
+ * 说明。
+ * 说明。
  */
 @Component
 public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
 
-    /** 用于访问 Redis 的模板。 */
+    /** 注释说明。 */
     private final StringRedisTemplate stringRedisTemplate;
     /** 快照序列化对象映射器。 */
     private final ObjectMapper objectMapper;
@@ -25,10 +25,10 @@ public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
     private final GraphSnapshotProperties graphSnapshotProperties;
 
     /**
-     * 构造 Redis 图快照发布器。
+     * 说明。
      *
-     * @param stringRedisTemplate Redis 模板
-     * @param objectMapper JSON 映射器
+     * @param stringRedisTemplate 参数说明。
+     * @param objectMapper 参数说明。
      * @param graphSnapshotProperties 图快照配置
      */
     public RedisGraphSnapshotPublisher(StringRedisTemplate stringRedisTemplate,
@@ -40,7 +40,7 @@ public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
     }
 
     /**
-        * 把快照载荷和最新版本指针发布到 Redis。
+        * 说明。
      *
         * @param graphKey 图逻辑标识
         * @param snapshot 待发布快照
@@ -52,13 +52,13 @@ public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
         String snapshotKey = GraphSnapshotRedisKeys.snapshotKey(normalizedGraphKey, snapshot.snapshotVersion());
         String payload = toJson(snapshot);
 
-        // 快照内容键与 latest 指针都做版本化，读侧可保持严格只读且无需与构建进程协同。
+        // 说明。
         stringRedisTemplate.opsForValue().set(snapshotKey, payload, graphSnapshotProperties.getTtl());
         stringRedisTemplate.opsForValue().set(latestKey, snapshot.snapshotVersion(), graphSnapshotProperties.getTtl());
     }
 
     /**
-     * 归一化 graphKey。
+     * 说明。
      *
      * @param graphKey 原始图标识
      * @return 归一化后的图标识
@@ -73,7 +73,7 @@ public class RedisGraphSnapshotPublisher implements GraphSnapshotPublisher {
      * 序列化快照对象。
      *
      * @param snapshot 图快照
-     * @return JSON 字符串
+     * @return 返回结果。
      */
     private String toJson(GraphSnapshot snapshot) {
         try {

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 /**
  * 最终回答阶段的默认输入装配器。
  *
- * <p>它把 retrieval 阶段输出统一收口为 FinalAnswerPromptInput，
- * 让文本生成器不必直接理解 KB 条目、MCP 返回结构和检索边界状态。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
@@ -35,9 +35,9 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     private static final String RISK_EVALUATE_TOOL_ID = "risk.evaluate";
 
     /**
-     * 从 retrieval 结果装配 final answer 输入。
+     * 说明。
      *
-     * @param retrievalResult retrieval 阶段输出
+     * @param retrievalResult 参数说明。
      * @return 文本生成器可直接消费的标准输入
      */
     @Override
@@ -52,7 +52,7 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
         boolean mcpRequested = !stageOneResult.intentSplitResult().mcpIntents().isEmpty();
 
         List<AnswerEvidenceSummary> evidenceSummaries = new ArrayList<>();
-        // 先分别收集 KB 与 MCP 证据，避免把“部分成功”语义混成一个不可解释的总摘要。
+        // 说明。
         kbContext.items().stream()
                 .limit(4)
                 .map(this::toKbEvidence)
@@ -89,9 +89,9 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     }
 
     /**
-     * 把 KB 检索条目转换为回答证据摘要。
+     * 说明。
      *
-     * @param item KB 检索条目
+     * @param item 参数说明。
      * @return 证据摘要
      */
     private AnswerEvidenceSummary toKbEvidence(KbRetrievalItem item) {
@@ -104,9 +104,9 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     }
 
     /**
-     * 把 MCP 执行记录转换为回答证据摘要。
+     * 说明。
      *
-     * @param execution MCP 执行记录
+     * @param execution 参数说明。
      * @return 证据摘要
      */
     private AnswerEvidenceSummary toMcpEvidence(McpExecutionRecord execution) {
@@ -134,7 +134,7 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     }
 
     /**
-     * 根据工具类型汇总成功态 MCP 结果。
+     * 说明。
      *
      * @param toolId 工具标识
      * @param toolResult 工具返回结果
@@ -153,9 +153,9 @@ public class DefaultFinalAnswerAssembler implements FinalAnswerAssembler {
     }
 
     /**
-     * 汇总 DATA_NOT_FOUND 状态下的工具结果。
+     * 说明。
      *
-     * @param execution MCP 执行记录
+     * @param execution 参数说明。
      * @return 状态说明文本
      */
     private String summarizeDataNotFound(McpExecutionRecord execution) {

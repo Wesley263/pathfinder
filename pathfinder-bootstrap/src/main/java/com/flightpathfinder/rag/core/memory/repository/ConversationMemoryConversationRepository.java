@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.memory.repository;
+﻿package com.flightpathfinder.rag.core.memory.repository;
 
 import com.flightpathfinder.rag.core.memory.ConversationMemoryConversation;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * 会话级记忆元数据仓储接口。
  *
- * <p>该仓储仅管理会话头与计数信息。
+ * 说明。
  * 消息明细与摘要分属独立仓储，以便各层能力独立演进。
  */
 public interface ConversationMemoryConversationRepository {

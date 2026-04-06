@@ -1,4 +1,4 @@
-package com.flightpathfinder.admin.service.impl;
+﻿package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminCacheInvalidateResult;
 import com.flightpathfinder.admin.service.AdminDatasetReloadResult;
@@ -22,10 +22,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * 管理端 ETL 重载、数据统计与缓存失效的默认编排实现。
+ * 说明。
  *
- * <p>该服务面向管理端运维任务，负责导入数据集及其下游缓存治理。
- * 其中 {@code data/reload} 不承担图快照重建职责，快照重建保持为独立图管理动作。
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultAdminDataService implements AdminDataService {
@@ -88,11 +88,11 @@ public class DefaultAdminDataService implements AdminDataService {
     }
 
     /**
-        * 执行管理端触发的外部数据集 ETL，并在数据变化时失效依赖读面。
+        * 说明。
      *
-     * @param graphKey graph key whose published snapshot should be invalidated if data changes
-     * @param reason operator-supplied reason for the reload
-     * @return overall reload result including dataset-level outcomes and refreshed stats
+     * @param graphKey 参数说明。
+     * @param reason 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminDataReloadResult reload(String graphKey, String reason) {
@@ -129,7 +129,7 @@ public class DefaultAdminDataService implements AdminDataService {
     /**
         * 返回管理端数据集当前聚合计数。
      *
-     * @return current table counts used by the admin stats view
+     * @return 返回结果。
      */
     @Override
     public AdminDataStats currentStats() {
@@ -151,9 +151,9 @@ public class DefaultAdminDataService implements AdminDataService {
     /**
         * 失效依赖导入数据的缓存面。
      *
-     * @param graphKey graph key whose published snapshot should be invalidated
-     * @param reason operator-supplied reason for the invalidation
-     * @return cache invalidation summary
+     * @param graphKey 参数说明。
+     * @param reason 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminCacheInvalidateResult invalidateCaches(String graphKey, String reason) {

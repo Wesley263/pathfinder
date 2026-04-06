@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 import java.util.Comparator;
 import java.util.List;
@@ -7,10 +7,10 @@ import java.util.Optional;
 /**
  * 意图解析总结果。
  *
- * <p>它同时保留“子问题级打分结果”和“最终分流结果”，用于支撑主链审计、trace 和后续 retrieval 输入。</p>
+ * 说明。
  *
  * @param subQuestionIntents 每个子问题对应的候选意图打分列表
- * @param splitResult 汇总后的 KB/MCP/SYSTEM 分流结果
+ * @param splitResult 参数说明。
  */
 public record IntentResolution(List<SubQuestionIntent> subQuestionIntents, IntentSplitResult splitResult) {
 

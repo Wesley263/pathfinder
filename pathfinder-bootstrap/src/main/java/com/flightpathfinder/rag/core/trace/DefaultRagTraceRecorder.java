@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.trace;
+﻿package com.flightpathfinder.rag.core.trace;
 
 import com.flightpathfinder.framework.trace.TraceContext;
 import com.flightpathfinder.framework.trace.TraceNode;
@@ -9,19 +9,19 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * 面向 RAG 的跟踪层到 framework trace 原语的默认桥接实现。
+ * 说明。
  *
- * <p>该实现将与 {@link TraceContext} 的集成面控制在最小范围，
- * 使上层 trace 生命周期逻辑聚焦请求语义而非底层上下文改写细节。
+ * 说明。
+ * 说明。
  */
 @Service
 public class DefaultRagTraceRecorder implements RagTraceRecorder {
 
     /**
-     * 为指定场景启动 framework trace 根节点。
+     * 说明。
      *
-     * @param scene trace 场景名
-     * @return 已启动的 trace 根节点
+     * @param scene 参数说明。
+     * @return 返回结果。
      */
     @Override
     public TraceRoot startRoot(String scene) {
@@ -29,9 +29,9 @@ public class DefaultRagTraceRecorder implements RagTraceRecorder {
     }
 
     /**
-     * 向给定根节点追加一个 trace 节点。
+     * 说明。
      *
-     * @param root 活动 trace 根节点
+     * @param root 参数说明。
      * @param name 节点名
      * @param startedAt 节点开始时间
      * @param finishedAt 节点结束时间
@@ -54,7 +54,7 @@ public class DefaultRagTraceRecorder implements RagTraceRecorder {
     }
 
     /**
-     * 清理底层 framework trace 上下文。
+     * 说明。
      */
     @Override
     public void clear() {

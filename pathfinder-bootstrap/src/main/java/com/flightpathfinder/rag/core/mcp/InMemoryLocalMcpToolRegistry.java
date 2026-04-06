@@ -1,10 +1,13 @@
-package com.flightpathfinder.rag.core.mcp;
+﻿package com.flightpathfinder.rag.core.mcp;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolDescriptor;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.stereotype.Component;
+/**
+ * 核心组件。
+ */
 
 @Component
 public class InMemoryLocalMcpToolRegistry implements LocalMcpToolRegistry {
@@ -28,4 +31,5 @@ public class InMemoryLocalMcpToolRegistry implements LocalMcpToolRegistry {
         toolsHolder.set(List.copyOf(tools));
     }
 }
+
 

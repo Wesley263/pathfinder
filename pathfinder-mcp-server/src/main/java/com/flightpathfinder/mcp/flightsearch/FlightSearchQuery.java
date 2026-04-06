@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.flightsearch;
+﻿package com.flightpathfinder.mcp.flightsearch;
 
 import java.time.LocalDate;
 import java.util.Locale;
@@ -6,8 +6,8 @@ import java.util.Locale;
 /**
  * 直飞检索查询参数。
  *
- * @param origin 出发机场 IATA 三字码
- * @param destination 到达机场 IATA 三字码
+ * @param origin 参数说明。
+ * @param destination 参数说明。
  * @param date 查询基准日期
  * @param flexibilityDays 日期弹性天数
  * @param topK 返回候选上限

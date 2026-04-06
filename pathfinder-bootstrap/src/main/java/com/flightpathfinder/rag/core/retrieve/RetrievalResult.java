@@ -5,14 +5,14 @@ import com.flightpathfinder.rag.core.pipeline.StageOneRagResult;
 /**
  * 检索阶段总结果。
  *
- * <p>它把 stage one 输入、KB 上下文和 MCP 上下文收口为统一结果对象，
- * 供 final answer、trace 和 API 审计层继续消费。</p>
+ * 说明。
+ * 说明。
  *
- * @param status retrieval 总体状态
- * @param summary 面向审计和 trace 的摘要
- * @param stageOneResult 产生本次 retrieval 的第一阶段结果
- * @param kbContext KB 分支结果
- * @param mcpContext MCP 分支结果
+ * @param status 参数说明。
+ * @param summary 参数说明。
+ * @param stageOneResult 参数说明。
+ * @param kbContext 参数说明。
+ * @param mcpContext 参数说明。
  */
 public record RetrievalResult(
         String status,
@@ -22,7 +22,7 @@ public record RetrievalResult(
         McpContext mcpContext) {
 
     /**
-     * 归一化 retrieval 结果。
+     * 说明。
      */
     public RetrievalResult {
         status = status == null || status.isBlank() ? "EMPTY" : status;
@@ -33,18 +33,18 @@ public record RetrievalResult(
     }
 
     /**
-     * 判断 retrieval 阶段是否没有产生任何可用上下文。
+     * 说明。
      *
-     * @return KB 为空且 MCP 未执行时返回 true
+     * @return 返回结果。
      */
     public boolean isEmpty() {
         return kbContext.empty() && mcpContext.executions().isEmpty();
     }
 
     /**
-     * 判断 retrieval 阶段是否受到 SNAPSHOT_MISS 影响。
+     * 说明。
      *
-     * @return 若 MCP 分支出现 snapshot miss，则返回 true
+     * @return 返回结果。
      */
     public boolean hasSnapshotMiss() {
         return mcpContext.hasSnapshotMiss();

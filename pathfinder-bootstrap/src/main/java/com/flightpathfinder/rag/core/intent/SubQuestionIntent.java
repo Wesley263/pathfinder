@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 import java.util.Comparator;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * 单个子问题的意图识别结果。
  *
- * <p>该模型保留“子问题 -> 候选意图列表”的映射，是解释多子问题路由为什么成立的关键审计信息。</p>
+ * 说明。
  *
  * @param question 当前子问题文本
  * @param nodeScores 当前子问题对应的候选意图打分列表

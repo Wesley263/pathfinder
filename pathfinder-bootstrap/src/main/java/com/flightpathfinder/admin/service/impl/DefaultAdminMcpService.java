@@ -1,4 +1,4 @@
-package com.flightpathfinder.admin.service.impl;
+﻿package com.flightpathfinder.admin.service.impl;
 
 import com.flightpathfinder.admin.service.AdminMcpService;
 import com.flightpathfinder.admin.service.AdminMcpToolDetail;
@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 /**
- * 面向 MCP 目录管理的服务默认实现。
+ * 说明。
  *
- * <p>该服务将 MCP 工具视为受管运维资产，提供可用性与依赖提示，
+ * 说明。
  * 因此位于管理端能力面而非复用用户侧执行模型。
  */
 @Service
@@ -50,10 +50,10 @@ public class DefaultAdminMcpService implements AdminMcpService {
     }
 
     /**
-        * 从当前发现状态列出受管 MCP 工具。
+        * 说明。
      *
-     * @param refresh whether discovery should refresh the local catalog first
-     * @return admin-facing tool list
+     * @param refresh 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminMcpToolListResult listTools(boolean refresh) {
@@ -71,11 +71,11 @@ public class DefaultAdminMcpService implements AdminMcpService {
     }
 
     /**
-        * 加载单个受管 MCP 工具详情视图。
+        * 说明。
      *
-     * @param toolId managed tool id
-     * @param refresh whether discovery should refresh the local catalog first
-     * @return admin-facing tool detail result
+     * @param toolId 参数说明。
+     * @param refresh 参数说明。
+     * @return 返回结果。
      */
     @Override
     public AdminMcpToolDetailResult findTool(String toolId, boolean refresh) {
@@ -151,7 +151,7 @@ public class DefaultAdminMcpService implements AdminMcpService {
         if ("graph.path.search".equals(definition.toolId())) {
             String graphKey = graphSnapshotProperties.getDefaultGraphKey();
             Optional<GraphSnapshot> snapshot = graphSnapshotQueryService.loadCurrent(graphKey);
-                        // 图路径检索工具依赖已发布图快照读模型，不同于仅依赖数据源可用性的 JDBC 工具。
+                        // 说明。
             if (snapshot.isPresent()) {
                 GraphSnapshot graphSnapshot = snapshot.get();
                 details.add("Current graph snapshot is ready for graphKey=" + graphKey + ", snapshotVersion=" + graphSnapshot.snapshotVersion());

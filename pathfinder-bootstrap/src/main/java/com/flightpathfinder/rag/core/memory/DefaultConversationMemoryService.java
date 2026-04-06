@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.memory;
+﻿package com.flightpathfinder.rag.core.memory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 /**
  * 记忆加载与写入流程的默认编排实现。
  *
- * <p>该层将记忆生命周期职责从 stage-one、检索与回答服务中隔离出来，
+ * 说明。
  * 并将近期轮次存储与可选摘要加载统一组合，使主链仅消费单一记忆上下文对象。
  */
 @Service

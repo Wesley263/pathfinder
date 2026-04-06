@@ -1,13 +1,13 @@
-package com.flightpathfinder.admin.config;
+﻿package com.flightpathfinder.admin.config;
 
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * 确保引导数据源中存在管理端 ETL 所需表结构。
+ * 说明。
  *
- * <p>该初始化器归属管理端功能，用于支撑管理触发的数据导入与诊断流程，而非直接服务用户请求链路。
+ * 说明。
  */
 @Component
 public class JdbcAdminDataSchemaInitializer {
@@ -161,9 +161,9 @@ public class JdbcAdminDataSchemaInitializer {
     );
 
     /**
-        * 执行管理端 ETL 数据集所需的 DDL 语句集合。
+        * 说明。
      *
-     * @param jdbcTemplate JDBC entry point used to create or update the admin-managed tables and indexes
+     * @param jdbcTemplate 参数说明。
      */
     public JdbcAdminDataSchemaInitializer(JdbcTemplate jdbcTemplate) {
         DDL.forEach(jdbcTemplate::execute);

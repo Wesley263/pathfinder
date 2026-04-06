@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.trace.repository;
+﻿package com.flightpathfinder.rag.core.trace.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,10 +11,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * 跟踪运行头的 JDBC 仓储实现。
+ * 说明。
  *
- * <p>该仓储同时支持按 traceId 直查详情入口，
- * 以及按 requestId / conversationId 维度列出近期运行记录。
+ * 说明。
+ * 说明。
  */
 @Repository
 public class JdbcRagTraceRunRepository implements RagTraceRunRepository {
@@ -63,7 +63,7 @@ public class JdbcRagTraceRunRepository implements RagTraceRunRepository {
     }
 
     /**
-     * 插入或更新一条 trace 运行头记录。
+     * 说明。
      *
      * @param record 单次请求对应的持久化运行记录
      */
@@ -87,9 +87,9 @@ public class JdbcRagTraceRunRepository implements RagTraceRunRepository {
     }
 
     /**
-     * 按 traceId 查询单条 trace 运行头记录。
+     * 说明。
      *
-     * @param traceId 唯一 trace 标识
+     * @param traceId 参数说明。
      * @return 命中时返回运行记录
      */
     @Override
@@ -98,7 +98,7 @@ public class JdbcRagTraceRunRepository implements RagTraceRunRepository {
     }
 
     /**
-     * 按请求标识或会话标识过滤并列出近期 trace 运行头。
+     * 说明。
      *
      * @param requestId 可选请求标识过滤
      * @param conversationId 可选会话标识过滤

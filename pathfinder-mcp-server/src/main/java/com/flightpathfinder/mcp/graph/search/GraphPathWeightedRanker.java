@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.graph.search;
+﻿package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredCandidatePath;
 import com.flightpathfinder.mcp.graph.model.RestoredFlightGraph;
@@ -7,15 +7,15 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Pareto 选择后候选路径的最终加权排序器。
+ * 说明。
  *
- * <p>该阶段位于 Pareto 过滤之后：先保留“各维度都不错”的多样候选，
- * 再通过加权排序选出最终 top-K。</p>
+ * 说明。
+ * 说明。
  */
 final class GraphPathWeightedRanker {
 
     /**
-     * 对候选集合执行排序并返回最终 top-K。
+     * 说明。
      */
     List<RestoredCandidatePath> rank(RestoredFlightGraph graph,
                                      GraphPathParetoSelection selection,
@@ -153,7 +153,7 @@ final class GraphPathWeightedRanker {
     private record ScoreRange(double min, double max) {
 
         /**
-         * 基于 double 数组构建区间。
+         * 说明。
          */
         static ScoreRange ofDoubles(double[] values) {
             if (values.length == 0) {
@@ -169,7 +169,7 @@ final class GraphPathWeightedRanker {
         }
 
         /**
-         * 基于 int 数组构建区间。
+         * 说明。
          */
         static ScoreRange ofInts(int[] values) {
             if (values.length == 0) {

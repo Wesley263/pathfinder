@@ -1,8 +1,11 @@
-package com.flightpathfinder;
+﻿package com.flightpathfinder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
+/**
+ * 核心组件。
+ */
 
 @SpringBootApplication(scanBasePackages = "com.flightpathfinder")
 @EnableScheduling
@@ -12,4 +15,5 @@ public class PathfinderBootstrapApplication {
         SpringApplication.run(PathfinderBootstrapApplication.class, args);
     }
 }
+
 

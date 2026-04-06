@@ -1,4 +1,4 @@
-package com.flightpathfinder.framework.trace;
+﻿package com.flightpathfinder.framework.trace;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * 追踪根节点线程上下文持有器。
  *
- * <p>负责在一次请求生命周期内创建、读取与清理当前 TraceRoot。
+ * 说明。
  */
 public final class TraceContext {
 
@@ -33,7 +33,7 @@ public final class TraceContext {
     /**
      * 读取当前线程追踪根节点。
      *
-     * @return 当前 TraceRoot（若不存在则为空）
+     * @return 返回结果。
      */
     public static Optional<TraceRoot> currentRoot() {
         return Optional.ofNullable(ROOT_HOLDER.get());

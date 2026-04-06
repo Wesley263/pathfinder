@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.service.model;
+﻿package com.flightpathfinder.rag.service.model;
 
 import com.flightpathfinder.rag.core.answer.AnswerResult;
 import com.flightpathfinder.rag.core.pipeline.StageOneRagResult;
@@ -9,13 +9,13 @@ import java.util.List;
 /**
  * 同步查询总结果。
  *
- * <p>它把 stage one、retrieval、answer 和 trace 统一收口为一个应用层结果对象，
- * 供同步 controller 组装最终响应。</p>
+ * 说明。
+ * 说明。
  *
  * @param stageOneResult 第一阶段结果
- * @param retrievalResult retrieval 阶段结果
+ * @param retrievalResult 参数说明。
  * @param answerResult 最终回答结果
- * @param traceResult 本次请求的 trace 结果
+ * @param traceResult 参数说明。
  */
 public record RagQueryResult(
         StageOneRagResult stageOneResult,
@@ -40,7 +40,7 @@ public record RagQueryResult(
     /**
      * 判断第一阶段是否产生了有效结果。
      *
-     * @return 若改写结果或任一路意图非空，则返回 true
+     * @return 返回结果。
      */
     public boolean stageOneCompleted() {
         return !stageOneResult.rewriteResult().rewrittenQuestion().isBlank()

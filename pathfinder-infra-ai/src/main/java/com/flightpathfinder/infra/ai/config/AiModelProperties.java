@@ -6,9 +6,9 @@ import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 面向 AI 基础设施的配置，按“供应商连接信息”和“能力路由选择”拆分。
+ * 说明。
  *
- * <p>providers 描述如何连接上游厂商端点；chat 与 embedding 描述当前能力使用的
+ * 说明。
  * 供应商与模型组合。
  */
 @ConfigurationProperties(prefix = "pathfinder.ai")
@@ -43,7 +43,7 @@ public class AiModelProperties {
     }
 
     /**
-        * 单个上游 AI 供应商的连接与鉴权配置。
+        * 说明。
      */
     public static class ProviderProperties {
 

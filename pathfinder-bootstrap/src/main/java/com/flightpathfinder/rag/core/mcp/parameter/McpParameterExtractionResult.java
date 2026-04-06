@@ -1,9 +1,11 @@
-package com.flightpathfinder.rag.core.mcp.parameter;
+﻿package com.flightpathfinder.rag.core.mcp.parameter;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 核心组件。
+ */
 public record McpParameterExtractionResult(
         String toolId,
         Map<String, Object> parameters,
@@ -23,3 +25,4 @@ public record McpParameterExtractionResult(
         return "READY".equals(status);
     }
 }
+

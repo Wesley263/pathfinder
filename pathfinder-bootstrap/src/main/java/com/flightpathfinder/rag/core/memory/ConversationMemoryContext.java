@@ -1,13 +1,13 @@
-package com.flightpathfinder.rag.core.memory;
+﻿package com.flightpathfinder.rag.core.memory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 供 RAG 主链消费的记忆上下文。
+ * 说明。
  *
- * <p>该上下文有意同时携带近期轮次与可选摘要。
- * 近期轮次用于保留最新原话，摘要用于在会话超过近期窗口后为 stage one 与检索提供背景。
+ * 说明。
+ * 说明。
  */
 public record ConversationMemoryContext(
         ConversationMemoryConversation conversation,
@@ -25,7 +25,7 @@ public record ConversationMemoryContext(
     /**
      * 判断当前上下文是否不含可用记忆。
      *
-     * @return 当近期轮次与摘要都缺失时返回 {@code true}
+     * @return 返回结果。
      */
     public boolean empty() {
         return recentTurns.isEmpty() && !summary.exists();
@@ -52,7 +52,7 @@ public record ConversationMemoryContext(
     /**
      * 判断是否存在可用摘要片段。
      *
-     * @return 当旧轮次摘要文本存在时返回 {@code true}
+     * @return 返回结果。
      */
     public boolean hasSummary() {
         return summary.exists();
@@ -69,7 +69,7 @@ public record ConversationMemoryContext(
             fragments.add("Summary: " + summary.summaryText());
         }
         // 摘要覆盖较早历史，近期轮次保留最新精确措辞。
-        // 两者共同保留，避免 rewrite 与路由丢失长程上下文或即时语义细节。
+        // 说明。
         recentTurns.stream()
                 .map(turn -> "User: " + turn.questionForContext() + " | Assistant: " + abbreviate(turn.answerText()))
                 .forEach(fragments::add);

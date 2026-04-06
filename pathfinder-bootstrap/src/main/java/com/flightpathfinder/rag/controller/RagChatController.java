@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 同步 user-facing RAG 控制器。
+ * 说明。
  *
- * <p>它只负责把 HTTP 请求适配成同步查询服务调用。memory 读取、trace 生命周期、
- * 检索编排和审计组装都留在 service 层，避免 controller 变成隐藏编排器。</p>
+ * 说明。
+ * 说明。
  */
 @RestController
 @RequestMapping("/api/rag")
@@ -41,7 +41,7 @@ public class RagChatController {
     }
 
     /**
-     * 执行同步 RAG 主链并返回完整响应。
+     * 说明。
      *
      * @param request 用户面对话请求
      * @return 包含回答正文和审计信息的统一响应
@@ -63,7 +63,7 @@ public class RagChatController {
      * @return 面向接口返回的响应对象
      */
     private RagChatResponseVO toResponse(String question, RagQueryResult queryResult) {
-        // 这里只做展示层扁平化，真正的 memory / trace / retrieval 生命周期仍归应用编排层所有。
+        // 说明。
         return new RagChatResponseVO(
                 question == null ? "" : question.trim(),
                 queryResult.stageOneResult().rewriteResult().rewrittenQuestion(),

@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.graph.search;
+﻿package com.flightpathfinder.mcp.graph.search;
 
 import com.flightpathfinder.mcp.graph.model.RestoredCandidatePath;
 import java.util.ArrayList;
@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 已准入候选路径的 Pareto 分层选择器。
+ * 说明。
  *
- * <p>该过滤器位于候选准入与最终加权排序之间，避免 ranker 只能基于单一标量序做选择。</p>
+ * 说明。
  */
 final class GraphPathParetoFilter {
 
     /**
-     * 选择足够数量的 Pareto 分层供最终排序使用。
+     * 说明。
      */
     GraphPathParetoSelection selectForRanking(List<RestoredCandidatePath> candidates, int minimumSelectedCount) {
         if (candidates.isEmpty()) {
@@ -28,7 +28,7 @@ final class GraphPathParetoFilter {
         int layer = 1;
 
         while (!remaining.isEmpty() && selected.size() < minimumSelectedCount) {
-            // 按层累积到足够规模，保证 ranker 有足够多样性而非退化到单一标量序。
+            // 说明。
             List<RestoredCandidatePath> front = paretoFront(remaining);
             front.sort(defaultOrder());
             for (RestoredCandidatePath path : front) {
@@ -50,7 +50,7 @@ final class GraphPathParetoFilter {
     }
 
     /**
-     * 计算当前候选集的 Pareto 前沿。
+     * 说明。
      */
     private List<RestoredCandidatePath> paretoFront(List<RestoredCandidatePath> candidates) {
         List<RestoredCandidatePath> front = new ArrayList<>();

@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.rewrite;
+﻿package com.flightpathfinder.rag.core.rewrite;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 /**
  * 基于模型的改写服务实现。
  *
- * <p>它在确定性 rewrite 之上增加模型能力，但仍保留本地 fallback。这样即使模型不可用、
- * 返回空结果或格式不合法，第一阶段也不会失去稳定可运行的改写能力。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 @Primary
@@ -25,9 +25,9 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
 
     /** 确定性改写服务，作为模型不可用时的兜底实现。 */
     private final DefaultQuestionRewriteService fallbackRewriteService;
-    /** 面向 2.0 AI 基础设施的聊天模型调用入口。 */
+    /** 注释说明。 */
     private final ChatService chatService;
-    /** 用于解析模型返回 JSON 的对象映射器。 */
+    /** 注释说明。 */
     private final ObjectMapper objectMapper;
 
     /**
@@ -35,7 +35,7 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
      *
      * @param fallbackRewriteService 确定性兜底改写服务
      * @param chatService 模型对话服务
-     * @param objectMapper JSON 解析器
+     * @param objectMapper 参数说明。
      */
     public ModelBackedQuestionRewriteService(DefaultQuestionRewriteService fallbackRewriteService,
                                             ChatService chatService,
@@ -146,11 +146,11 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
     }
 
     /**
-     * 解析模型返回的 JSON 改写结果。
+     * 说明。
      *
      * @param raw 模型原始文本输出
      * @return 解析后的改写结果；缺少子问题时会回填为单问题列表
-     * @throws Exception 当 JSON 不合法或无法解析时抛出异常
+     * @throws Exception 异常说明。
      */
     private ParsedRewrite parseRewrite(String raw) throws Exception {
         String cleaned = stripMarkdownCodeFence(raw);
@@ -173,10 +173,10 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
     }
 
     /**
-     * 去掉模型返回内容可能携带的 Markdown 代码块包裹。
+     * 说明。
      *
      * @param raw 模型原始输出
-     * @return 适合 JSON 解析的纯文本内容
+     * @return 返回结果。
      */
     private String stripMarkdownCodeFence(String raw) {
         String cleaned = raw == null ? "" : raw.trim();
@@ -201,7 +201,7 @@ public class ModelBackedQuestionRewriteService implements QuestionRewriteService
     }
 
     /**
-     * 把字符串列表格式化成接近 JSON 数组的展示文本。
+     * 说明。
      *
      * @param values 待格式化的字符串列表
      * @return 便于模型理解的数组文本

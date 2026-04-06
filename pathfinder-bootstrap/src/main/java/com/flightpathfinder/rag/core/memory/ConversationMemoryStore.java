@@ -1,9 +1,9 @@
-package com.flightpathfinder.rag.core.memory;
+﻿package com.flightpathfinder.rag.core.memory;
 
 /**
  * 面向持久化层的近期轮次记忆存储抽象。
  *
- * <p>该存储负责会话头与消息明细持久化，摘要生成保持独立关注点。
+ * 说明。
  * 这种拆分让原始历史读取保持简单，也使摘要策略可以独立演进而不影响写路径存储契约。
  */
 public interface ConversationMemoryStore {

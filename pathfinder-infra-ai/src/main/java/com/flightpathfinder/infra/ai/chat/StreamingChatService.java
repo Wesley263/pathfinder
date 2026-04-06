@@ -1,6 +1,6 @@
 ﻿package com.flightpathfinder.infra.ai.chat;
 /**
- * 面向 AI 聊天的能力接口定义。
+ * 说明。
  */
 public interface StreamingChatService {
 

@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.trace.repository;
+﻿package com.flightpathfinder.rag.core.trace.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 跟踪节点的 JDBC 仓储实现。
+ * 说明。
  *
- * <p>trace 完成后按有序全量集合替换节点，
- * 使持久化结果与“完成态 trace 不可变”的心智模型保持一致。
+ * 说明。
+ * 说明。
  */
 @Repository
 public class JdbcRagTraceNodeRepository implements RagTraceNodeRepository {
@@ -50,9 +50,9 @@ public class JdbcRagTraceNodeRepository implements RagTraceNodeRepository {
     }
 
     /**
-     * 替换指定 traceId 的全部节点行。
+     * 说明。
      *
-     * @param traceId 唯一 trace 标识
+     * @param traceId 参数说明。
      * @param records 完整有序节点记录集
      */
     @Override
@@ -84,9 +84,9 @@ public class JdbcRagTraceNodeRepository implements RagTraceNodeRepository {
     }
 
     /**
-     * 加载单个 trace 的节点行。
+     * 说明。
      *
-     * @param traceId 唯一 trace 标识
+     * @param traceId 参数说明。
      * @return 按节点序号排序的节点记录
      */
     @Override

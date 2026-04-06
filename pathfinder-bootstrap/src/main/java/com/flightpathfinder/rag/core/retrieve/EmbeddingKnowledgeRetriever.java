@@ -1,4 +1,4 @@
-package com.flightpathfinder.rag.core.retrieve;
+﻿package com.flightpathfinder.rag.core.retrieve;
 
 import com.flightpathfinder.infra.ai.embedding.EmbeddingService;
 import com.flightpathfinder.rag.core.intent.IntentSplitResult;
@@ -19,27 +19,27 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
- * 基于 embedding 的 KB 检索器。
+ * 说明。
  *
- * <p>它在内置目录检索器之上增加向量相似度能力，但仍保留确定性 fallback。
- * 这样 embedding 服务不可用时，KB 分支仍能维持稳定可运行。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 @Primary
 public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
 
-    /** 目录式 KB 检索器兜底实现。 */
+    /** 注释说明。 */
     private final DefaultKnowledgeRetriever fallbackKnowledgeRetriever;
-    /** embedding 向量服务。 */
+    /** 注释说明。 */
     private final EmbeddingService embeddingService;
-    /** 文档 embedding 缓存，避免每次检索都重复向量化相同文档。 */
+    /** 注释说明。 */
     private final Map<String, List<Float>> documentEmbeddingCache = new ConcurrentHashMap<>();
 
     /**
-     * 构造 embedding 检索器。
+     * 说明。
      *
      * @param fallbackKnowledgeRetriever 目录式兜底检索器
-     * @param embeddingService embedding 向量服务
+     * @param embeddingService 参数说明。
      */
     public EmbeddingKnowledgeRetriever(DefaultKnowledgeRetriever fallbackKnowledgeRetriever,
                                        EmbeddingService embeddingService) {
@@ -48,11 +48,11 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 基于 embedding 执行 KB 检索。
+     * 说明。
      *
      * @param rewriteResult 改写结果
      * @param intentSplitResult 分流结果
-     * @return embedding 检索结果；无法执行时回落到目录式检索结果
+     * @return 返回结果。
      */
     @Override
     public KbContext retrieve(RewriteResult rewriteResult, IntentSplitResult intentSplitResult) {
@@ -88,12 +88,12 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 针对单个 KB intent 执行 embedding 检索。
+     * 说明。
      *
      * @param catalog 当前知识目录
      * @param rewriteResult 改写结果
-     * @param kbIntent 当前 KB intent
-     * @return 当前 intent 命中的条目列表
+     * @param kbIntent 参数说明。
+     * @return 返回结果。
      * @throws Exception 当反射读取文档字段失败时抛出异常
      */
     private List<KbRetrievalItem> retrieveForIntent(Map<String, List<Object>> catalog,
@@ -137,10 +137,10 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 为单条文档生成 embedding。
+     * 说明。
      *
      * @param document 文档对象
-     * @return 文档 embedding；失败时返回空列表
+     * @return 返回结果。
      */
     private List<Float> embedDocument(Object document) {
         try {
@@ -154,13 +154,13 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 把反射读取到的文档对象转换为统一 KB 条目。
+     * 说明。
      *
-     * @param kbIntent 当前 KB intent
+     * @param kbIntent 参数说明。
      * @param document 原始文档对象
      * @param score 文档得分
      * @param rank 排名
-     * @return 标准化 KB 条目
+     * @return 返回结果。
      */
     private KbRetrievalItem toItem(ResolvedIntent kbIntent, Object document, double score, int rank) {
         try {
@@ -182,7 +182,7 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 对条目按 intentId + documentId 去重。
+     * 说明。
      *
      * @param items 原始条目列表
      * @return 去重后的条目列表
@@ -200,7 +200,7 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     }
 
     /**
-     * 生成 KB 检索摘要。
+     * 说明。
      *
      * @param items 检索条目列表
      * @return 按集合统计的摘要文本
@@ -220,7 +220,7 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
     /**
      * 通过反射读取目录式检索器中的知识目录。
      *
-     * <p>这里刻意复用兜底检索器已有的目录数据，避免为第一版 embedding 检索再维护一份平行目录。</p>
+     * 说明。
      *
      * @return 当前知识目录
      * @throws Exception 当反射读取失败时抛出异常
@@ -236,7 +236,7 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
      * 决定本次检索应使用的问题文本。
      *
      * @param rewriteResult 改写结果
-     * @param kbIntent 当前 KB intent
+     * @param kbIntent 参数说明。
      * @return 优先使用子问题文本，否则退回改写主问题
      */
     private String resolveQuery(RewriteResult rewriteResult, ResolvedIntent kbIntent) {
@@ -250,7 +250,7 @@ public class EmbeddingKnowledgeRetriever implements KnowledgeRetriever {
      * 计算词法得分，用于与向量相似度混合。
      *
      * @param query 当前检索问题
-     * @param kbIntent 当前 KB intent
+     * @param kbIntent 参数说明。
      * @param document 待评分文档
      * @return 词法得分
      * @throws Exception 当文档字段读取失败时抛出异常

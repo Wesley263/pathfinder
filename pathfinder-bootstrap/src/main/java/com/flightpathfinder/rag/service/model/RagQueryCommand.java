@@ -1,9 +1,9 @@
-package com.flightpathfinder.rag.service.model;
+﻿package com.flightpathfinder.rag.service.model;
 
 /**
  * 同步查询命令。
  *
- * <p>它把 controller 层的请求语义收口成应用编排层可直接消费的命令对象。</p>
+ * 说明。
  *
  * @param question 用户问题
  * @param conversationId 会话标识

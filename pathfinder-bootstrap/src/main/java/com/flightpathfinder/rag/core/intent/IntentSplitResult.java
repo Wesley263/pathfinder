@@ -1,15 +1,15 @@
-package com.flightpathfinder.rag.core.intent;
+﻿package com.flightpathfinder.rag.core.intent;
 
 import java.util.List;
 
 /**
- * 面向 retrieval 的意图分流结果。
+ * 说明。
  *
- * <p>这里显式拆开 KB、MCP 和 SYSTEM 三路，避免后续阶段只拿到一个模糊的“路由结果”，
- * 从而丢失每一类分支的独立语义。</p>
+ * 说明。
+ * 说明。
  *
  * @param kbIntents 命中的知识检索意图列表
- * @param mcpIntents 命中的 MCP 工具调用意图列表
+ * @param mcpIntents 参数说明。
  * @param systemIntents 命中的系统级意图列表
  */
 public record IntentSplitResult(

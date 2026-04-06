@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 管理端数据 ETL、统计与缓存维护 API。
+ * 管理端数据导入、统计与缓存维护接口。
  *
- * <p>该控制器面向运维管理场景，暴露导入数据集与缓存状态的操作能力，
- * 与用户侧 API 以及图快照管理接口保持职责隔离。
+ * 该控制器面向运维管理场景，暴露导入数据集与缓存状态的操作能力，
+ * 与用户侧接口以及图快照管理接口保持职责隔离。
  */
 @RestController
 @RequestMapping("/api/admin/data")
@@ -36,10 +36,10 @@ public class AdminDataController {
     }
 
     /**
-        * 触发管理端外部数据集 ETL。
+     * 触发管理端外部数据集导入。
      *
-     * @param request optional reload request carrying graph key and operator reason
-     * @return reload summary with dataset-level outcomes and current stats
+     * @param request 可选重载请求，包含图键与操作原因
+     * @return 重载结果摘要，包含数据集级执行结果与当前统计
      */
     @PostMapping("/reload")
     public Result<AdminDataReloadVO> reload(@RequestBody(required = false) AdminDataReloadRequest request) {
@@ -50,9 +50,9 @@ public class AdminDataController {
     }
 
     /**
-        * 返回管理端数据表当前聚合统计。
+     * 返回管理端数据表当前聚合统计。
      *
-     * @return current data stats snapshot
+     * @return 当前数据统计快照
      */
     @GetMapping("/stats")
     public Result<AdminDataStatsVO> stats() {
@@ -60,10 +60,10 @@ public class AdminDataController {
     }
 
     /**
-        * 失效依赖导入数据的缓存面。
+     * 失效依赖导入数据的缓存面。
      *
-     * @param request optional invalidate request carrying graph key and operator reason
-     * @return cache invalidation summary
+     * @param request 可选失效请求，包含图键与操作原因
+     * @return 缓存失效摘要
      */
     @PostMapping("/cache/invalidate")
     public Result<AdminCacheInvalidateVO> invalidateCaches(@RequestBody(required = false) AdminCacheInvalidateRequest request) {

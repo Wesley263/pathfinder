@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 /**
  * 主应用侧已发布图快照只读查询服务。
  *
- * <p>该服务主要用于 admin/巡检场景。它读取与 MCP server 相同的 Redis 读模型，
- * 保证跨进程看到的一致快照视图。</p>
+ * 说明。
+ * 说明。
  */
 @Service
 public class RedisGraphSnapshotQueryService implements GraphSnapshotQueryService {
 
-    /** 用于访问 Redis 的模板。 */
+    /** 注释说明。 */
     private final StringRedisTemplate stringRedisTemplate;
     /** 快照反序列化对象映射器。 */
     private final ObjectMapper objectMapper;
@@ -29,10 +29,10 @@ public class RedisGraphSnapshotQueryService implements GraphSnapshotQueryService
     private final GraphSnapshotProperties graphSnapshotProperties;
 
     /**
-     * 构造 Redis 图快照查询服务。
+     * 说明。
      *
-     * @param stringRedisTemplate Redis 模板
-     * @param objectMapper JSON 映射器
+     * @param stringRedisTemplate 参数说明。
+     * @param objectMapper 参数说明。
      * @param graphSnapshotProperties 图快照配置
      */
     public RedisGraphSnapshotQueryService(StringRedisTemplate stringRedisTemplate,
@@ -44,7 +44,7 @@ public class RedisGraphSnapshotQueryService implements GraphSnapshotQueryService
     }
 
     /**
-        * 从 Redis 加载一个 graphKey 的当前已发布快照。
+        * 说明。
      *
         * @param graphKey 图逻辑标识
         * @return 当前快照（存在时返回）
@@ -68,14 +68,14 @@ public class RedisGraphSnapshotQueryService implements GraphSnapshotQueryService
                     BaseErrorCode.SERVICE_ERROR,
                     "unsupported graph snapshot schema version: " + snapshot.schemaVersion());
         }
-        // 管理侧读取与 MCP 相同的 Redis 快照，确保运维视图与实际 path-search 消费视图一致。
+        // 说明。
         return Optional.of(snapshot);
     }
 
     /**
      * 反序列化快照载荷。
      *
-     * @param payload Redis 中的 JSON 载荷
+     * @param payload 参数说明。
      * @return 图快照对象
      */
     private GraphSnapshot deserialize(String payload) {
@@ -87,7 +87,7 @@ public class RedisGraphSnapshotQueryService implements GraphSnapshotQueryService
     }
 
     /**
-     * 归一化 graphKey。
+     * 说明。
      *
      * @param graphKey 原始图标识
      * @return 归一化后的图标识

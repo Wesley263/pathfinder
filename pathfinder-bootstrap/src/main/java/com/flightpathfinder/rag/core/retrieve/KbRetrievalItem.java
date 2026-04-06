@@ -1,9 +1,9 @@
-package com.flightpathfinder.rag.core.retrieve;
+﻿package com.flightpathfinder.rag.core.retrieve;
 
 /**
- * 单条 KB 检索命中结果。
+ * 说明。
  *
- * <p>它保留意图、集合、主题、来源和排序信息，便于 final answer、audit 和 trace 从管理视角查看“这条知识为什么会进入回答”。</p>
+ * 说明。
  *
  * @param intentId 触发该条目的意图标识
  * @param intentName 触发该条目的意图名称
@@ -31,7 +31,7 @@ public record KbRetrievalItem(
         int rank) {
 
     /**
-     * 归一化 KB 检索条目中的文本字段。
+     * 说明。
      */
     public KbRetrievalItem {
         intentId = intentId == null ? "" : intentId.trim();

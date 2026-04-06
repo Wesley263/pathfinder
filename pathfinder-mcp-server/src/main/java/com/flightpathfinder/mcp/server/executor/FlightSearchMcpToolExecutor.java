@@ -1,4 +1,4 @@
-package com.flightpathfinder.mcp.server.executor;
+﻿package com.flightpathfinder.mcp.server.executor;
 
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallRequest;
 import com.flightpathfinder.framework.protocol.mcp.McpToolCallResult;
@@ -14,10 +14,10 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
- * {@code flight.search} 的服务端执行器。
+ * 说明。
  *
- * <p>该工具通过 MCP 暴露直飞检索契约，同时把真实数据源访问保留在
- * {@code pathfinder-mcp-server} 内。bootstrap 侧仅消费工具契约，不共享底层检索实现。
+ * 说明。
+ * 说明。
  */
 @Component
 public class FlightSearchMcpToolExecutor implements McpToolExecutor {
@@ -31,9 +31,9 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 描述直飞查询的 MCP 工具契约。
+     * 说明。
      *
-     * @return {@code flight.search} 的请求参数与结果 schema 描述
+     * @return 返回结果。
      */
     @Override
     public McpToolDescriptor descriptor() {
@@ -67,11 +67,11 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
     }
 
     /**
-     * 基于 MCP 服务端数据源执行直飞检索。
+     * 说明。
      *
-     * @param request MCP 请求，包含结构化机场/日期约束
-     * @return 结构化检索结果，状态可能为 {@code SUCCESS}、{@code NO_FLIGHTS_FOUND}，
-     *     或 {@code INVALID_REQUEST}/{@code EXECUTION_ERROR}
+     * @param request 参数说明。
+     * @return 返回结果。
+     * 说明。
      */
     @Override
     public McpToolCallResult execute(McpToolCallRequest request) {
@@ -135,7 +135,7 @@ public class FlightSearchMcpToolExecutor implements McpToolExecutor {
         }
 
         try {
-            // 执行器统一做一次协议入参归一化，让下游 JDBC 检索可直接依赖强类型查询对象。
+            // 说明。
             return new FlightSearchQuery(origin, destination, LocalDate.parse(date), flexibilityDays, topK);
         } catch (DateTimeParseException exception) {
             throw new IllegalArgumentException("date must be in yyyy-MM-dd format");

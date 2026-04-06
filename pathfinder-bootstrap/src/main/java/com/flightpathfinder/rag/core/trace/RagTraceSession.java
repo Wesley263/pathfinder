@@ -1,14 +1,14 @@
-package com.flightpathfinder.rag.core.trace;
+﻿package com.flightpathfinder.rag.core.trace;
 
 import com.flightpathfinder.framework.trace.TraceRoot;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 单次查询执行中的可变 trace 会话。
+ * 说明。
  *
- * <p>{@code requestId} 标识外部请求，{@code conversationId} 在存在时关联会话记忆，
- * {@code root.traceId()} 则是用于持久化审计查询的唯一 trace 键。
+ * 说明。
+ * 说明。
  */
 public final class RagTraceSession {
 
@@ -19,11 +19,11 @@ public final class RagTraceSession {
     private final List<RagTraceToolSummary> mcpToolSummaries = new ArrayList<>();
 
     /**
-     * 创建新的执行中 trace 会话。
+     * 说明。
      *
      * @param requestId 外部请求标识
      * @param conversationId 可选会话标识
-     * @param root 支撑该会话的 framework trace 根节点
+     * @param root 参数说明。
      */
     public RagTraceSession(String requestId, String conversationId, TraceRoot root) {
         this.requestId = requestId == null ? "" : requestId.trim();
@@ -46,7 +46,7 @@ public final class RagTraceSession {
     }
 
     /**
-     * 返回底层 trace 根节点。
+     * 说明。
      */
     public TraceRoot root() {
         return root;
@@ -60,7 +60,7 @@ public final class RagTraceSession {
     }
 
     /**
-     * 返回 MCP 工具汇总集合（可追加）。
+     * 说明。
      */
     public List<RagTraceToolSummary> mcpToolSummaries() {
         return mcpToolSummaries;

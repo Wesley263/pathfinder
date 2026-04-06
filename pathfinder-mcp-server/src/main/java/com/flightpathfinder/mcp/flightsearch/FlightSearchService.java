@@ -1,13 +1,13 @@
-package com.flightpathfinder.mcp.flightsearch;
+﻿package com.flightpathfinder.mcp.flightsearch;
 
 import java.util.List;
 
 /**
  * 直飞检索的服务端契约。
  *
- * <p>该服务驻留在 {@code pathfinder-mcp-server}，
- * 因为 {@code flight.search} 是基于服务端自有数据源访问的独立 MCP 工具，
- * 不依赖共享的 bootstrap 业务实现。
+ * 说明。
+ * 说明。
+ * 说明。
  */
 public interface FlightSearchService {
 

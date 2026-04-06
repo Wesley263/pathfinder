@@ -1,12 +1,12 @@
-package com.flightpathfinder.rag.core.memory;
+﻿package com.flightpathfinder.rag.core.memory;
 
 import java.util.List;
 
 /**
  * 从记忆存储中读取到的原始近期轮次快照。
  *
- * <p>该快照有意保持“存储形态”：先携带会话元信息与显式近期轮次，
- * 再由上层在 {@link ConversationMemoryContext} 中合并摘要层信息。
+ * 说明。
+ * 说明。
  */
 public record ConversationMemorySnapshot(
         ConversationMemoryConversation conversation,
